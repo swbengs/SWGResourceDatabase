@@ -179,6 +179,7 @@
     <ClCompile Include="Lua\lutf8lib.c" />
     <ClCompile Include="Lua\lvm.c" />
     <ClCompile Include="Lua\lzio.c" />
+    <ClCompile Include="Resource.cpp" />
     <ClCompile Include="Sqlite\sqlite3.c" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
@@ -214,6 +215,8 @@
     <ClInclude Include="Lua\lundump.h" />
     <ClInclude Include="Lua\lvm.h" />
     <ClInclude Include="Lua\lzio.h" />
+    <ClInclude Include="pods.hpp" />
+    <ClInclude Include="Resource.hpp" />
     <ClInclude Include="Sqlite\sqlite3.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
