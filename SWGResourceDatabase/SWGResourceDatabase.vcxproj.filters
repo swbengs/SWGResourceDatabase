@@ -135,8 +135,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />
-    <None Include="resource_manager_spawns.lua" />
-    <None Include="table_test.lua" />
+    <None Include="resource_manager_spawns.lua">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="table_test.lua">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sqlite\sqlite3.h">
