@@ -184,6 +184,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />
+    <None Include="resource_manager_spawns.lua" />
+    <None Include="table_test.lua" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lua\lapi.h" />
