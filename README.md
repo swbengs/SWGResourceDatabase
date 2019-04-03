@@ -9,3 +9,17 @@ The ZonamaDev server at a minimum produces a Lua file that contains all resource
 3. Use the CLI or any other Sqlite3 interface to run queries
 4. Enjoy!
 
+Built with MS VS 2015
+
+## Languages
+* Lua 5.3
+* Sqlite3
+* C++11
+
+## License info
+My code is under the MIT license but Lua and Sqlite have their own. 
+
+Lib name | Lib version | Website | License
+-------- | ----------- | ------- | -------
+Lua | 5.3.4 | https://www.lua.org/ | https://www.lua.org/license.html
+Sqlite | 3 | https://www.sqlite.org/index.html | https://www.sqlite.org/copyright.html
