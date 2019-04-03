@@ -41,6 +41,7 @@ public:
     Resource();
     Resource(const resource_pod& pod);
 private:
+    unsigned int resource_type;
     resource_pod resource;
 };
 

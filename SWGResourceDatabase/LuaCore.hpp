@@ -1,9 +1,16 @@
-//class header
-#include "Resource.hpp"
+#pragma once
 
 //std lib includes
+#include <string>
 
 //other includes
+//extern c or else while compiling as C++ there are naming issues
+extern "C"
+{
+#include "Lua\lua.h" //bread and butter
+#include "Lua\lauxlib.h" //helper functions for plain Lua
+#include "Lua\lualib.h" //helper libraries for tables, math, IO, and so on inside Lua
+}
 
 /*
 MIT License
@@ -29,27 +36,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-//class code
+/*
+Description: Class that will collect all information from the given lua script
+*/
 
-Resource::Resource()
+//class delcaration
+class LuaCore
 {
-    resource_type = 0;
-    resource.name = "junk name";
-    resource.type = "junk type";
-    resource.cold_resistance = 0;
-    resource.conductivity = 0;
-    resource.decay_resistance = 0;
-    resource.flavor = 0;
-    resource.heat_resistance = 0;
-    resource.malleability = 0;
-    resource.overall_quality = 0;
-    resource.potential_energy = 0;
-    resource.shock_resistance = 0;
-    resource.unit_toughness = 0;
-}
+public:
+    LuaCore();
+    ~LuaCore();
+private:
+    lua_State* lua_state;
+};
 
-Resource::Resource(const resource_pod& pod)
-{
-    resource_type = 0;
-    resource = pod;
-}

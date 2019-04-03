@@ -1,5 +1,5 @@
 //class header
-#include "Resource.hpp"
+#include "LuaCore.hpp"
 
 //std lib includes
 
@@ -31,25 +31,13 @@ SOFTWARE.
 
 //class code
 
-Resource::Resource()
+LuaCore::LuaCore()
 {
-    resource_type = 0;
-    resource.name = "junk name";
-    resource.type = "junk type";
-    resource.cold_resistance = 0;
-    resource.conductivity = 0;
-    resource.decay_resistance = 0;
-    resource.flavor = 0;
-    resource.heat_resistance = 0;
-    resource.malleability = 0;
-    resource.overall_quality = 0;
-    resource.potential_energy = 0;
-    resource.shock_resistance = 0;
-    resource.unit_toughness = 0;
+    lua_state = luaL_newstate();
 }
 
-Resource::Resource(const resource_pod& pod)
+LuaCore::~LuaCore()
 {
-    resource_type = 0;
-    resource = pod;
+    lua_close(lua_state);
+    lua_state = nullptr;
 }
