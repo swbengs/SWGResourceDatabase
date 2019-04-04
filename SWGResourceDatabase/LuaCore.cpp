@@ -34,6 +34,7 @@ SOFTWARE.
 LuaCore::LuaCore()
 {
     lua_state = luaL_newstate();
+    //luaL_openlibs(lua_state); //only use if you are sure that no harmful Lua code will be run
     current_index = 0;
 }
 
@@ -93,7 +94,7 @@ void LuaCore::stop()
     }
 }
 
-bool LuaCore::getNextResource(resource_pod& pod)
+bool LuaCore::getNextResource(resource_pod& pod, std::vector<std::string>& classes)
 {
     if (!lua_gettop(lua_state) == 1)
     {
@@ -121,7 +122,14 @@ bool LuaCore::getNextResource(resource_pod& pod)
     pod.type = getFieldString("type");
     if (!getResourceAttributes(pod))
     {
-        printf("Resource attributes error\n");
+        fprintf(stderr, "Resource attributes error\n");
+        lua_pop(lua_state, 1); //must clean up before we leave this method
+        return false;
+    }
+
+    if (!getResourceClasses(classes))
+    {
+        fprintf(stderr, "Resource classes error\n");
         lua_pop(lua_state, 1); //must clean up before we leave this method
         return false;
     }
@@ -177,6 +185,7 @@ std::string LuaCore::getFieldString(std::string key)
     if (!lua_isstring(lua_state, -1))
     {
         printf("invalid string in table[%s]\n", key.c_str());
+        return "null";
     }
 
     result = lua_tostring(lua_state, -1); //in C++11 it is supposed to copy the char*. If it does not this will cause issues. The internal pointer that Lua gives is only valid while the value is on the Lua stack
@@ -193,6 +202,7 @@ std::string LuaCore::getFieldString(int key)
     if (!lua_isstring(lua_state, -1))
     {
         printf("invalid string in table[%i]\n", key);
+        return "null";
     }
 
     result = lua_tostring(lua_state, -1); //in C++11 it is supposed to copy the char*. If it does not this will cause issues. The internal pointer that Lua gives is only valid while the value is on the Lua stack
@@ -223,7 +233,7 @@ bool LuaCore::getResourceAttributes(resource_pod& pod)
         {
             next = false;
         }
-        else
+        else //grab the attribute
         {
             getAttribute(pod);
         }
@@ -235,6 +245,7 @@ bool LuaCore::getResourceAttributes(resource_pod& pod)
     return true;
 }
 
+//grabs a single attribute. An error will just return 0 so there is no way to know for certain the proper value was there
 void LuaCore::getAttribute(resource_pod& pod)
 {
     //grab the value only. We don't push the table off that happens in the loop
@@ -287,5 +298,46 @@ void LuaCore::getAttribute(resource_pod& pod)
     {
         fprintf(stderr, "unknown key in getAttribute of: %s", key.c_str());
     }
+}
+
+bool LuaCore::getResourceClasses(std::vector<std::string>& classes)
+{
+    lua_pushstring(lua_state, "classes");
+    lua_gettable(lua_state, -2);
+    if (!lua_istable(lua_state, -1))
+    {
+        printf("Resource has no classes\n");
+        lua_pop(lua_state, 1); //pop off whatever junk was there
+        return false;
+    }
+
+    bool next = true; //loop control
+    int index = 0;
+    do
+    {
+        index++;
+        lua_pushinteger(lua_state, index);
+        lua_gettable(lua_state, -2);
+        if (!lua_istable(lua_state, -1)) //could be an error or that we have hit the end of the attributes
+        {
+            next = false;
+        }
+        else //grab just the second value. First is a more human readable string of the second
+        {
+            std::string value = getFieldString(2);
+            if (value.compare("null") == 0)
+            {
+                //error will generate at call above so just cleanup and return
+                lua_pop(lua_state, 1); //pop off whatever junk was there
+                return false;
+            }
+            classes.push_back(std::move(value));
+        }
+
+        lua_pop(lua_state, 1); //get ready for next table
+    } while (next);
+
+    lua_pop(lua_state, 1); //pop off attributes
+    return true;
 }
 

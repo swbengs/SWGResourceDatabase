@@ -2,6 +2,7 @@
 
 //std lib includes
 #include <string>
+#include <vector>
 
 //other includes
 #include "pods.hpp"
@@ -51,7 +52,7 @@ public:
 
     bool start(std::string filename); //do setup things to be ready to collect resources. Takes a filename which is the Lua file that is a resource dump. Returns true if there was no error
     void stop(); //do closing things so that if the Lua state needs to be used again it's clean aka stack is empty
-    bool getNextResource(resource_pod& pod); //gets the next resource and returns true if there was one. If false the POD you pass in is junk
+    bool getNextResource(resource_pod& pod, std::vector<std::string>& classes); //gets the next resource and returns true if there was one. If false the POD and vector you pass in are junk
 private:
     lua_State* lua_state;
     int current_index;
@@ -65,5 +66,6 @@ private:
     std::string getFieldString(int key);
     bool getResourceAttributes(resource_pod& pod);
     void getAttribute(resource_pod& pod); //these are in a table with key at table[1] and value at table[2]
+    bool getResourceClasses(std::vector<std::string>& classes);
 };
 

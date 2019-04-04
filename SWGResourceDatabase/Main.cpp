@@ -35,6 +35,28 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+bool checkVector(const std::vector<std::string>& vector, const std::vector<std::string>& expected, std::string name)
+{
+    //check size
+    if (vector.size() != expected.size())
+    {
+        printf("%s was not the same size as expected\n", name.c_str());
+        return false;
+    }
+
+    //check actual values
+    for (size_t i = 0; i < vector.size(); i++) //for extra saftey/sanity should check all values in expected in case they are out of order in vector. Long as they are the same size and contain the same values, even in a different order it should pass
+    {
+        if (vector[i].compare(expected[i]) != 0)
+        {
+            printf("%s was not %s: value at [%i] was %s\n", name.c_str(), expected[i].c_str(), i, vector[i].c_str());
+            return false;
+        }
+    }
+
+    return true;
+}
+
 bool checkString(std::string value, std::string expected, std::string name)
 {
     if (value.compare(expected) != 0)
@@ -56,6 +78,22 @@ bool checkInt(int value, int expected, std::string name)
     return true;
 }
 
+void printVector(std::vector<std::string> vector, std::string name)
+{
+    printf("%s:\n", name.c_str());
+    for (size_t i = 0; i < vector.size(); i++)
+    {
+        printf("%s\n", vector[i].c_str());
+    }
+}
+
+//sets given vector to default constructed vector
+void resetResourceClasses(std::vector<std::string>& classes)
+{
+    classes = std::vector<std::string>();
+}
+
+//sets given resource to junk strings and 0 ints
 void resetResourcePOD(resource_pod& resource)
 {
     resource.name = "fail name";
@@ -105,13 +143,15 @@ bool test_LuaCoreFirst()
     LuaCore lua;
     resource_pod resource;
     resetResourcePOD(resource);
+    std::vector<std::string> classes;
+    std::vector<std::string> expected = {"inorganic", "mineral", "metal", "metal_nonferrous", "copper", "copper_borocarbitic"};
 
     if (!lua.start(filename))
     {
         return EXIT_FAILURE;
     }
 
-    lua.getNextResource(resource);
+    lua.getNextResource(resource, classes);
     lua.stop();
 
     if (!checkString(resource.name, "Ababuglu", "name"))
@@ -162,6 +202,10 @@ bool test_LuaCoreFirst()
     {
         return EXIT_FAILURE;
     }
+    else if (!checkVector(classes, expected, "classes"))
+    {
+        return EXIT_FAILURE;
+    }
 
     printf("name: %s\n", resource.name.c_str());
     printf("type: %s\n", resource.type.c_str());
@@ -175,6 +219,7 @@ bool test_LuaCoreFirst()
     printf("potential_energy: %i\n", resource.potential_energy);
     printf("shock_resistance: %i\n", resource.shock_resistance);
     printf("unit_toughness: %i\n", resource.unit_toughness);
+    printVector(classes, "classes");
 
     printf("test_LuaCoreFirst stop\n\n");
 
@@ -189,15 +234,18 @@ bool test_LuaCoreSecond()
     LuaCore lua;
     resource_pod resource;
     resetResourcePOD(resource);
+    std::vector<std::string> classes;
+    std::vector<std::string> expected = { "organic", "creature_resources", "creature_structural", "bone_horn", "bone_horn_rori" };
 
     if (!lua.start(filename))
     {
         return EXIT_FAILURE;
     }
 
-    lua.getNextResource(resource); //1
+    lua.getNextResource(resource, classes); //1
     resetResourcePOD(resource);
-    lua.getNextResource(resource); //2
+    resetResourceClasses(classes);
+    lua.getNextResource(resource, classes); //2
     lua.stop();
 
     if (!checkString(resource.name, "Abayquily", "name"))
@@ -248,6 +296,10 @@ bool test_LuaCoreSecond()
     {
         return EXIT_FAILURE;
     }
+    else if (!checkVector(classes, expected, "classes"))
+    {
+        return EXIT_FAILURE;
+    }
 
     printf("name: %s\n", resource.name.c_str());
     printf("type: %s\n", resource.type.c_str());
@@ -261,6 +313,7 @@ bool test_LuaCoreSecond()
     printf("potential_energy: %i\n", resource.potential_energy);
     printf("shock_resistance: %i\n", resource.shock_resistance);
     printf("unit_toughness: %i\n", resource.unit_toughness);
+    printVector(classes, "classes");
 
     printf("test_LuaCoreSecond stop\n\n");
 
@@ -275,19 +328,24 @@ bool test_LuaCoreFourth()
     LuaCore lua;
     resource_pod resource;
     resetResourcePOD(resource);
+    std::vector<std::string> classes;
+    std::vector<std::string> expected = { "organic", "flora_resources", "flora_food", "seeds", "fruit", "fruit_fruits", "fruit_fruits_dantooine" };
 
     if (!lua.start(filename))
     {
         return EXIT_FAILURE;
     }
 
-    lua.getNextResource(resource); //1
+    lua.getNextResource(resource, classes); //1
     resetResourcePOD(resource);
-    lua.getNextResource(resource); //2
+    resetResourceClasses(classes);
+    lua.getNextResource(resource, classes); //2
     resetResourcePOD(resource);
-    lua.getNextResource(resource); //3
+    resetResourceClasses(classes);
+    lua.getNextResource(resource, classes); //3
     resetResourcePOD(resource);
-    lua.getNextResource(resource); //4
+    resetResourceClasses(classes);
+    lua.getNextResource(resource, classes); //4
     lua.stop();
 
     if (!checkString(resource.name, "Able", "name"))
@@ -338,6 +396,10 @@ bool test_LuaCoreFourth()
     {
         return EXIT_FAILURE;
     }
+    else if (!checkVector(classes, expected, "classes"))
+    {
+        return EXIT_FAILURE;
+    }
 
     printf("name: %s\n", resource.name.c_str());
     printf("type: %s\n", resource.type.c_str());
@@ -351,6 +413,7 @@ bool test_LuaCoreFourth()
     printf("potential_energy: %i\n", resource.potential_energy);
     printf("shock_resistance: %i\n", resource.shock_resistance);
     printf("unit_toughness: %i\n", resource.unit_toughness);
+    printVector(classes, "classes");
 
     printf("test_LuaCoreFourth stop\n\n");
 

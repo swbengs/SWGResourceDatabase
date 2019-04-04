@@ -2,6 +2,7 @@
 
 //std lib includes
 #include <string>
+#include <vector>
 
 //other includes
 #include "pods.hpp"
@@ -43,5 +44,6 @@ public:
 private:
     unsigned int resource_type;
     resource_pod resource;
+    std::vector<std::string> classes;
 };
 
