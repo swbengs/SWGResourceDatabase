@@ -69,18 +69,23 @@ bool LuaCore::start(std::string filename)
 //if everything else worked right, we only have the resources table on the stack so we just pop that off and it should be an empty stack
 void LuaCore::stop()
 {
-    if (lua_gettop(lua_state) == 1)
+    int count = lua_gettop(lua_state);
+    if (count == 1)
     {
         lua_pop(lua_state, 1);
     }
-    else
+    else if(count > 1)
     {
         fprintf(stderr, "Lua stack has extra items. Clearing the stack.\n");
         lua_settop(lua_state, 0);
     }
+    else
+    {
+        fprintf(stderr, "Lua stack was empty. Did you forget to run start? Did it not return true?\n");
+    }
 
     //sanity check
-    int count = lua_gettop(lua_state);
+    count = lua_gettop(lua_state);
     if (count != 0)
     {
         fprintf(stderr, "Lua stack is not empty after stop(). Stack count is: %i\n", count);

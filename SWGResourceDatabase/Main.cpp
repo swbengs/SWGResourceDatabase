@@ -35,7 +35,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-bool test_LuaCore()
+//test that will use the test script. Simply does a start and stop
+bool test_LuaCoreBasic()
 {
     std::string filename = "table_test.lua";
     LuaCore lua;
@@ -50,11 +51,22 @@ bool test_LuaCore()
     return EXIT_SUCCESS;
 }
 
+//runs just stop without a start
+bool test_LuaCoreStop()
+{
+    LuaCore lua;
+    lua.stop();
+
+    return EXIT_SUCCESS;
+}
+
 int main()
 {
     bool result;
 
-    result = test_LuaCore();
+    result = test_LuaCoreBasic();
+    //result = test_LuaCoreStop();
+
     return result;
 }
 
