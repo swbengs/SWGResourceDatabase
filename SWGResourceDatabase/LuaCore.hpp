@@ -60,6 +60,10 @@ private:
 
     //helper gets expect the table to already be pushed onto the stack
     int getFieldInt(std::string key);
+    int getFieldInt(int key);
     std::string getFieldString(std::string key);
+    std::string getFieldString(int key);
+    bool getResourceAttributes(resource_pod& pod);
+    void getAttribute(resource_pod& pod); //these are in a table with key at table[1] and value at table[2]
 };
 

@@ -90,10 +90,59 @@ bool test_LuaCoreFirst()
         printf("resource name was not Ababuglu\n");
         return EXIT_FAILURE;
     }
-
-    if (resource.type.compare("copper_borocarbitic") != 0)
+    else if (resource.type.compare("copper_borocarbitic") != 0)
     {
         printf("resource type was not copper_borocarbitic\n");
+        return EXIT_FAILURE;
+    }
+    else if (resource.cold_resistance != 184)
+    {
+        printf("resource cold_resistance was not 184\n");
+        return EXIT_FAILURE;
+    }
+    else if (resource.conductivity != 539)
+    {
+        printf("resource conductivity was not 539\n");
+        return EXIT_FAILURE;
+    }
+    else if (resource.decay_resistance != 906)
+    {
+        printf("resource decay_resistance was not 906\n");
+        return EXIT_FAILURE;
+    }
+    else if (resource.flavor != 0)
+    {
+        printf("resource flavor was not 0\n");
+        return EXIT_FAILURE;
+    }
+    else if (resource.heat_resistance != 86)
+    {
+        printf("resource heat_resistance was not 86\n");
+        return EXIT_FAILURE;
+    }
+    else if (resource.malleability != 349)
+    {
+        printf("resource malleability was not 349\n");
+        return EXIT_FAILURE;
+    }
+    else if (resource.overall_quality != 469)
+    {
+        printf("resource overall_quality was not 469\n");
+        return EXIT_FAILURE;
+    }
+    else if (resource.potential_energy != 0)
+    {
+        printf("resource potential_energy was not 0\n");
+        return EXIT_FAILURE;
+    }
+    else if (resource.shock_resistance != 344)
+    {
+        printf("resource shock_resistance was not 344\n");
+        return EXIT_FAILURE;
+    }
+    else if (resource.unit_toughness != 598)
+    {
+        printf("resource unit_toughness was not 598\n");
         return EXIT_FAILURE;
     }
 

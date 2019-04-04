@@ -119,6 +119,12 @@ bool LuaCore::getNextResource(resource_pod& pod)
 
     pod.name = getFieldString("name");
     pod.type = getFieldString("type");
+    if (!getResourceAttributes(pod))
+    {
+        printf("Resource attributes error\n");
+        lua_pop(lua_state, 1); //must clean up before we leave this method
+        return false;
+    }
 
     lua_pop(lua_state, 1); //make sure we pop our table off before we leave
 
@@ -147,6 +153,21 @@ int LuaCore::getFieldInt(std::string key)
     return result;
 }
 
+int LuaCore::getFieldInt(int key)
+{
+    int result;
+    lua_pushinteger(lua_state, key);
+    lua_gettable(lua_state, -2);  /* get table[key] */
+    if (!lua_isnumber(lua_state, -1))
+    {
+        printf("invalid integer in table[%i]\n", key);
+    }
+
+    result = (int)lua_tonumber(lua_state, -1);
+    lua_pop(lua_state, 1);  /* remove number */
+    return result;
+}
+
 std::string LuaCore::getFieldString(std::string key)
 {
     std::string result;
@@ -161,5 +182,110 @@ std::string LuaCore::getFieldString(std::string key)
     result = lua_tostring(lua_state, -1); //in C++11 it is supposed to copy the char*. If it does not this will cause issues. The internal pointer that Lua gives is only valid while the value is on the Lua stack
     lua_pop(lua_state, 1);
     return result;
+}
+
+std::string LuaCore::getFieldString(int key)
+{
+    std::string result;
+
+    lua_pushinteger(lua_state, key);
+    lua_gettable(lua_state, -2);
+    if (!lua_isstring(lua_state, -1))
+    {
+        printf("invalid string in table[%i]\n", key);
+    }
+
+    result = lua_tostring(lua_state, -1); //in C++11 it is supposed to copy the char*. If it does not this will cause issues. The internal pointer that Lua gives is only valid while the value is on the Lua stack
+    lua_pop(lua_state, 1);
+    return result;
+}
+
+//fills in the cold resistance through unit toughness aka the stats
+bool LuaCore::getResourceAttributes(resource_pod& pod)
+{
+    lua_pushstring(lua_state, "attributes");
+    lua_gettable(lua_state, -2);
+    if (!lua_istable(lua_state, -1))
+    {
+        printf("Resource has no attributes\n");
+        lua_pop(lua_state, 1); //pop off whatever junk was there
+        return false;
+    }
+
+    bool next = true; //loop control
+    int index = 0;
+    do
+    {
+        index++;
+        lua_pushinteger(lua_state, index);
+        lua_gettable(lua_state, -2);
+        if (!lua_istable(lua_state, -1)) //could be an error or that we have hit the end of the attributes
+        {
+            next = false;
+        }
+        else
+        {
+            getAttribute(pod);
+        }
+
+        lua_pop(lua_state, 1); //get ready for next table
+    } while (next);
+
+    lua_pop(lua_state, 1); //pop off attributes
+    return true;
+}
+
+void LuaCore::getAttribute(resource_pod& pod)
+{
+    //grab the value only. We don't push the table off that happens in the loop
+    //1 is the key, 2 is the value
+    std::string key = getFieldString(1);
+    int value = getFieldInt(2);
+
+    //figure out which attribute to set based on the key
+    if (key.compare("res_cold_resist") == 0)
+    {
+        pod.cold_resistance = value;
+    }
+    else if (key.compare("res_conductivity") == 0)
+    {
+        pod.conductivity = value;
+    }
+    else if (key.compare("res_decay_resist") == 0)
+    {
+        pod.decay_resistance = value;
+    }
+    else if (key.compare("res_flavor") == 0)
+    {
+        pod.flavor = value;
+    }
+    else if (key.compare("res_heat_resist") == 0)
+    {
+        pod.heat_resistance = value;
+    }
+    else if (key.compare("res_malleability") == 0)
+    {
+        pod.malleability = value;
+    }
+    else if (key.compare("res_quality") == 0)
+    {
+        pod.overall_quality = value;
+    }
+    else if (key.compare("res_potential_energy") == 0)
+    {
+        pod.potential_energy = value;
+    }
+    else if (key.compare("res_shock_resistance") == 0)
+    {
+        pod.shock_resistance = value;
+    }
+    else if (key.compare("res_toughness") == 0)
+    {
+        pod.unit_toughness = value;
+    }
+    else //unknown key
+    {
+        fprintf(stderr, "unknown key in getAttribute of: %s", key.c_str());
+    }
 }
 
