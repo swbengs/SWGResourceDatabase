@@ -8,6 +8,9 @@
 //other library files
 #include "Sqlite\sqlite3.h"
 
+//test includes
+#include "LuaCore.hpp"
+
 /*
 MIT License
 
@@ -32,8 +35,26 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+bool test_LuaCore()
+{
+    std::string filename = "table_test.lua";
+    LuaCore lua;
+
+    if (!lua.start(filename))
+    {
+        return EXIT_FAILURE;
+    }
+
+    lua.stop();
+
+    return EXIT_SUCCESS;
+}
+
 int main()
 {
-    return EXIT_SUCCESS;
+    bool result;
+
+    result = test_LuaCore();
+    return result;
 }
 

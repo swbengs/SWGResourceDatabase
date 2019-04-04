@@ -4,6 +4,8 @@
 #include <string>
 
 //other includes
+#include "pods.hpp"
+
 //extern c or else while compiling as C++ there are naming issues
 extern "C"
 {
@@ -46,7 +48,13 @@ class LuaCore
 public:
     LuaCore();
     ~LuaCore();
+
+    bool start(std::string filename); //do setup things to be ready to collect resources. Takes a filename which is the Lua file that is a resource dump. Returns true if there was no error
+    void stop(); //do closing things so that if the Lua state needs to be used again it's clean aka stack is empty
+    bool getNextResource(resource_pod& pod); //gets the next resource and returns true if there was one. If false the POD you pass in is junk
 private:
     lua_State* lua_state;
+
+    void error();
 };
 
