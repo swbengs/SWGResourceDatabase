@@ -35,6 +35,43 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+bool checkString(std::string value, std::string expected, std::string name)
+{
+    if (value.compare(expected) != 0)
+    {
+        printf("%s was not %s: value was %s\n", name.c_str(), expected.c_str(), value.c_str());
+        return false;
+    }
+    return true;
+}
+
+//true if it matches, false if not
+bool checkInt(int value, int expected, std::string name)
+{
+    if (value != expected)
+    {
+        printf("%s was not %i: value was %i\n", name.c_str(), expected, value);
+        return false;
+    }
+    return true;
+}
+
+void resetResourcePOD(resource_pod& resource)
+{
+    resource.name = "fail name";
+    resource.type = "fail type";
+    resource.cold_resistance = 0;
+    resource.conductivity = 0;
+    resource.decay_resistance = 0;
+    resource.flavor = 0;
+    resource.heat_resistance = 0;
+    resource.malleability = 0;
+    resource.overall_quality = 0;
+    resource.potential_energy = 0;
+    resource.shock_resistance = 0;
+    resource.unit_toughness = 0;
+}
+
 //test that will use the test script. Simply does a start and stop
 bool test_LuaCoreBasic()
 {
@@ -65,18 +102,7 @@ bool test_LuaCoreFirst()
     std::string filename = "table_test.lua";
     LuaCore lua;
     resource_pod resource;
-    resource.name = "fail name";
-    resource.type = "fail type";
-    resource.cold_resistance = 0;
-    resource.conductivity = 0;
-    resource.decay_resistance = 0;
-    resource.flavor = 0;
-    resource.heat_resistance = 0;
-    resource.malleability = 0;
-    resource.overall_quality = 0;
-    resource.potential_energy = 0;
-    resource.shock_resistance = 0;
-    resource.unit_toughness = 0;
+    resetResourcePOD(resource);
 
     if (!lua.start(filename))
     {
@@ -85,64 +111,52 @@ bool test_LuaCoreFirst()
     lua.getNextResource(resource);
     lua.stop();
 
-    if (resource.name.compare("Ababuglu") != 0)
+    if (!checkString(resource.name, "Ababuglu", "name"))
     {
-        printf("resource name was not Ababuglu\n");
         return EXIT_FAILURE;
     }
-    else if (resource.type.compare("copper_borocarbitic") != 0)
+    else if (!checkString(resource.type, "copper_borocarbitic", "type"))
     {
-        printf("resource type was not copper_borocarbitic\n");
         return EXIT_FAILURE;
     }
-    else if (resource.cold_resistance != 184)
+    else if (!checkInt(resource.cold_resistance, 184, "cold_resistance"))
     {
-        printf("resource cold_resistance was not 184\n");
         return EXIT_FAILURE;
     }
-    else if (resource.conductivity != 539)
+    else if (!checkInt(resource.conductivity, 539, "conductivity"))
     {
-        printf("resource conductivity was not 539\n");
         return EXIT_FAILURE;
     }
-    else if (resource.decay_resistance != 906)
+    else if (!checkInt(resource.decay_resistance, 906, "decay_resistance"))
     {
-        printf("resource decay_resistance was not 906\n");
         return EXIT_FAILURE;
     }
-    else if (resource.flavor != 0)
+    else if (!checkInt(resource.flavor, 0, "flavor"))
     {
-        printf("resource flavor was not 0\n");
         return EXIT_FAILURE;
     }
-    else if (resource.heat_resistance != 86)
+    else if (!checkInt(resource.heat_resistance, 86, "heat_resistance"))
     {
-        printf("resource heat_resistance was not 86\n");
         return EXIT_FAILURE;
     }
-    else if (resource.malleability != 349)
+    else if (!checkInt(resource.malleability, 349, "malleability"))
     {
-        printf("resource malleability was not 349\n");
         return EXIT_FAILURE;
     }
-    else if (resource.overall_quality != 469)
+    else if (!checkInt(resource.overall_quality, 469, "overall_quality"))
     {
-        printf("resource overall_quality was not 469\n");
         return EXIT_FAILURE;
     }
-    else if (resource.potential_energy != 0)
+    else if (!checkInt(resource.potential_energy, 0, "potential_energy"))
     {
-        printf("resource potential_energy was not 0\n");
         return EXIT_FAILURE;
     }
-    else if (resource.shock_resistance != 344)
+    else if (!checkInt(resource.shock_resistance, 344, "shock_resistance"))
     {
-        printf("resource shock_resistance was not 344\n");
         return EXIT_FAILURE;
     }
-    else if (resource.unit_toughness != 598)
+    else if (!checkInt(resource.unit_toughness, 598, "unit_toughness"))
     {
-        printf("resource unit_toughness was not 598\n");
         return EXIT_FAILURE;
     }
 
