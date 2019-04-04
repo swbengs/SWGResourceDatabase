@@ -54,7 +54,12 @@ public:
     bool getNextResource(resource_pod& pod); //gets the next resource and returns true if there was one. If false the POD you pass in is junk
 private:
     lua_State* lua_state;
+    int current_index;
 
     void error();
+
+    //helper gets expect the table to already be pushed onto the stack
+    int getFieldInt(std::string key);
+    std::string getFieldString(std::string key);
 };
 

@@ -34,6 +34,7 @@ SOFTWARE.
 LuaCore::LuaCore()
 {
     lua_state = luaL_newstate();
+    current_index = 0;
 }
 
 LuaCore::~LuaCore()
@@ -107,6 +108,20 @@ bool LuaCore::getNextResource(resource_pod& pod)
         return false;
     }
 
+    current_index++;
+    lua_pushinteger(lua_state, current_index);
+    lua_gettable(lua_state, -2);
+    if (!lua_istable(lua_state, -1))
+    {
+        printf("Resource table end has been reached\n");
+        return false;
+    }
+
+    pod.name = getFieldString("name");
+    pod.type = getFieldString("type");
+
+    lua_pop(lua_state, 1); //make sure we pop our table off before we leave
+
     return true;
 }
 
@@ -116,3 +131,35 @@ void LuaCore::error()
     fprintf(stderr, "%s\n", lua_tostring(lua_state, -1));
     lua_pop(lua_state, 1);  /* pop error message from the stack */
 }
+
+int LuaCore::getFieldInt(std::string key)
+{
+    int result;
+    lua_pushstring(lua_state, key.c_str());
+    lua_gettable(lua_state, -2);  /* get table[key] */
+    if (!lua_isnumber(lua_state, -1))
+    {
+        printf("invalid integer in table[%s]\n", key.c_str());
+    }
+
+    result = (int)lua_tonumber(lua_state, -1);
+    lua_pop(lua_state, 1);  /* remove number */
+    return result;
+}
+
+std::string LuaCore::getFieldString(std::string key)
+{
+    std::string result;
+
+    lua_pushstring(lua_state, key.c_str());
+    lua_gettable(lua_state, -2);
+    if (!lua_isstring(lua_state, -1))
+    {
+        printf("invalid string in table[%s]\n", key.c_str());
+    }
+
+    result = lua_tostring(lua_state, -1); //in C++11 it is supposed to copy the char*. If it does not this will cause issues. The internal pointer that Lua gives is only valid while the value is on the Lua stack
+    lua_pop(lua_state, 1);
+    return result;
+}
+

@@ -60,12 +60,66 @@ bool test_LuaCoreStop()
     return EXIT_SUCCESS;
 }
 
+bool test_LuaCoreFirst()
+{
+    std::string filename = "table_test.lua";
+    LuaCore lua;
+    resource_pod resource;
+    resource.name = "fail name";
+    resource.type = "fail type";
+    resource.cold_resistance = 0;
+    resource.conductivity = 0;
+    resource.decay_resistance = 0;
+    resource.flavor = 0;
+    resource.heat_resistance = 0;
+    resource.malleability = 0;
+    resource.overall_quality = 0;
+    resource.potential_energy = 0;
+    resource.shock_resistance = 0;
+    resource.unit_toughness = 0;
+
+    if (!lua.start(filename))
+    {
+        return EXIT_FAILURE;
+    }
+    lua.getNextResource(resource);
+    lua.stop();
+
+    if (resource.name.compare("Ababuglu") != 0)
+    {
+        printf("resource name was not Ababuglu\n");
+        return EXIT_FAILURE;
+    }
+
+    if (resource.type.compare("copper_borocarbitic") != 0)
+    {
+        printf("resource type was not copper_borocarbitic\n");
+        return EXIT_FAILURE;
+    }
+
+    printf("name: %s\n", resource.name.c_str());
+    printf("type: %s\n", resource.type.c_str());
+    printf("cold_resistance: %i\n", resource.cold_resistance);
+    printf("conductivity: %i\n", resource.conductivity);
+    printf("decay_resistance: %i\n", resource.decay_resistance);
+    printf("flavor: %i\n", resource.flavor);
+    printf("heat_resistance: %i\n", resource.heat_resistance);
+    printf("malleability: %i\n", resource.malleability);
+    printf("overall_quality: %i\n", resource.overall_quality);
+    printf("potential_energy: %i\n", resource.potential_energy);
+    printf("shock_resistance: %i\n", resource.shock_resistance);
+    printf("unit_toughness: %i\n", resource.unit_toughness);
+
+    return EXIT_SUCCESS;
+}
+
 int main()
 {
     bool result;
 
-    result = test_LuaCoreBasic();
+    //result = test_LuaCoreBasic();
     //result = test_LuaCoreStop();
+    result = test_LuaCoreFirst();
 
     return result;
 }
