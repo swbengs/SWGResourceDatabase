@@ -94,6 +94,7 @@ void LuaCore::stop()
     }
 }
 
+//returns true if the resource was successfully pulled from Lua. False means either there was an error or the end of the table was reached. Errors will output to console/stderr
 bool LuaCore::getNextResource(resource_pod& pod, std::vector<std::string>& classes)
 {
     if (!lua_gettop(lua_state) == 1)
@@ -102,7 +103,7 @@ bool LuaCore::getNextResource(resource_pod& pod, std::vector<std::string>& class
         {
             fprintf(stderr, "Lua stack has extra items at getNextResource()\n");
         }
-        else //if it's one we wouldn't be here. If it's not greater than one than the only answer is that the stack has nothing
+        else //if it's one we wouldn't be here. If it's not greater than one than the only answer is that the stack has nothing/negative things(how the??? who popped too many things?)
         {
             fprintf(stderr, "Lua stack is empty getNextResource()\n");
         }
@@ -234,7 +235,7 @@ bool LuaCore::getResourceAttributes(resource_pod& pod)
         {
             next = false;
         }
-        else //grab the attribute
+        else //grab the attribute. No way to tell if something goes wrong here easily so no need to return false and cleanup
         {
             getAttribute(pod);
         }
@@ -332,8 +333,9 @@ bool LuaCore::getResourceClasses(std::vector<std::string>& classes)
             std::string value = getFieldString(2);
             if (value.compare("null") == 0)
             {
-                //error will generate at call above so just cleanup and return
+                //error will generate at call above so just cleanup and return. Issue here means the classes table is messed up somehow so make sure the calling method knows something went wrong
                 lua_pop(lua_state, 1); //pop off whatever junk was there
+                lua_pop(lua_state, 1); //pop off attributes(we were 2 extra items deep here and now we are not ;) )
                 return false;
             }
             classes.push_back(std::move(value));
