@@ -115,6 +115,7 @@ bool LuaCore::getNextResource(resource_pod& pod, std::vector<std::string>& class
     if (!lua_istable(lua_state, -1))
     {
         printf("Resource table end has been reached\n");
+        lua_pop(lua_state, 1); //must clean up before we leave this method
         return false;
     }
 
@@ -293,6 +294,10 @@ void LuaCore::getAttribute(resource_pod& pod)
     else if (key.compare("res_toughness") == 0)
     {
         pod.unit_toughness = value;
+    }
+    else if (key.compare("entangle_resistance") == 0)
+    {
+        //do nothing but don't show an error. Not used for anything ingame to my knowledge and only gemstones have this
     }
     else //unknown key
     {
