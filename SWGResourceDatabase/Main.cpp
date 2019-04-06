@@ -449,6 +449,44 @@ int test_LuaCoreCount()
     return EXIT_SUCCESS;
 }
 
+int test_LuaCoreClassesError()
+{
+    printf("test_LuaCoreClassesError start\n");
+
+    std::string filename = "bad_classes.lua";
+    LuaCore lua;
+    resource_pod resource;
+    std::vector<std::string> classes;
+    bool result;
+
+    lua.start(filename);
+    result = lua.getNextResource(resource, classes);
+    lua.stop();
+
+    if (result) //should not be successful
+    {
+        return EXIT_FAILURE;
+    }
+
+    printf("name: %s\n", resource.name.c_str());
+    printf("type: %s\n", resource.type.c_str());
+    printf("cold_resistance: %i\n", resource.cold_resistance);
+    printf("conductivity: %i\n", resource.conductivity);
+    printf("decay_resistance: %i\n", resource.decay_resistance);
+    printf("flavor: %i\n", resource.flavor);
+    printf("heat_resistance: %i\n", resource.heat_resistance);
+    printf("malleability: %i\n", resource.malleability);
+    printf("overall_quality: %i\n", resource.overall_quality);
+    printf("potential_energy: %i\n", resource.potential_energy);
+    printf("shock_resistance: %i\n", resource.shock_resistance);
+    printf("unit_toughness: %i\n", resource.unit_toughness);
+    printVector(classes, "classes");
+
+    printf("test_LuaCoreClassesError stop\n\n");
+
+    return EXIT_SUCCESS;
+}
+
 int main()
 {
     int result;
@@ -458,7 +496,8 @@ int main()
     //result = test_LuaCoreFirst();
     //result = test_LuaCoreSecond();
     //result = test_LuaCoreFourth();
-    result = test_LuaCoreCount();
+    //result = test_LuaCoreCount();
+    result = test_LuaCoreClassesError();
 
     return result;
 }

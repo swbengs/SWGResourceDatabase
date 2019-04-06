@@ -148,6 +148,7 @@ void LuaCore::error()
     lua_pop(lua_state, 1);  /* pop error message from the stack */
 }
 
+//get int can cry about an error but there is no valid int that will signify an error to the calling method. Just print error and go on
 int LuaCore::getFieldInt(std::string key)
 {
     int result;
@@ -155,7 +156,7 @@ int LuaCore::getFieldInt(std::string key)
     lua_gettable(lua_state, -2);  /* get table[key] */
     if (!lua_isnumber(lua_state, -1))
     {
-        printf("invalid integer in table[%s]\n", key.c_str());
+        fprintf(stderr, "invalid integer in table[%s]\n", key.c_str());
     }
 
     result = (int)lua_tonumber(lua_state, -1);
@@ -170,7 +171,7 @@ int LuaCore::getFieldInt(int key)
     lua_gettable(lua_state, -2);  /* get table[key] */
     if (!lua_isnumber(lua_state, -1))
     {
-        printf("invalid integer in table[%i]\n", key);
+        fprintf(stderr, "invalid integer in table[%i]\n", key);
     }
 
     result = (int)lua_tonumber(lua_state, -1);
@@ -186,7 +187,8 @@ std::string LuaCore::getFieldString(std::string key)
     lua_gettable(lua_state, -2);
     if (!lua_isstring(lua_state, -1))
     {
-        printf("invalid string in table[%s]\n", key.c_str());
+        fprintf(stderr, "invalid string in table[%s]\n", key.c_str());
+        lua_pop(lua_state, 1); //don't forget to cleanup
         return "null";
     }
 
@@ -203,7 +205,8 @@ std::string LuaCore::getFieldString(int key)
     lua_gettable(lua_state, -2);
     if (!lua_isstring(lua_state, -1))
     {
-        printf("invalid string in table[%i]\n", key);
+        fprintf(stderr, "invalid string in table[%i]\n", key);
+        lua_pop(lua_state, 1); //don't forget to cleanup stack when returning early
         return "null";
     }
 
@@ -220,7 +223,7 @@ bool LuaCore::getResourceAttributes(resource_pod& pod)
     if (!lua_istable(lua_state, -1))
     {
         printf("Resource has no attributes\n");
-        lua_pop(lua_state, 1); //pop off whatever junk was there
+        lua_pop(lua_state, 1); //don't forget to cleanup stack when returning early
         return false;
     }
 
@@ -334,8 +337,7 @@ bool LuaCore::getResourceClasses(std::vector<std::string>& classes)
             if (value.compare("null") == 0)
             {
                 //error will generate at call above so just cleanup and return. Issue here means the classes table is messed up somehow so make sure the calling method knows something went wrong
-                lua_pop(lua_state, 1); //pop off whatever junk was there
-                lua_pop(lua_state, 1); //pop off attributes(we were 2 extra items deep here and now we are not ;) )
+                lua_pop(lua_state, 2); //pop off whatever junk was there and attributes(we were 2 extra items deep here and now we are not ;) )
                 return false;
             }
             classes.push_back(std::move(value));
