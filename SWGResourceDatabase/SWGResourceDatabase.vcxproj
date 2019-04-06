@@ -146,6 +146,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="bad_classes.lua">
+      <FileType>Document</FileType>
+    </None>
     <ClCompile Include="LuaCore.cpp" />
     <ClCompile Include="Lua\lapi.c" />
     <ClCompile Include="Lua\lauxlib.c" />

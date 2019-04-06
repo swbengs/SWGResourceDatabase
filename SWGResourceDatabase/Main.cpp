@@ -111,7 +111,7 @@ void resetResourcePOD(resource_pod& resource)
 }
 
 //test that will use the test script. Simply does a start and stop
-bool test_LuaCoreBasic()
+int test_LuaCoreBasic()
 {
     std::string filename = "table_test.lua";
     LuaCore lua;
@@ -127,7 +127,7 @@ bool test_LuaCoreBasic()
 }
 
 //runs just stop without a start
-bool test_LuaCoreStop()
+int test_LuaCoreStop()
 {
     LuaCore lua;
     lua.stop();
@@ -135,7 +135,7 @@ bool test_LuaCoreStop()
     return EXIT_SUCCESS;
 }
 
-bool test_LuaCoreFirst()
+int test_LuaCoreFirst()
 {
     printf("test_LuaCoreFirst start\n");
 
@@ -226,7 +226,7 @@ bool test_LuaCoreFirst()
     return EXIT_SUCCESS;
 }
 
-bool test_LuaCoreSecond()
+int test_LuaCoreSecond()
 {
     printf("test_LuaCoreSecond start\n");
 
@@ -320,7 +320,7 @@ bool test_LuaCoreSecond()
     return EXIT_SUCCESS;
 }
 
-bool test_LuaCoreFourth()
+int test_LuaCoreFourth()
 {
     printf("test_LuaCoreFourth start\n");
 
@@ -420,15 +420,84 @@ bool test_LuaCoreFourth()
     return EXIT_SUCCESS;
 }
 
+int test_LuaCoreCount()
+{
+    printf("test_LuaCoreCount start\n");
+
+    std::string filename = "resource_manager_spawns.lua";
+    LuaCore lua;
+    unsigned int count = 0;
+
+    lua.start(filename);
+    bool next = true;
+    do
+    {
+        resource_pod resource;
+        std::vector<std::string> classes;
+
+        next = lua.getNextResource(resource, classes);
+        if (next)
+        {
+            count++;
+        }
+    } while (next);
+
+    lua.stop();
+
+    printf("resource count: %i\n", count);
+    printf("test_LuaCoreCount stop\n\n");
+    return EXIT_SUCCESS;
+}
+
+int test_LuaCoreClassesError()
+{
+    printf("test_LuaCoreClassesError start\n");
+
+    std::string filename = "bad_classes.lua";
+    LuaCore lua;
+    resource_pod resource;
+    std::vector<std::string> classes;
+    bool result;
+
+    lua.start(filename);
+    result = lua.getNextResource(resource, classes);
+    lua.stop();
+
+    if (result) //should not be successful
+    {
+        return EXIT_FAILURE;
+    }
+
+    printf("name: %s\n", resource.name.c_str());
+    printf("type: %s\n", resource.type.c_str());
+    printf("cold_resistance: %i\n", resource.cold_resistance);
+    printf("conductivity: %i\n", resource.conductivity);
+    printf("decay_resistance: %i\n", resource.decay_resistance);
+    printf("flavor: %i\n", resource.flavor);
+    printf("heat_resistance: %i\n", resource.heat_resistance);
+    printf("malleability: %i\n", resource.malleability);
+    printf("overall_quality: %i\n", resource.overall_quality);
+    printf("potential_energy: %i\n", resource.potential_energy);
+    printf("shock_resistance: %i\n", resource.shock_resistance);
+    printf("unit_toughness: %i\n", resource.unit_toughness);
+    printVector(classes, "classes");
+
+    printf("test_LuaCoreClassesError stop\n\n");
+
+    return EXIT_SUCCESS;
+}
+
 int main()
 {
-    bool result;
+    int result;
 
     //result = test_LuaCoreBasic();
     //result = test_LuaCoreStop();
-    result = test_LuaCoreFirst();
-    result = test_LuaCoreSecond();
-    result = test_LuaCoreFourth();
+    //result = test_LuaCoreFirst();
+    //result = test_LuaCoreSecond();
+    //result = test_LuaCoreFourth();
+    //result = test_LuaCoreCount();
+    result = test_LuaCoreClassesError();
 
     return result;
 }

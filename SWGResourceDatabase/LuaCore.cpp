@@ -94,6 +94,7 @@ void LuaCore::stop()
     }
 }
 
+//returns true if the resource was successfully pulled from Lua. False means either there was an error or the end of the table was reached. Errors will output to console/stderr
 bool LuaCore::getNextResource(resource_pod& pod, std::vector<std::string>& classes)
 {
     if (!lua_gettop(lua_state) == 1)
@@ -102,7 +103,7 @@ bool LuaCore::getNextResource(resource_pod& pod, std::vector<std::string>& class
         {
             fprintf(stderr, "Lua stack has extra items at getNextResource()\n");
         }
-        else //if it's one we wouldn't be here. If it's not greater than one than the only answer is that the stack has nothing
+        else //if it's one we wouldn't be here. If it's not greater than one than the only answer is that the stack has nothing/negative things(how the??? who popped too many things?)
         {
             fprintf(stderr, "Lua stack is empty getNextResource()\n");
         }
@@ -115,6 +116,7 @@ bool LuaCore::getNextResource(resource_pod& pod, std::vector<std::string>& class
     if (!lua_istable(lua_state, -1))
     {
         printf("Resource table end has been reached\n");
+        lua_pop(lua_state, 1); //must clean up before we leave this method
         return false;
     }
 
@@ -146,6 +148,7 @@ void LuaCore::error()
     lua_pop(lua_state, 1);  /* pop error message from the stack */
 }
 
+//get int can cry about an error but there is no valid int that will signify an error to the calling method. Just print error and go on
 int LuaCore::getFieldInt(std::string key)
 {
     int result;
@@ -153,7 +156,7 @@ int LuaCore::getFieldInt(std::string key)
     lua_gettable(lua_state, -2);  /* get table[key] */
     if (!lua_isnumber(lua_state, -1))
     {
-        printf("invalid integer in table[%s]\n", key.c_str());
+        fprintf(stderr, "invalid integer in table[%s]\n", key.c_str());
     }
 
     result = (int)lua_tonumber(lua_state, -1);
@@ -168,7 +171,7 @@ int LuaCore::getFieldInt(int key)
     lua_gettable(lua_state, -2);  /* get table[key] */
     if (!lua_isnumber(lua_state, -1))
     {
-        printf("invalid integer in table[%i]\n", key);
+        fprintf(stderr, "invalid integer in table[%i]\n", key);
     }
 
     result = (int)lua_tonumber(lua_state, -1);
@@ -184,7 +187,8 @@ std::string LuaCore::getFieldString(std::string key)
     lua_gettable(lua_state, -2);
     if (!lua_isstring(lua_state, -1))
     {
-        printf("invalid string in table[%s]\n", key.c_str());
+        fprintf(stderr, "invalid string in table[%s]\n", key.c_str());
+        lua_pop(lua_state, 1); //don't forget to cleanup
         return "null";
     }
 
@@ -201,7 +205,8 @@ std::string LuaCore::getFieldString(int key)
     lua_gettable(lua_state, -2);
     if (!lua_isstring(lua_state, -1))
     {
-        printf("invalid string in table[%i]\n", key);
+        fprintf(stderr, "invalid string in table[%i]\n", key);
+        lua_pop(lua_state, 1); //don't forget to cleanup stack when returning early
         return "null";
     }
 
@@ -218,7 +223,7 @@ bool LuaCore::getResourceAttributes(resource_pod& pod)
     if (!lua_istable(lua_state, -1))
     {
         printf("Resource has no attributes\n");
-        lua_pop(lua_state, 1); //pop off whatever junk was there
+        lua_pop(lua_state, 1); //don't forget to cleanup stack when returning early
         return false;
     }
 
@@ -233,7 +238,7 @@ bool LuaCore::getResourceAttributes(resource_pod& pod)
         {
             next = false;
         }
-        else //grab the attribute
+        else //grab the attribute. No way to tell if something goes wrong here easily so no need to return false and cleanup
         {
             getAttribute(pod);
         }
@@ -294,6 +299,10 @@ void LuaCore::getAttribute(resource_pod& pod)
     {
         pod.unit_toughness = value;
     }
+    else if (key.compare("entangle_resistance") == 0)
+    {
+        //do nothing but don't show an error. Not used for anything ingame to my knowledge and only gemstones have this
+    }
     else //unknown key
     {
         fprintf(stderr, "unknown key in getAttribute of: %s", key.c_str());
@@ -327,8 +336,8 @@ bool LuaCore::getResourceClasses(std::vector<std::string>& classes)
             std::string value = getFieldString(2);
             if (value.compare("null") == 0)
             {
-                //error will generate at call above so just cleanup and return
-                lua_pop(lua_state, 1); //pop off whatever junk was there
+                //error will generate at call above so just cleanup and return. Issue here means the classes table is messed up somehow so make sure the calling method knows something went wrong
+                lua_pop(lua_state, 2); //pop off whatever junk was there and attributes(we were 2 extra items deep here and now we are not ;) )
                 return false;
             }
             classes.push_back(std::move(value));

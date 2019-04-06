@@ -147,6 +147,9 @@
     <None Include="table_test.lua">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="bad_classes.lua">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sqlite\sqlite3.h">
