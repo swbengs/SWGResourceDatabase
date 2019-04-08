@@ -10,6 +10,7 @@
 
 //test includes
 #include "LuaCore.hpp"
+#include "SqliteCore_V1.hpp"
 
 /*
 MIT License
@@ -487,17 +488,28 @@ int test_LuaCoreClassesError()
     return EXIT_SUCCESS;
 }
 
+int test_Sqlite_create()
+{
+    std::string database_name = "test.db";
+    SqliteCore_V1 database(database_name);
+    return EXIT_SUCCESS;
+}
+
 int main()
 {
     int result;
 
+    //Lua
     //result = test_LuaCoreBasic();
     //result = test_LuaCoreStop();
     //result = test_LuaCoreFirst();
     //result = test_LuaCoreSecond();
     //result = test_LuaCoreFourth();
     //result = test_LuaCoreCount();
-    result = test_LuaCoreClassesError();
+    //result = test_LuaCoreClassesError();
+
+    //Sqlite
+    result = test_Sqlite_create();
 
     return result;
 }
