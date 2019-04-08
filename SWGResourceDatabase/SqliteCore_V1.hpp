@@ -46,10 +46,14 @@ public:
 
     //queries
     void addResource(const resource_pod& resource, const std::vector<std::string>& classes) const; //insert
+    void createTables() const; //create table
+    void dropTables() const; //drop
 
 private:
     sqlite3* database;
-
-    void createTables() const;
+    static const std::string resource_table_name;
+    static const std::string classes_table_name;
+    static const std::string intermediate_table_name;
+    static const std::string types_table_name;
 };
 

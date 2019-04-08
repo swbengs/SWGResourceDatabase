@@ -490,8 +490,27 @@ int test_LuaCoreClassesError()
 
 int test_Sqlite_create()
 {
+    printf("test_Sqlite_create start\n");
+
     std::string database_name = "test.db";
     SqliteCore_V1 database(database_name);
+    database.createTables();
+
+    printf("test_Sqlite_create stop\n\n");
+
+    return EXIT_SUCCESS;
+}
+
+int test_Sqlite_delete()
+{
+    printf("test_Sqlite_delete start\n");
+
+    std::string database_name = "test.db";
+    SqliteCore_V1 database(database_name);
+    database.dropTables();
+
+    printf("test_Sqlite_delete stop\n\n");
+
     return EXIT_SUCCESS;
 }
 
@@ -509,6 +528,7 @@ int main()
     //result = test_LuaCoreClassesError();
 
     //Sqlite
+    result = test_Sqlite_delete();
     result = test_Sqlite_create();
 
     return result;
