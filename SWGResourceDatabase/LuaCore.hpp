@@ -53,11 +53,18 @@ public:
     bool start(std::string filename); //do setup things to be ready to collect resources. Takes a filename which is the Lua file that is a resource dump. Returns true if there was no error
     void stop(); //do closing things so that if the Lua state needs to be used again it's clean aka stack is empty
     bool getNextResource(resource_pod& pod, std::vector<std::string>& classes); //gets the next resource and returns true if there was one. If false the POD and vector you pass in are junk
+
+    //debug helpers
+    void debugStart(); //adds in all libraries NOT SAFE. only use trusted Lua scripts. Runs commands and scripts to build all text files with enums and their methods
+    void debugCollectResourceInfo(); //resource classes and types and their pretty names and enums. stored in classes.txt and types.txt
+    void debugMakeEnums(); //makes classes and types enum lists in classes_enums.txt and types_enums.txt
+    void debugMakeConversions(); //makes classes types conversion from enum to text and their pretty version convert_classes.txt convert_types.txt
 private:
     lua_State* lua_state;
     int current_index;
 
     void error();
+    bool runScript(std::string filename); //run given script. returns true if it ran without errors
 
     //helper gets expect the table to already be pushed onto the stack
     int getFieldInt(std::string key);

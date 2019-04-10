@@ -10,6 +10,7 @@
 
 //test includes
 #include "LuaCore.hpp"
+#include "SqliteCore_V1.hpp"
 
 /*
 MIT License
@@ -487,17 +488,103 @@ int test_LuaCoreClassesError()
     return EXIT_SUCCESS;
 }
 
+//sqlite
+int test_Sqlite_create()
+{
+    printf("test_Sqlite_create start\n");
+
+    std::string database_name = "test.db";
+    SqliteCore_V1 database(database_name);
+    database.createTables();
+
+    printf("test_Sqlite_create stop\n\n");
+
+    return EXIT_SUCCESS;
+}
+
+int test_Sqlite_delete()
+{
+    printf("test_Sqlite_delete start\n");
+
+    std::string database_name = "test.db";
+    SqliteCore_V1 database(database_name);
+    database.dropTables();
+
+    printf("test_Sqlite_delete stop\n\n");
+
+    return EXIT_SUCCESS;
+}
+
+int test_Sqlite_insert()
+{
+    printf("test_Sqlite_insert start\n");
+
+    std::string database_name = "test.db";
+    SqliteCore_V1 database(database_name);
+
+    resource_pod pod;
+    pod.name = "test2";
+    pod.type = "junk2";
+    pod.cold_resistance = 0;
+    pod.conductivity = 2;
+    pod.decay_resistance = 3;
+    pod.flavor = 4;
+    pod.heat_resistance = 0;
+    pod.malleability = 6;
+    pod.overall_quality = 7;
+    pod.potential_energy = 8;
+    pod.shock_resistance = 9;
+    pod.unit_toughness = 0;
+    std::vector<std::string> vector;
+
+    Resource resource = Resource(pod, vector);
+    database.addResource(resource);
+    database.showAllResources();
+
+    printf("test_Sqlite_insert stop\n\n");
+
+    return EXIT_SUCCESS;
+}
+
+//debug stuff
+int debugRun()
+{
+    printf("debugRun start\n");
+
+    std::string filename = "resource_manager_spawns.lua";
+    LuaCore lua;
+
+    lua.start(filename);
+    lua.stop();
+    lua.debugStart();
+    lua.debugCollectResourceInfo();
+    lua.debugMakeEnums();
+    lua.debugMakeConversions();
+
+    printf("debugRun stop\n\n");
+    return EXIT_SUCCESS;
+}
+
 int main()
 {
     int result;
 
+    //Lua
     //result = test_LuaCoreBasic();
     //result = test_LuaCoreStop();
     //result = test_LuaCoreFirst();
     //result = test_LuaCoreSecond();
     //result = test_LuaCoreFourth();
     //result = test_LuaCoreCount();
-    result = test_LuaCoreClassesError();
+    //result = test_LuaCoreClassesError();
+
+    //Sqlite
+   // result = test_Sqlite_delete();
+    //result = test_Sqlite_create();
+    //result = test_Sqlite_insert();
+
+    //debug
+    result = debugRun();
 
     return result;
 }

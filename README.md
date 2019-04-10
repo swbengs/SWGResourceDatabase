@@ -1,6 +1,14 @@
 # SWGResourceDatabase
 Lua to Sqlite database program and simple CLI to do queries
 
+## Still in dev
+* Lua side
+   * Done!
+* Sqlite3 version 1
+   * In progress
+* CLI
+   * Not started yet
+
 ## How it works
 The ZonamaDev server at a minimum produces a Lua file that contains all resources to ever exist on the test server. It's likely that the Core3 ones do as well, since they run basically the same code. This program will load that file and make a Sqlite3 database with a name of your choosing.
 

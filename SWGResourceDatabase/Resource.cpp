@@ -33,7 +33,6 @@ SOFTWARE.
 
 Resource::Resource()
 {
-    resource_type = 0;
     resource.name = "junk name";
     resource.type = "junk type";
     resource.cold_resistance = 0;
@@ -48,8 +47,18 @@ Resource::Resource()
     resource.unit_toughness = 0;
 }
 
-Resource::Resource(const resource_pod& pod)
+Resource::Resource(const resource_pod& pod, std::vector<std::string>& vector)
 {
-    resource_type = 0;
-    resource = pod;
+    resource = std::move(pod);
+    classes = std::move(vector);
+}
+
+const resource_pod& Resource::getResourcePOD() const
+{
+    return resource;
+}
+
+const std::vector<std::string>& Resource::getClasses() const
+{
+    return classes;
 }
