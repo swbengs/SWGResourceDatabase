@@ -40,9 +40,12 @@ class Resource
 {
 public:
     Resource();
-    Resource(const resource_pod& pod);
+    Resource(const resource_pod& pod, std::vector<std::string>& vector);
+
+    const resource_pod& getResourcePOD() const;
+    const std::vector<std::string>& getClasses() const;
+
 private:
-    unsigned int resource_type;
     resource_pod resource;
     std::vector<std::string> classes;
 };

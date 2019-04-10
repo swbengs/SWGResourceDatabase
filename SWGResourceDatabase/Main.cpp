@@ -514,6 +514,37 @@ int test_Sqlite_delete()
     return EXIT_SUCCESS;
 }
 
+int test_Sqlite_insert()
+{
+    printf("test_Sqlite_insert start\n");
+
+    std::string database_name = "test.db";
+    SqliteCore_V1 database(database_name);
+
+    resource_pod pod;
+    pod.name = "test2";
+    pod.type = "junk2";
+    pod.cold_resistance = 0;
+    pod.conductivity = 2;
+    pod.decay_resistance = 3;
+    pod.flavor = 4;
+    pod.heat_resistance = 0;
+    pod.malleability = 6;
+    pod.overall_quality = 7;
+    pod.potential_energy = 8;
+    pod.shock_resistance = 9;
+    pod.unit_toughness = 0;
+    std::vector<std::string> vector;
+
+    Resource resource = Resource(pod, vector);
+    database.addResource(resource);
+    database.showAllResources();
+
+    printf("test_Sqlite_insert stop\n\n");
+
+    return EXIT_SUCCESS;
+}
+
 int main()
 {
     int result;
@@ -528,8 +559,9 @@ int main()
     //result = test_LuaCoreClassesError();
 
     //Sqlite
-    result = test_Sqlite_delete();
-    result = test_Sqlite_create();
+   // result = test_Sqlite_delete();
+    //result = test_Sqlite_create();
+    result = test_Sqlite_insert();
 
     return result;
 }

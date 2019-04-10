@@ -1,5 +1,4 @@
-//class header
-#include "Resource.hpp"
+#pragma once
 
 //std lib includes
 
@@ -29,36 +28,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-//class code
+/*
+Description: Constants such as classes, types, their string and enums and so on
+*/
 
-Resource::Resource()
-{
-    resource.name = "junk name";
-    resource.type = "junk type";
-    resource.cold_resistance = 0;
-    resource.conductivity = 0;
-    resource.decay_resistance = 0;
-    resource.flavor = 0;
-    resource.heat_resistance = 0;
-    resource.malleability = 0;
-    resource.overall_quality = 0;
-    resource.potential_energy = 0;
-    resource.shock_resistance = 0;
-    resource.unit_toughness = 0;
-}
 
-Resource::Resource(const resource_pod& pod, std::vector<std::string>& vector)
-{
-    resource = std::move(pod);
-    classes = std::move(vector);
-}
 
-const resource_pod& Resource::getResourcePOD() const
-{
-    return resource;
-}
-
-const std::vector<std::string>& Resource::getClasses() const
-{
-    return classes;
-}

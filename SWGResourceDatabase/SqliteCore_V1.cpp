@@ -2,7 +2,6 @@
 #include "SqliteCore_V1.hpp"
 
 //std lib includes
-#include <sstream>
 
 //other includes
 
@@ -89,9 +88,9 @@ SqliteCore_V1::~SqliteCore_V1()
 //queries
 
 //insert into database if it doesn't already exist
-void SqliteCore_V1::addResource(const resource_pod& resource, const std::vector<std::string>& classes) const
+void SqliteCore_V1::addResource(const Resource& resource) const
 {
-    
+    addResource(resource.getResourcePOD(), resource.getClasses());
 }
 
 //create
@@ -138,5 +137,63 @@ void SqliteCore_V1::dropTables() const
     execute_statement_general(database, show_tables);
 }
 
+//select
+void SqliteCore_V1::showAllResources() const
+{
+    std::stringstream stream;
+    stream << "SELECT * from " << resource_table_name << ";";
+    execute_statement_general(database, stream.str());
+}
+
 //private
+
+void SqliteCore_V1::insertResourceIntValue(std::stringstream& stream, int value, bool add_comma) const
+{
+    if (value > 0)
+    {
+        stream << value;
+        if (add_comma)
+        {
+            stream << ", ";
+        }
+    }
+    else
+    {
+        stream << "NULL";
+        if (add_comma)
+        {
+            stream << ", ";
+        }
+    }
+}
+
+void SqliteCore_V1::addResource(const resource_pod& pod, const std::vector<std::string>& vector) const
+{
+    std::stringstream stream;
+    int resource_type = 0;
+
+    stream << "INSERT INTO " << resource_table_name;
+    stream << " (name, type_id, cold_resistance, conductivity, decay_resistance, flavor, heat_resistance, malleability, overall_quality, potential_energy, shock_resistance, unit_toughness) ";
+    stream << "VALUES ('" << pod.name << "', ";
+    insertResourceIntValue(stream, resource_type, true);
+    insertResourceIntValue(stream, pod.cold_resistance, true);
+    insertResourceIntValue(stream, pod.conductivity, true);
+    insertResourceIntValue(stream, pod.decay_resistance, true);
+    insertResourceIntValue(stream, pod.flavor, true);
+    insertResourceIntValue(stream, pod.heat_resistance, true);
+    insertResourceIntValue(stream, pod.malleability, true);
+    insertResourceIntValue(stream, pod.overall_quality, true);
+    insertResourceIntValue(stream, pod.potential_energy, true);
+    insertResourceIntValue(stream, pod.shock_resistance, true);
+    insertResourceIntValue(stream, pod.unit_toughness, false);
+    stream << ");";
+
+    for (size_t i = 0; i < vector.size(); i++)
+    {
+
+    }
+
+    //printf("%s\n", stream.str().c_str());
+    execute_statement_general(database, stream.str());
+}
 

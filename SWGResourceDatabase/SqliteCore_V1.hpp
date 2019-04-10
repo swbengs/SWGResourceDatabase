@@ -3,6 +3,7 @@
 //std lib includes
 #include <string>
 #include <vector>
+#include <sstream>
 
 //other includes
 #include "pods.hpp"
@@ -45,9 +46,10 @@ public:
     ~SqliteCore_V1();
 
     //queries
-    void addResource(const resource_pod& resource, const std::vector<std::string>& classes) const; //insert
+    void addResource(const Resource& resource) const; //insert
     void createTables() const; //create table
     void dropTables() const; //drop
+    void showAllResources() const; //select
 
 private:
     sqlite3* database;
@@ -55,5 +57,8 @@ private:
     static const std::string classes_table_name;
     static const std::string intermediate_table_name;
     static const std::string types_table_name;
+
+    void insertResourceIntValue(std::stringstream& stream, int value, bool add_comma) const; //converts any 0 to NULL and adds the value to stream. if add_comma is true it adds a comma as well
+    void addResource(const resource_pod& pod, const std::vector<std::string>& vector) const;
 };
 
