@@ -45,7 +45,6 @@ end
 local classes = {}
 local types = {}
 
-
 getClassValues(classes)
 getTypeValues(types)
 

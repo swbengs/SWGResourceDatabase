@@ -1,0 +1,405 @@
+std::string func(SWG_resource_classes e)
+{
+    switch (e)
+    {
+    case ALUMINUM:
+        return "aluminum";
+    case BONE:
+        return "bone";
+    case BONE_AVIAN:
+        return "bone_avian";
+    case BONE_HORN:
+        return "bone_horn";
+    case CEREAL:
+        return "cereal";
+    case CHEMICAL:
+        return "chemical";
+    case COPPER:
+        return "copper";
+    case CORN:
+        return "corn";
+    case CORN_DOMESTICATED:
+        return "corn_domesticated";
+    case CORN_WILD:
+        return "corn_wild";
+    case CREATURE_FOOD:
+        return "creature_food";
+    case CREATURE_RESOURCES:
+        return "creature_resources";
+    case CREATURE_STRUCTURAL:
+        return "creature_structural";
+    case ENERGY:
+        return "energy";
+    case ENERGY_RENEWABLE:
+        return "energy_renewable";
+    case ENERGY_RENEWABLE_SITE_LIMITED:
+        return "energy_renewable_site_limited";
+    case ENERGY_RENEWABLE_UNLIMITED:
+        return "energy_renewable_unlimited";
+    case ENERGY_RENEWABLE_UNLIMITED_SOLAR:
+        return "energy_renewable_unlimited_solar";
+    case ENERGY_RENEWABLE_UNLIMITED_WIND:
+        return "energy_renewable_unlimited_wind";
+    case FIBERPLAST:
+        return "fiberplast";
+    case FLORA_FOOD:
+        return "flora_food";
+    case FLORA_RESOURCES:
+        return "flora_resources";
+    case FLORA_STRUCTURAL:
+        return "flora_structural";
+    case FRUIT:
+        return "fruit";
+    case FRUIT_BERRIES:
+        return "fruit_berries";
+    case FRUIT_FLOWERS:
+        return "fruit_flowers";
+    case FRUIT_FRUITS:
+        return "fruit_fruits";
+    case FUEL_PETROCHEM_LIQUID:
+        return "fuel_petrochem_liquid";
+    case FUEL_PETROCHEM_LIQUID_KNOWN:
+        return "fuel_petrochem_liquid_known";
+    case FUEL_PETROCHEM_SOLID:
+        return "fuel_petrochem_solid";
+    case FUEL_PETROCHEM_SOLID_KNOWN:
+        return "fuel_petrochem_solid_known";
+    case GAS:
+        return "gas";
+    case GAS_INERT:
+        return "gas_inert";
+    case GAS_INERT_KNOWN:
+        return "gas_inert_known";
+    case GAS_REACTIVE:
+        return "gas_reactive";
+    case GAS_REACTIVE_KNOWN:
+        return "gas_reactive_known";
+    case GEMSTONE:
+        return "gemstone";
+    case GEMSTONE_ARMOPHOUS:
+        return "gemstone_armophous";
+    case GEMSTONE_CRYSTALLINE:
+        return "gemstone_crystalline";
+    case HIDE:
+        return "hide";
+    case HIDE_BRISTLEY:
+        return "hide_bristley";
+    case HIDE_LEATHERY:
+        return "hide_leathery";
+    case HIDE_SCALEY:
+        return "hide_scaley";
+    case HIDE_WOOLY:
+        return "hide_wooly";
+    case INORGANIC:
+        return "inorganic";
+    case IRON:
+        return "iron";
+    case MEAT:
+        return "meat";
+    case MEAT_AVIAN:
+        return "meat_avian";
+    case MEAT_CARNIVORE:
+        return "meat_carnivore";
+    case MEAT_DOMESTICATED:
+        return "meat_domesticated";
+    case MEAT_EGG:
+        return "meat_egg";
+    case MEAT_HERBIVORE:
+        return "meat_herbivore";
+    case MEAT_INSECT:
+        return "meat_insect";
+    case MEAT_REPTILLIAN:
+        return "meat_reptillian";
+    case MEAT_WILD:
+        return "meat_wild";
+    case METAL:
+        return "metal";
+    case METAL_FERROUS:
+        return "metal_ferrous";
+    case METAL_NONFERROUS:
+        return "metal_nonferrous";
+    case MILK:
+        return "milk";
+    case MILK_DOMESTICATED:
+        return "milk_domesticated";
+    case MILK_WILD:
+        return "milk_wild";
+    case MINERAL:
+        return "mineral";
+    case OATS:
+        return "oats";
+    case OATS_DOMESTICATED:
+        return "oats_domesticated";
+    case OATS_WILD:
+        return "oats_wild";
+    case ORE:
+        return "ore";
+    case ORE_CARBONATE:
+        return "ore_carbonate";
+    case ORE_EXTRUSIVE:
+        return "ore_extrusive";
+    case ORE_IGNEOUS:
+        return "ore_igneous";
+    case ORE_INTRUSIVE:
+        return "ore_intrusive";
+    case ORE_SEDIMENTARY:
+        return "ore_sedimentary";
+    case ORE_SILICLASTIC:
+        return "ore_siliclastic";
+    case ORGANIC:
+        return "organic";
+    case PETROCHEM_INERT:
+        return "petrochem_inert";
+    case RADIOACTIVE:
+        return "radioactive";
+    case RADIOACTIVE_KNOWN:
+        return "radioactive_known";
+    case RICE:
+        return "rice";
+    case RICE_DOMESTICATED:
+        return "rice_domesticated";
+    case RICE_WILD:
+        return "rice_wild";
+    case SEAFOOD:
+        return "seafood";
+    case SEAFOOD_CRUSTACEAN:
+        return "seafood_crustacean";
+    case SEAFOOD_FISH:
+        return "seafood_fish";
+    case SEAFOOD_MOLLUSK:
+        return "seafood_mollusk";
+    case SEEDS:
+        return "seeds";
+    case SOFTWOOD:
+        return "softwood";
+    case SOFTWOOD_EVERGREEN:
+        return "softwood_evergreen";
+    case STEEL:
+        return "steel";
+    case VEGETABLE:
+        return "vegetable";
+    case VEGETABLE_BEANS:
+        return "vegetable_beans";
+    case VEGETABLE_FUNGI:
+        return "vegetable_fungi";
+    case VEGETABLE_GREENS:
+        return "vegetable_greens";
+    case VEGETABLE_TUBERS:
+        return "vegetable_tubers";
+    case WATER:
+        return "water";
+    case WHEAT:
+        return "wheat";
+    case WHEAT_DOMESTICATED:
+        return "wheat_domesticated";
+    case WHEAT_WILD:
+        return "wheat_wild";
+    case WOOD:
+        return "wood";
+    case WOOD_DECIDUOUS:
+        return "wood_deciduous";
+    }
+}
+
+std::string funcpretty(SWG_resource_classes e)
+{
+    switch (e)
+    {
+    case ALUMINUM:
+        return "Aluminum";
+    case BONE:
+        return "Bone";
+    case BONE_AVIAN:
+        return "Avian bone";
+    case BONE_HORN:
+        return "Horn";
+    case CEREAL:
+        return "Cereal";
+    case CHEMICAL:
+        return "Chemical";
+    case COPPER:
+        return "Copper";
+    case CORN:
+        return "Corn";
+    case CORN_DOMESTICATED:
+        return "Domesticated Corn";
+    case CORN_WILD:
+        return "Wild Corn";
+    case CREATURE_FOOD:
+        return "Creature Food";
+    case CREATURE_RESOURCES:
+        return "Creature Resources";
+    case CREATURE_STRUCTURAL:
+        return "Creature Structural";
+    case ENERGY:
+        return "Energy";
+    case ENERGY_RENEWABLE:
+        return "Renewable energy";
+    case ENERGY_RENEWABLE_SITE_LIMITED:
+        return "Site-Restricted Renewable Energy";
+    case ENERGY_RENEWABLE_UNLIMITED:
+        return "Non Site-Restricted Renewable Energy";
+    case ENERGY_RENEWABLE_UNLIMITED_SOLAR:
+        return "Solar Energy";
+    case ENERGY_RENEWABLE_UNLIMITED_WIND:
+        return "Wind Energy";
+    case FIBERPLAST:
+        return "Fiberplast";
+    case FLORA_FOOD:
+        return "Flora Food";
+    case FLORA_RESOURCES:
+        return "Flora Resources";
+    case FLORA_STRUCTURAL:
+        return "Flora Structural";
+    case FRUIT:
+        return "Fruit";
+    case FRUIT_BERRIES:
+        return "Berries";
+    case FRUIT_FLOWERS:
+        return "Flowers";
+    case FRUIT_FRUITS:
+        return "Fruits";
+    case FUEL_PETROCHEM_LIQUID:
+        return "Liquid Petrochem Fuel";
+    case FUEL_PETROCHEM_LIQUID_KNOWN:
+        return "Known Liquid Petrochem Fuel";
+    case FUEL_PETROCHEM_SOLID:
+        return "Solid Petrochem Fuel";
+    case FUEL_PETROCHEM_SOLID_KNOWN:
+        return "Known Solid Petrochem Fuel";
+    case GAS:
+        return "Gas";
+    case GAS_INERT:
+        return "Inert Gas";
+    case GAS_INERT_KNOWN:
+        return "Known Inert Gas";
+    case GAS_REACTIVE:
+        return "Reactive Gas";
+    case GAS_REACTIVE_KNOWN:
+        return "Known Reactive Gas";
+    case GEMSTONE:
+        return "Gemstone";
+    case GEMSTONE_ARMOPHOUS:
+        return "Amorphous Gemstone";
+    case GEMSTONE_CRYSTALLINE:
+        return "Crystalline Gemstone";
+    case HIDE:
+        return "Hide";
+    case HIDE_BRISTLEY:
+        return "Bristley Hide";
+    case HIDE_LEATHERY:
+        return "Leathery Hide";
+    case HIDE_SCALEY:
+        return "Scaley Hide";
+    case HIDE_WOOLY:
+        return "Wooly Hide";
+    case INORGANIC:
+        return "Inorganic";
+    case IRON:
+        return "Iron";
+    case MEAT:
+        return "Meat";
+    case MEAT_AVIAN:
+        return "Avian Meat";
+    case MEAT_CARNIVORE:
+        return "Carnivore Meat";
+    case MEAT_DOMESTICATED:
+        return "Domesticated Meat";
+    case MEAT_EGG:
+        return "Egg";
+    case MEAT_HERBIVORE:
+        return "Herbivore Meat";
+    case MEAT_INSECT:
+        return "Insect Meat";
+    case MEAT_REPTILLIAN:
+        return "Reptillian Meat";
+    case MEAT_WILD:
+        return "Wild Meat";
+    case METAL:
+        return "Metal";
+    case METAL_FERROUS:
+        return "Ferrous Metal";
+    case METAL_NONFERROUS:
+        return "Non-Ferrous Metal";
+    case MILK:
+        return "Milk";
+    case MILK_DOMESTICATED:
+        return "Domesticated Milk";
+    case MILK_WILD:
+        return "Wild Milk";
+    case MINERAL:
+        return "Mineral";
+    case OATS:
+        return "Oats";
+    case OATS_DOMESTICATED:
+        return "Domesticated Oats";
+    case OATS_WILD:
+        return "Wild Oats";
+    case ORE:
+        return "Low-Grade Ore";
+    case ORE_CARBONATE:
+        return "Carbonate Ore";
+    case ORE_EXTRUSIVE:
+        return "Extrusive Ore";
+    case ORE_IGNEOUS:
+        return "Igneous Ore";
+    case ORE_INTRUSIVE:
+        return "Intrusive Ore";
+    case ORE_SEDIMENTARY:
+        return "Sedimentary Ore";
+    case ORE_SILICLASTIC:
+        return "Siliclastic Ore";
+    case ORGANIC:
+        return "Organic";
+    case PETROCHEM_INERT:
+        return "Inert Petrochemical";
+    case RADIOACTIVE:
+        return "Radioactive";
+    case RADIOACTIVE_KNOWN:
+        return "Known Radioactive";
+    case RICE:
+        return "Rice";
+    case RICE_DOMESTICATED:
+        return "Domesticated Rice";
+    case RICE_WILD:
+        return "Wild Rice";
+    case SEAFOOD:
+        return "Seafood";
+    case SEAFOOD_CRUSTACEAN:
+        return "Crustacean";
+    case SEAFOOD_FISH:
+        return "Fish";
+    case SEAFOOD_MOLLUSK:
+        return "Mollusk";
+    case SEEDS:
+        return "Seeds";
+    case SOFTWOOD:
+        return "Soft Wood";
+    case SOFTWOOD_EVERGREEN:
+        return "Evergreen Soft Wood";
+    case STEEL:
+        return "Steel";
+    case VEGETABLE:
+        return "Vegetables";
+    case VEGETABLE_BEANS:
+        return "Beans";
+    case VEGETABLE_FUNGI:
+        return "Fungi";
+    case VEGETABLE_GREENS:
+        return "Greens";
+    case VEGETABLE_TUBERS:
+        return "Tubers";
+    case WATER:
+        return "Water";
+    case WHEAT:
+        return "Wheat";
+    case WHEAT_DOMESTICATED:
+        return "Domesticated Wheat";
+    case WHEAT_WILD:
+        return "Wild Wheat";
+    case WOOD:
+        return "Wood";
+    case WOOD_DECIDUOUS:
+        return "Hard Wood";
+    }
+}
