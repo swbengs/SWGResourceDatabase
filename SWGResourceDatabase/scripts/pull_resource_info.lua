@@ -42,16 +42,26 @@ table.sort(sorted_classes)
 table.sort(sorted_types)
 
 --traverse sorted keys with ipairs so it goes in order and print the goods
-print("classes_unique")
-for _, key in ipairs(sorted_classes) do
-  print(key.." = "..classes_unique[key])
-end
-print("classes_unique end")
-print("")
+local function writeTable(filename, sorted_table, table)
+  local file = assert(io.open(filename, "w"))
+  io.output(file)
 
-print("types")
-for _, key in ipairs(sorted_types) do
-  print(key.." = "..types[key])
+  for _, key in ipairs(sorted_table) do
+  --print(key.." = "..types[key])
+  io.write(string.upper(key)..","..key..","..table[key]..",\n")
+  end
+
+  io.close(file)
 end
-print("types end")
+
+local function printTable(sorted_table, table)
+  for _, key in ipairs(sorted_table) do
+    print(key.." = "..table[key])
+  end
+end
+
+writeTable("scripts\\classes.txt", sorted_classes, classes_unique)
+writeTable("scripts\\types.txt", sorted_types, types)
+--printTable(sorted_classes, classes_unique)
+--printTable(sorted_types, types)
 
