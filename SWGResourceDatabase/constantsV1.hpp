@@ -2,6 +2,7 @@
 
 //std lib includes
 #include <string>
+#include <unordered_map>
 
 //other includes
 
@@ -814,4 +815,10 @@ std::string SWGResourceClassStringPretty(SWG_resource_classes e);
 
 std::string SWGResourceTypeString(SWG_resource_types e);
 std::string SWGResourceTypeStringPretty(SWG_resource_types e);
+
+std::unordered_map<std::string, SWG_resource_classes> getReverseOfClassesString();
+std::unordered_map<std::string, SWG_resource_classes> getReverseOfClassesPrettyString();
+
+std::unordered_map<std::string, SWG_resource_types> getReverseOfTypesString();
+std::unordered_map<std::string, SWG_resource_types> getReverseOfTypesPrettyString();
 

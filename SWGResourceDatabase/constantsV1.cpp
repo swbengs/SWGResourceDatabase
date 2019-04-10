@@ -2839,4 +2839,60 @@ std::string SWGResourceTypeStringPretty(SWG_resource_types e)
     }
 }
 
+std::unordered_map<std::string, SWG_resource_classes> getReverseOfClassesString()
+{
+    std::unordered_map<std::string, SWG_resource_classes> temp;
+    temp.reserve(SWG_resource_classes_count);
+
+    for (size_t i = 0; i < SWG_resource_classes_count; i++)
+    {
+        SWG_resource_classes m = static_cast<SWG_resource_classes>(i); //so we only have to do one cast
+        temp[SWGResourceClassString(m)] = m; //get string and put into table
+    }
+
+    return temp;
+}
+
+std::unordered_map<std::string, SWG_resource_classes> getReverseOfClassesPrettyString()
+{
+    std::unordered_map<std::string, SWG_resource_classes> temp;
+    temp.reserve(SWG_resource_classes_count);
+
+    for (size_t i = 0; i < SWG_resource_classes_count; i++)
+    {
+        SWG_resource_classes m = static_cast<SWG_resource_classes>(i); //so we only have to do one cast
+        temp[SWGResourceClassStringPretty(m)] = m; //get string and put into table
+    }
+
+    return temp;
+}
+
+std::unordered_map<std::string, SWG_resource_types> getReverseOfTypesString()
+{
+    std::unordered_map<std::string, SWG_resource_types> temp;
+    temp.reserve(SWG_resource_types_count);
+
+    for (size_t i = 0; i < SWG_resource_types_count; i++)
+    {
+        SWG_resource_types m = static_cast<SWG_resource_types>(i); //so we only have to do one cast
+        temp[SWGResourceTypeString(m)] = m; //get string and put into table
+    }
+
+    return temp;
+}
+
+std::unordered_map<std::string, SWG_resource_types> getReverseOfTypesPrettyString()
+{
+    std::unordered_map<std::string, SWG_resource_types> temp;
+    temp.reserve(SWG_resource_types_count);
+
+    for (size_t i = 0; i < SWG_resource_types_count; i++)
+    {
+        SWG_resource_types m = static_cast<SWG_resource_types>(i); //so we only have to do one cast
+        temp[SWGResourceTypeStringPretty(m)] = m; //get string and put into table
+    }
+
+    return temp;
+}
+
 
