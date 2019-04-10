@@ -488,6 +488,7 @@ int test_LuaCoreClassesError()
     return EXIT_SUCCESS;
 }
 
+//sqlite
 int test_Sqlite_create()
 {
     printf("test_Sqlite_create start\n");
@@ -545,6 +546,26 @@ int test_Sqlite_insert()
     return EXIT_SUCCESS;
 }
 
+//debug stuff
+
+int debugCollectInfo()
+{
+    printf("debugCollectInfo start\n");
+
+    std::string filename = "resource_manager_spawns.lua";
+    LuaCore lua;
+
+    lua.start(filename);
+    lua.stop();
+    lua.debugStart();
+    lua.debugCollectResourceInfo();
+
+    printf("debugCollectInfo stop\n\n");
+    return EXIT_SUCCESS;
+
+    return EXIT_SUCCESS;
+}
+
 int main()
 {
     int result;
@@ -561,7 +582,10 @@ int main()
     //Sqlite
    // result = test_Sqlite_delete();
     //result = test_Sqlite_create();
-    result = test_Sqlite_insert();
+    //result = test_Sqlite_insert();
+
+    //debug
+    result = debugCollectInfo();
 
     return result;
 }

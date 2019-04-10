@@ -25,6 +25,9 @@
     <Filter Include="Source Files\Sqlite">
       <UniqueIdentifier>{c2ea87cf-0712-4941-9d0e-3b1649c78a7d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="scripts">
+      <UniqueIdentifier>{54fd9720-c433-4cb9-8352-900f31b463b0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Lua\lapi.c">
@@ -155,6 +158,9 @@
     </None>
     <None Include="bad_classes.lua">
       <Filter>Resource Files</Filter>
+    </None>
+    <None Include="scripts\pull_resource_info.lua">
+      <Filter>scripts</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

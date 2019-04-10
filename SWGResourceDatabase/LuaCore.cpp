@@ -34,7 +34,6 @@ SOFTWARE.
 LuaCore::LuaCore()
 {
     lua_state = luaL_newstate();
-    //luaL_openlibs(lua_state); //only use if you are sure that no harmful Lua code will be run
     current_index = 0;
 }
 
@@ -47,13 +46,10 @@ LuaCore::~LuaCore()
 //load the given file, and check that it is properly laid out. If it doesn't load Lua will give a reason such as file doesn't exist and so on. If it loads we need a table called 'resources'. Otherwise it's not a proper dump script
 bool LuaCore::start(std::string filename)
 {
-    if (luaL_loadfile(lua_state, filename.c_str()) || lua_pcall(lua_state, 0, 0, 0))
+    if (!runScript(filename))
     {
-        error();
         return false;
     }
-
-    printf("load script and run it was a success!\n");
 
     //script ran so see if we have a resources table
     lua_getglobal(lua_state, "resources");
@@ -141,11 +137,47 @@ bool LuaCore::getNextResource(resource_pod& pod, std::vector<std::string>& class
     return true;
 }
 
+//debug helpers
+void LuaCore::debugStart()
+{
+    luaL_openlibs(lua_state); //only use if you are sure that no harmful Lua code will be run
+}
+
+void LuaCore::debugCollectResourceInfo()
+{
+    std::string filename = "scripts\\pull_resource_info.lua";
+    runScript(filename);
+}
+
+void LuaCore::debugMakeEnums()
+{
+    std::string filename = "";
+    runScript(filename);
+}
+
+void LuaCore::debugMakeReturns()
+{
+    std::string filename = "";
+    runScript(filename);
+}
+
 //private
 void LuaCore::error()
 {
     fprintf(stderr, "%s\n", lua_tostring(lua_state, -1));
     lua_pop(lua_state, 1);  /* pop error message from the stack */
+}
+
+bool LuaCore::runScript(std::string filename)
+{
+    if (luaL_loadfile(lua_state, filename.c_str()) || lua_pcall(lua_state, 0, 0, 0))
+    {
+        error();
+        return false;
+    }
+
+    printf("running script: %s was a success!\n", filename.c_str());
+    return true;
 }
 
 //get int can cry about an error but there is no valid int that will signify an error to the calling method. Just print error and go on
