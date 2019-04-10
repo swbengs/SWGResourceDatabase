@@ -41,6 +41,10 @@ local function writeBasicStrings(filename, func_name, pretty_name, enums_table, 
   for _, t in ipairs(enums_table) do
     writeBodyLine(t, "enum_string")
   end
+  io.write("    default:\n")
+  io.write("        return \"bad ")
+  io.write(enums_name)
+  io.write(" enum\";\n")
   writeFooter()
 
   io.write("\n")
@@ -49,6 +53,10 @@ local function writeBasicStrings(filename, func_name, pretty_name, enums_table, 
   for _, t in ipairs(enums_table) do
     writeBodyLine(t, "pretty_string")
   end
+  io.write("    default:\n")
+  io.write("        return \"bad ")
+  io.write(enums_name)
+  io.write(" enum\";\n")
   writeFooter()
 
   io.close(file)
@@ -60,6 +68,6 @@ local types = {}
 getClassValues(classes)
 getTypeValues(types)
 
-writeBasicStrings("scripts\\convert_classes.txt", "func", "funcpretty", classes, "SWG_resource_classes")
-writeBasicStrings("scripts\\convert_types.txt", "func2", "funcpretty", types, "SWG_resource_types")
+writeBasicStrings("scripts\\convert_classes.txt", "SWGResourceClassString", "SWGResourceClassStringPretty", classes, "SWG_resource_classes")
+writeBasicStrings("scripts\\convert_types.txt", "SWGResourceTypeString", "SWGResourceTypeStringPretty", types, "SWG_resource_types")
 

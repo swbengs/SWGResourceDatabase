@@ -1,4 +1,4 @@
-std::string func(SWG_resource_classes e)
+std::string SWGResourceClassString(SWG_resource_classes e)
 {
     switch (e)
     {
@@ -198,10 +198,12 @@ std::string func(SWG_resource_classes e)
         return "wood";
     case WOOD_DECIDUOUS:
         return "wood_deciduous";
+    default:
+        return "bad SWG_resource_classes enum";
     }
 }
 
-std::string funcpretty(SWG_resource_classes e)
+std::string SWGResourceClassStringPretty(SWG_resource_classes e)
 {
     switch (e)
     {
@@ -401,5 +403,7 @@ std::string funcpretty(SWG_resource_classes e)
         return "Wood";
     case WOOD_DECIDUOUS:
         return "Hard Wood";
+    default:
+        return "bad SWG_resource_classes enum";
     }
 }

@@ -1,4 +1,4 @@
-std::string func2(SWG_resource_types e)
+std::string SWGResourceTypeString(SWG_resource_types e)
 {
     switch (e)
     {
@@ -1192,10 +1192,12 @@ std::string func2(SWG_resource_types e)
         return "wood_deciduous_tatooine";
     case WOOD_DECIDUOUS_YAVIN4:
         return "wood_deciduous_yavin4";
+    default:
+        return "bad SWG_resource_types enum";
     }
 }
 
-std::string funcpretty(SWG_resource_types e)
+std::string SWGResourceTypeStringPretty(SWG_resource_types e)
 {
     switch (e)
     {
@@ -2389,5 +2391,7 @@ std::string funcpretty(SWG_resource_types e)
         return "Tatooinian Deciduous Wood";
     case WOOD_DECIDUOUS_YAVIN4:
         return "Yavinian Deciduous Wood";
+    default:
+        return "bad SWG_resource_types enum";
     }
 }

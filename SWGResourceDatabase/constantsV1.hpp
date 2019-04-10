@@ -1,6 +1,7 @@
 #pragma once
 
 //std lib includes
+#include <string>
 
 //other includes
 
@@ -807,4 +808,10 @@ enum SWG_resource_types
     //add nothing below this one
     SWG_resource_types_count
 };
+
+std::string SWGResourceClassString(SWG_resource_classes e);
+std::string SWGResourceClassStringPretty(SWG_resource_classes e);
+
+std::string SWGResourceTypeString(SWG_resource_types e);
+std::string SWGResourceTypeStringPretty(SWG_resource_types e);
 
