@@ -141,6 +141,8 @@ bool LuaCore::getNextResource(resource_pod& pod, std::vector<std::string>& class
 void LuaCore::debugStart()
 {
     luaL_openlibs(lua_state); //only use if you are sure that no harmful Lua code will be run
+    std::string filename = "scripts\\global_helpers.lua";
+    runScript(filename);
 }
 
 void LuaCore::debugCollectResourceInfo()
@@ -151,13 +153,13 @@ void LuaCore::debugCollectResourceInfo()
 
 void LuaCore::debugMakeEnums()
 {
-    std::string filename = "";
+    std::string filename = "scripts\\make_enums.lua";
     runScript(filename);
 }
 
-void LuaCore::debugMakeReturns()
+void LuaCore::debugMakeConversions()
 {
-    std::string filename = "";
+    std::string filename = "scripts\\make_conversions.lua";
     runScript(filename);
 }
 

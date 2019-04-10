@@ -58,7 +58,7 @@ public:
     void debugStart(); //adds in all libraries NOT SAFE. only use trusted Lua scripts
     void debugCollectResourceInfo(); //resource classes and types and their pretty names and enums. stored in classes.txt and types.txt
     void debugMakeEnums(); //makes classes and types enum lists in classes_enums.txt and types_enums.txt
-    void debugMakeReturns(); //makes classes types conversion from enum to text and their pretty version convert_classes.txt convert_types.txt
+    void debugMakeConversions(); //makes classes types conversion from enum to text and their pretty version convert_classes.txt convert_types.txt
 private:
     lua_State* lua_state;
     int current_index;

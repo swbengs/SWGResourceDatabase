@@ -192,6 +192,9 @@
   <ItemGroup>
     <None Include="..\README.md" />
     <None Include="resource_manager_spawns.lua" />
+    <None Include="scripts\global_helpers.lua" />
+    <None Include="scripts\make_conversions.lua" />
+    <None Include="scripts\make_enums.lua" />
     <None Include="scripts\pull_resource_info.lua" />
     <None Include="table_test.lua" />
   </ItemGroup>

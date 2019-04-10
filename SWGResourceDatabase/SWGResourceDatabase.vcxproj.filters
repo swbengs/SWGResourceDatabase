@@ -162,6 +162,15 @@
     <None Include="scripts\pull_resource_info.lua">
       <Filter>scripts</Filter>
     </None>
+    <None Include="scripts\make_enums.lua">
+      <Filter>scripts</Filter>
+    </None>
+    <None Include="scripts\make_conversions.lua">
+      <Filter>scripts</Filter>
+    </None>
+    <None Include="scripts\global_helpers.lua">
+      <Filter>scripts</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sqlite\sqlite3.h">

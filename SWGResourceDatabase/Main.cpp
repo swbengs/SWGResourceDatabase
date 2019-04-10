@@ -547,10 +547,9 @@ int test_Sqlite_insert()
 }
 
 //debug stuff
-
-int debugCollectInfo()
+int debugRun()
 {
-    printf("debugCollectInfo start\n");
+    printf("debugRun start\n");
 
     std::string filename = "resource_manager_spawns.lua";
     LuaCore lua;
@@ -558,11 +557,11 @@ int debugCollectInfo()
     lua.start(filename);
     lua.stop();
     lua.debugStart();
-    lua.debugCollectResourceInfo();
+    //lua.debugCollectResourceInfo();
+    lua.debugMakeEnums();
+    lua.debugMakeConversions();
 
-    printf("debugCollectInfo stop\n\n");
-    return EXIT_SUCCESS;
-
+    printf("debugRun stop\n\n");
     return EXIT_SUCCESS;
 }
 
@@ -585,7 +584,7 @@ int main()
     //result = test_Sqlite_insert();
 
     //debug
-    result = debugCollectInfo();
+    result = debugRun();
 
     return result;
 }
