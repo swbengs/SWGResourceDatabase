@@ -48,7 +48,12 @@ local function writeTable(filename, sorted_table, table)
 
   for _, key in ipairs(sorted_table) do
   --print(key.." = "..types[key])
-  io.write(string.upper(key)..","..key..","..table[key]..",\n")
+  io.write(string.upper(key))
+  io.write(",")
+  io.write(key)
+  io.write(",")
+  io.write(table[key])
+  io.write(",\n")
   end
 
   io.close(file)
