@@ -557,7 +557,7 @@ int debugRun()
     lua.start(filename);
     lua.stop();
     lua.debugStart();
-    //lua.debugCollectResourceInfo();
+    lua.debugCollectResourceInfo();
     lua.debugMakeEnums();
     lua.debugMakeConversions();
 
