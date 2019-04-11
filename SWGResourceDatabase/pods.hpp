@@ -37,7 +37,7 @@ struct resource_pod
 {
     std::string name;
     std::string type; //convert to int through lookup before adding to database. is a string when collected in Lua. Becomes an int index when in database
-    unsigned int cold_resistance; //CR CD DR FL HR MA PE OQ SR UT are the abbreviations in order
+    unsigned int cold_resistance; //CR CD DR FL HR MA OQ PE SR UT are the abbreviations in order
     unsigned int conductivity;
     unsigned int decay_resistance;
     unsigned int flavor;

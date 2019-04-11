@@ -496,8 +496,8 @@ int test_Sqlite_create()
     std::string database_name = "test.db";
     SqliteCore_V1 database(database_name);
     database.createTables();
-    database.showAllClasses();
-    database.showAllTypes();
+    database.showAllClasses(100);
+    database.showAllTypes(100);
 
     printf("test_Sqlite_create stop\n\n");
 
@@ -542,7 +542,7 @@ int test_Sqlite_insert()
     Resource resource = Resource(pod, vector);
     database.addResource(resource);
     database.showAllResources(50);
-    database.showAllIntermediate();
+    database.showAllIntermediate(100);
     printf("resource count: %i\n", database.getResourceCount());
 
     printf("test_Sqlite_insert stop\n\n");
@@ -588,10 +588,18 @@ int test_Sqlite_real_create()
 
 int test_Sqlite_real_details()
 {
+    int limit = 50;
     std::string database_name = "test.db";
     SqliteCore_V1 database(database_name);
     printf("resource count: %i\n", database.getResourceCount());
-    database.showAllResourcesPretty(100);
+    //database.showAllResourcesPretty(limit);
+    
+    //printf("resources with type phrik aluminum\n");
+    //database.showResourcesWithClass(SWGResourceTypeString(ALUMINUM_PHRIK), limit); //do it the lazy way ;)
+    //printf("resources with type duralloy steel\n");
+    //database.showResourcesWithClass(SWGResourceTypeString(STEEL_DURALLOY), limit);
+    printf("resources with class steel\n");
+    database.showResourcesWithClass(SWGResourceClassString(STEEL), limit);
 
     return EXIT_SUCCESS;
 }

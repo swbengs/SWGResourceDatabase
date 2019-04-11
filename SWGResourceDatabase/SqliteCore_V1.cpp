@@ -32,6 +32,42 @@ SOFTWARE.
 //helper C functions(not part of the class)
 //callback that will print each column in a newline
 
+int print_resource_callback(void* row_count, int argc, char **argv, char **azColName)
+{
+    int* temp = (int*)row_count;
+    *temp = *temp + 1; //issue with operator precedence?
+
+    if (argc == 13)
+    {
+        printf("%s ", argv[0]);
+        printf("%s ", argv[1]);
+        printf("%s ", argv[2]);
+        int i;
+        for (i = 3; i < 13; i++)
+        {
+            printf("%s ", argv[i] ? argv[i] : "NULL");
+        }
+    }
+
+    printf("\n");
+
+    return 0; //anything else and bad things happen
+}
+
+void execute_statement_print_resource(sqlite3* database, std::string statement)
+{
+    int row_count = 0;
+    char *zErrMsg = nullptr;
+    printf("id name type CR CD DR FL HR MA OQ PE SR UT");
+    int rc = sqlite3_exec(database, statement.c_str(), print_resource_callback, &row_count, &zErrMsg);
+    if (rc != SQLITE_OK)
+    {
+        fprintf(stderr, "SQL error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+    }
+    printf("row count: %i\n", row_count);
+}
+
 int get_id_callback(void* count, int argc, char **argv, char **azColName)
 {
     int* temp = (int*)count;
@@ -58,8 +94,10 @@ int execute_statement_get_id(sqlite3* database, std::string statement)
     return count;
 }
 
-int general_callback(void *NotUsed, int argc, char **argv, char **azColName)
+int general_callback(void* row_count, int argc, char **argv, char **azColName)
 {
+    int* temp = (int*)row_count;
+    *temp = *temp + 1; //issue with operator precedence?
     int i;
     for (i = 0; i < argc; i++)
     {
@@ -72,15 +110,18 @@ int general_callback(void *NotUsed, int argc, char **argv, char **azColName)
     return 0; //anything else and bad things happen
 }
 
+//calls and counts returned rows
 void execute_statement_general(sqlite3* database, std::string statement)
 {
+    int row_count = 0;
     char *zErrMsg = nullptr;
-    int rc = sqlite3_exec(database, statement.c_str(), general_callback, 0, &zErrMsg);
+    int rc = sqlite3_exec(database, statement.c_str(), general_callback, &row_count, &zErrMsg);
     if (rc != SQLITE_OK)
     {
         fprintf(stderr, "SQL error: %s\n", zErrMsg);
         sqlite3_free(zErrMsg);
     }
+    printf("row count: %i\n", row_count);
 }
 
 //class code
@@ -182,29 +223,29 @@ void SqliteCore_V1::showAllResourcesPretty(int limit) const
     stream << "SELECT " << resource_table_name;
     stream << ".id, name, " << types_table_name;
     stream << ".type, cold_resistance, conductivity, decay_resistance, flavor, heat_resistance, malleability, overall_quality, potential_energy, shock_resistance, unit_toughness from " << resource_table_name;
-    stream << " JOIN " << types_table_name << " ON " << types_table_name << ".id = " << resource_table_name << ".id";
+    stream << " JOIN " << types_table_name << " ON " << types_table_name << ".id = " << resource_table_name << ".type_id";
     stream << " LIMIT " << limit << ";";
     execute_statement_general(database, stream.str());
 }
 
-void SqliteCore_V1::showAllClasses() const
+void SqliteCore_V1::showAllClasses(int limit) const
 {
     std::stringstream stream;
-    stream << "SELECT * from " << classes_table_name << " LIMIT 50;";
+    stream << "SELECT * from " << classes_table_name << " LIMIT " << limit << ";";
     execute_statement_general(database, stream.str());
 }
 
-void SqliteCore_V1::showAllTypes() const
+void SqliteCore_V1::showAllTypes(int limit) const
 {
     std::stringstream stream;
-    stream << "SELECT * from " << types_table_name << " LIMIT 50;";
+    stream << "SELECT * from " << types_table_name << " LIMIT " << limit << ";";
     execute_statement_general(database, stream.str());
 }
 
-void SqliteCore_V1::showAllIntermediate() const
+void SqliteCore_V1::showAllIntermediate(int limit) const
 {
     std::stringstream stream;
-    stream << "SELECT * from " << intermediate_table_name << " LIMIT 50;";
+    stream << "SELECT * from " << intermediate_table_name << " LIMIT " << limit << ";";
     execute_statement_general(database, stream.str());
 }
 
@@ -222,7 +263,7 @@ int SqliteCore_V1::getResourceCount() const
 {
     std::stringstream stream;
     stream << "SELECT COUNT(*) from " << resource_table_name << ";";
-    int count = execute_statement_get_id(database, stream.str());
+    int count = execute_statement_get_id(database, stream.str()); //returns one int which we want anyways
 
     return count;
 }
@@ -237,41 +278,26 @@ void SqliteCore_V1::transactionStop() const
     execute_statement_general(database, "COMMIT;");
 }
 
-//gets
-int SqliteCore_V1::getSWGClassInt(std::string name, bool print_error) const
+void SqliteCore_V1::showResourcesWithClass(std::string class_name, int limit) const
 {
-    int temp = 0;
-
-    if (classes.count(name) > 0)
+    //figure out which type of query to do
+    int id = getSWGClassInt(class_name, false);
+    if (id == 0) //not a class
     {
-        temp = classes.at(name) + 1; //actual DB value is 1 higher than enum
+        id = getSWGTypeInt(class_name, false);
+        if (id == 0) //not a type either ruh row
+        {
+            fprintf(stderr, "unkown class/type of: %s\n", class_name.c_str());
+        }
+        else
+        {
+            showByType(id, limit);
+        }
     }
     else
     {
-        if (print_error)
-        {
-            fprintf(stderr, "unknown class key of: %s\n", name.c_str());
-        }
+        showByClass(id, limit);
     }
-    return temp;
-}
-
-int SqliteCore_V1::getSWGTypeInt(std::string name, bool print_error) const
-{
-    int temp = 0;
-
-    if (types.count(name) > 0)
-    {
-        temp = types.at(name) + 1; //actual DB value is 1 higher than enum
-    }
-    else
-    {
-        if (print_error)
-        {
-            fprintf(stderr, "unknown type key of: %s\n", name.c_str());
-        }
-    }
-    return temp;
 }
 
 //private
@@ -391,5 +417,77 @@ void SqliteCore_V1::fillTypeAndClassTables() const
         addResourceType(SWGResourceTypeString(static_cast<SWG_resource_types>(i)));
     }
     transactionStop();
+}
+
+//usefuls
+int SqliteCore_V1::getSWGClassInt(std::string name, bool print_error) const
+{
+    int temp = 0;
+
+    if (classes.count(name) > 0)
+    {
+        temp = classes.at(name) + 1; //actual DB value is 1 higher than enum
+    }
+    else
+    {
+        if (print_error)
+        {
+            fprintf(stderr, "unknown class key of: %s\n", name.c_str());
+        }
+    }
+    return temp;
+}
+
+int SqliteCore_V1::getSWGTypeInt(std::string name, bool print_error) const
+{
+    int temp = 0;
+
+    if (types.count(name) > 0)
+    {
+        temp = types.at(name) + 1; //actual DB value is 1 higher than enum
+    }
+    else
+    {
+        if (print_error)
+        {
+            fprintf(stderr, "unknown type key of: %s\n", name.c_str());
+        }
+    }
+    return temp;
+}
+
+std::string SqliteCore_V1::resourceSelectString() const
+{
+    std::stringstream stream;
+    //CR CD DR FL HR MA OQ PE SR UT are the abbreviations in order
+    stream << "SELECT " << resource_table_name;
+    stream << ".id, name, " << types_table_name;
+    stream << ".type, cold_resistance AS CR, conductivity AS CD, decay_resistance AS DR, flavor AS FL, heat_resistance AS HR, malleability AS MA, overall_quality AS OQ, potential_energy AS PE,";
+    stream << " shock_resistance AS SR, unit_toughness AS UT from " << resource_table_name;
+    return stream.str();
+}
+
+void SqliteCore_V1::showByClass(int class_id, int limit) const
+{
+    std::stringstream stream;
+    stream << resourceSelectString();
+    stream << " JOIN " << intermediate_table_name << " ON " << intermediate_table_name << ".resource_id = " << resource_table_name << ".id";
+    stream << " JOIN " << classes_table_name << " ON " << classes_table_name << ".id = " << intermediate_table_name << ".class_id";
+    stream << " JOIN " << types_table_name << " ON " << types_table_name << ".id = " << resource_table_name << ".type_id";
+    stream << " WHERE " << classes_table_name << ".id = " << class_id;
+    stream << " LIMIT " << limit << ";";
+    execute_statement_print_resource(database, stream.str());
+    //printf("showByType statement: %s\n", stream.str().c_str());
+}
+
+void SqliteCore_V1::showByType(int type_id, int limit) const
+{
+    std::stringstream stream;
+    stream << resourceSelectString();
+    stream << " JOIN " << types_table_name << " ON " << types_table_name << ".id = " << resource_table_name << ".type_id";
+    stream << " WHERE " << types_table_name << ".id = " << type_id;
+    stream << " LIMIT " << limit << ";";
+    execute_statement_print_resource(database, stream.str());
+    //printf("showByType statement: %s\n", stream.str().c_str());
 }
 
