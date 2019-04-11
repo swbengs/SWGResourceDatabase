@@ -39,13 +39,13 @@ int print_resource_callback(void* row_count, int argc, char **argv, char **azCol
 
     if (argc == 13)
     {
-        printf("%s ", argv[0]);
-        printf("%s ", argv[1]);
-        printf("%s ", argv[2]);
+        printf("%6s ", argv[0]);
+        printf("%20s ", argv[1]);
+        printf("%40s ", argv[2]);
         int i;
         for (i = 3; i < 13; i++)
         {
-            printf("%s ", argv[i] ? argv[i] : "NULL");
+            printf("%4s ", argv[i] ? argv[i] : "NULL");
         }
     }
 
@@ -58,7 +58,7 @@ void execute_statement_print_resource(sqlite3* database, std::string statement)
 {
     int row_count = 0;
     char *zErrMsg = nullptr;
-    printf("id name type CR CD DR FL HR MA OQ PE SR UT");
+    printf("%6s %20s %40s %4s %4s %4s %4s %4s %4s %4s %4s %4s %4s\n", "id", "name", "type", "CR", "CD", "DR", "FL", "HR", "MA", "OQ", "PE", "SR", "UT");
     int rc = sqlite3_exec(database, statement.c_str(), print_resource_callback, &row_count, &zErrMsg);
     if (rc != SQLITE_OK)
     {

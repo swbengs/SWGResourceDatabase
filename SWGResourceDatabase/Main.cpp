@@ -588,7 +588,7 @@ int test_Sqlite_real_create()
 
 int test_Sqlite_real_details()
 {
-    int limit = 50;
+    const int limit = 100;
     std::string database_name = "test.db";
     SqliteCore_V1 database(database_name);
     printf("resource count: %i\n", database.getResourceCount());
@@ -598,8 +598,12 @@ int test_Sqlite_real_details()
     //database.showResourcesWithClass(SWGResourceTypeString(ALUMINUM_PHRIK), limit); //do it the lazy way ;)
     //printf("resources with type duralloy steel\n");
     //database.showResourcesWithClass(SWGResourceTypeString(STEEL_DURALLOY), limit);
-    printf("resources with class steel\n");
-    database.showResourcesWithClass(SWGResourceClassString(STEEL), limit);
+    //printf("resources with class steel\n");
+    //database.showResourcesWithClass(SWGResourceClassString(STEEL), limit);
+
+
+    //database.showResourcesWithClass(SWGResourceClassString(INORGANIC), limit);
+    database.showResourcesWithClass(SWGResourceClassString(ORGANIC), limit);
 
     return EXIT_SUCCESS;
 }
