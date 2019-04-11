@@ -51,14 +51,19 @@ public:
     void addResource(const Resource& resource) const; //insert
     void createTables() const; //create table
     void dropTables() const; //drop
-    void showAllResources() const; //select
+    void showAllResources(int limit) const; //select
+    void showAllResourcesPretty(int limit) const;
     void showAllClasses() const;
     void showAllTypes() const;
+    void showAllIntermediate() const;
     int getResourceID(std::string name) const;
+    int getResourceCount() const;
+    void transactionStart() const;
+    void transactionStop() const;
 
     //gets
-    int getSWGClassInt(std::string name) const; //both return 0(null) if it does not exist
-    int getSWGTypeInt(std::string name) const;
+    int getSWGClassInt(std::string name, bool print_error) const; //both return 0(null) if it does not exist print error controls whether or not to print an error
+    int getSWGTypeInt(std::string name, bool print_error) const;
 
 private:
     sqlite3* database;
@@ -73,7 +78,7 @@ private:
     void addResource(const resource_pod& pod, const std::vector<std::string>& vector) const;
     void addResourceClass(std::string name) const;
     void addResourceType(std::string name) const;
-    void addIntermediate(std::string name) const;
+    void addIntermediate(int resource_id, int class_id) const;
     void fillTypeAndClassTables() const; //since these don't change they are auto filled
 };
 

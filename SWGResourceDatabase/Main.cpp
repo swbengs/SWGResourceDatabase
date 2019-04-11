@@ -525,7 +525,7 @@ int test_Sqlite_insert()
     SqliteCore_V1 database(database_name);
 
     resource_pod pod;
-    pod.name = "id_test23";
+    pod.name = "make it so";
     pod.type = "ore_intrusive_berubium";
     pod.cold_resistance = 0;
     pod.conductivity = 2;
@@ -537,13 +537,61 @@ int test_Sqlite_insert()
     pod.potential_energy = 8;
     pod.shock_resistance = 9;
     pod.unit_toughness = 0;
-    std::vector<std::string> vector;
+    std::vector<std::string> vector = {"ore_intrusive_berubium", "inorganic", "gas"};
 
     Resource resource = Resource(pod, vector);
     database.addResource(resource);
-    database.showAllResources();
+    database.showAllResources(50);
+    database.showAllIntermediate();
+    printf("resource count: %i\n", database.getResourceCount());
 
     printf("test_Sqlite_insert stop\n\n");
+
+    return EXIT_SUCCESS;
+}
+
+int test_Sqlite_real_create()
+{
+    std::string database_name = "test.db";
+    std::string filename = "resource_manager_spawns.lua";
+    SqliteCore_V1 database(database_name);
+    database.dropTables();
+    database.createTables();
+
+    LuaCore lua;
+    if (!lua.start(filename))
+    {
+        return EXIT_FAILURE;
+    }
+
+    database.transactionStart();
+    bool next = true;
+    do
+    {
+        resource_pod pod;
+        std::vector<std::string> classes;
+
+        next = lua.getNextResource(pod, classes);
+        if (next)
+        {
+            Resource resource(pod, classes);
+            database.addResource(resource);
+        }
+    } while (next);
+
+    database.transactionStop();
+    lua.stop();
+    printf("resource count: %i\n", database.getResourceCount());
+
+    return EXIT_SUCCESS;
+}
+
+int test_Sqlite_real_details()
+{
+    std::string database_name = "test.db";
+    SqliteCore_V1 database(database_name);
+    printf("resource count: %i\n", database.getResourceCount());
+    database.showAllResourcesPretty(100);
 
     return EXIT_SUCCESS;
 }
@@ -583,7 +631,9 @@ int main()
     //Sqlite
     //result = test_Sqlite_delete();
     //result = test_Sqlite_create();
-    result = test_Sqlite_insert();
+    //result = test_Sqlite_insert();
+    //result = test_Sqlite_real_create(); //reading the full table and adding everything
+    result = test_Sqlite_real_details();
 
     //debug
     //result = debugRun();

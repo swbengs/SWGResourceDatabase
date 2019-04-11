@@ -93,6 +93,7 @@ void LuaCore::stop()
 //returns true if the resource was successfully pulled from Lua. False means either there was an error or the end of the table was reached. Errors will output to console/stderr
 bool LuaCore::getNextResource(resource_pod& pod, std::vector<std::string>& classes)
 {
+    resourceDefaults(pod); //set defaults
     if (!lua_gettop(lua_state) == 1)
     {
         if (lua_gettop(lua_state) > 1)
@@ -382,5 +383,21 @@ bool LuaCore::getResourceClasses(std::vector<std::string>& classes)
 
     lua_pop(lua_state, 1); //pop off attributes
     return true;
+}
+
+void LuaCore::resourceDefaults(resource_pod& pod) const
+{
+    pod.name = "junk";
+    pod.type = "junk";
+    pod.cold_resistance = 0;
+    pod.conductivity = 0;
+    pod.decay_resistance = 0;
+    pod.flavor = 0;
+    pod.heat_resistance = 0;
+    pod.malleability = 0;
+    pod.overall_quality = 0;
+    pod.potential_energy = 0;
+    pod.shock_resistance = 0;
+    pod.unit_toughness = 0;
 }
 
