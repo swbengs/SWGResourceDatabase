@@ -4,7 +4,6 @@
 //std lib includes
 
 //other includes
-#include "constantsV1.hpp"
 
 /*
 MIT License
@@ -31,8 +30,34 @@ SOFTWARE.
 */
 
 //helper C functions(not part of the class)
-
 //callback that will print each column in a newline
+
+int get_id_callback(void* count, int argc, char **argv, char **azColName)
+{
+    int* temp = (int*)count;
+    int i;
+    for (i = 0; i < argc; i++)
+    {
+        //printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+        *temp = std::stoi(argv[i], nullptr, 10);
+    }
+    return 0;
+}
+
+int execute_statement_get_id(sqlite3* database, std::string statement)
+{
+    int count = 0;
+    char *zErrMsg = nullptr;
+    int rc = sqlite3_exec(database, statement.c_str(), get_id_callback, &count, &zErrMsg);
+    if (rc != SQLITE_OK)
+    {
+        fprintf(stderr, "SQL error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+    }
+
+    return count;
+}
+
 int general_callback(void *NotUsed, int argc, char **argv, char **azColName)
 {
     int i;
@@ -78,6 +103,9 @@ SqliteCore_V1::SqliteCore_V1(std::string database_name)
         sqlite3_close(database);
         database = nullptr;
     }
+
+    classes = getReverseOfClassesString();
+    types = getReverseOfTypesString();
 }
 
 SqliteCore_V1::~SqliteCore_V1()
@@ -114,6 +142,8 @@ void SqliteCore_V1::createTables() const
     execute_statement_general(database, types_table.str());
 
     execute_statement_general(database, show_tables);
+
+    fillTypeAndClassTables();
 }
 
 //drop
@@ -139,11 +169,109 @@ void SqliteCore_V1::dropTables() const
 }
 
 //select
-void SqliteCore_V1::showAllResources() const
+void SqliteCore_V1::showAllResources(int limit) const
 {
     std::stringstream stream;
-    stream << "SELECT * from " << resource_table_name << ";";
+    stream << "SELECT * from " << resource_table_name << " LIMIT " << limit << ";";
     execute_statement_general(database, stream.str());
+}
+
+void SqliteCore_V1::showAllResourcesPretty(int limit) const
+{
+    std::stringstream stream;
+    stream << "SELECT " << resource_table_name;
+    stream << ".id, name, " << types_table_name;
+    stream << ".type, cold_resistance, conductivity, decay_resistance, flavor, heat_resistance, malleability, overall_quality, potential_energy, shock_resistance, unit_toughness from " << resource_table_name;
+    stream << " JOIN " << types_table_name << " ON " << types_table_name << ".id = " << resource_table_name << ".id";
+    stream << " LIMIT " << limit << ";";
+    execute_statement_general(database, stream.str());
+}
+
+void SqliteCore_V1::showAllClasses() const
+{
+    std::stringstream stream;
+    stream << "SELECT * from " << classes_table_name << " LIMIT 50;";
+    execute_statement_general(database, stream.str());
+}
+
+void SqliteCore_V1::showAllTypes() const
+{
+    std::stringstream stream;
+    stream << "SELECT * from " << types_table_name << " LIMIT 50;";
+    execute_statement_general(database, stream.str());
+}
+
+void SqliteCore_V1::showAllIntermediate() const
+{
+    std::stringstream stream;
+    stream << "SELECT * from " << intermediate_table_name << " LIMIT 50;";
+    execute_statement_general(database, stream.str());
+}
+
+int SqliteCore_V1::getResourceID(std::string name) const
+{
+    std::stringstream stream;
+    stream << "SELECT id from " << resource_table_name << " WHERE name = '" << name;
+    stream << "';";
+    int count = execute_statement_get_id(database, stream.str());
+
+    return count;
+}
+
+int SqliteCore_V1::getResourceCount() const
+{
+    std::stringstream stream;
+    stream << "SELECT COUNT(*) from " << resource_table_name << ";";
+    int count = execute_statement_get_id(database, stream.str());
+
+    return count;
+}
+
+void SqliteCore_V1::transactionStart() const
+{
+    execute_statement_general(database, "BEGIN TRANSACTION;");
+}
+
+void SqliteCore_V1::transactionStop() const
+{
+    execute_statement_general(database, "COMMIT;");
+}
+
+//gets
+int SqliteCore_V1::getSWGClassInt(std::string name, bool print_error) const
+{
+    int temp = 0;
+
+    if (classes.count(name) > 0)
+    {
+        temp = classes.at(name) + 1; //actual DB value is 1 higher than enum
+    }
+    else
+    {
+        if (print_error)
+        {
+            fprintf(stderr, "unknown class key of: %s\n", name.c_str());
+        }
+    }
+    return temp;
+}
+
+int SqliteCore_V1::getSWGTypeInt(std::string name, bool print_error) const
+{
+    int temp = 0;
+
+    if (types.count(name) > 0)
+    {
+        temp = types.at(name) + 1; //actual DB value is 1 higher than enum
+    }
+    else
+    {
+        if (print_error)
+        {
+            fprintf(stderr, "unknown type key of: %s\n", name.c_str());
+        }
+    }
+    return temp;
 }
 
 //private
@@ -170,31 +298,98 @@ void SqliteCore_V1::insertResourceIntValue(std::stringstream& stream, int value,
 
 void SqliteCore_V1::addResource(const resource_pod& pod, const std::vector<std::string>& vector) const
 {
-    std::stringstream stream;
-    int resource_type = 0;
-
-    stream << "INSERT INTO " << resource_table_name;
-    stream << " (name, type_id, cold_resistance, conductivity, decay_resistance, flavor, heat_resistance, malleability, overall_quality, potential_energy, shock_resistance, unit_toughness) ";
-    stream << "VALUES ('" << pod.name << "', ";
-    insertResourceIntValue(stream, resource_type, true);
-    insertResourceIntValue(stream, pod.cold_resistance, true);
-    insertResourceIntValue(stream, pod.conductivity, true);
-    insertResourceIntValue(stream, pod.decay_resistance, true);
-    insertResourceIntValue(stream, pod.flavor, true);
-    insertResourceIntValue(stream, pod.heat_resistance, true);
-    insertResourceIntValue(stream, pod.malleability, true);
-    insertResourceIntValue(stream, pod.overall_quality, true);
-    insertResourceIntValue(stream, pod.potential_energy, true);
-    insertResourceIntValue(stream, pod.shock_resistance, true);
-    insertResourceIntValue(stream, pod.unit_toughness, false);
-    stream << ");";
-
-    for (size_t i = 0; i < vector.size(); i++)
+    //first check if it already exists
+    int resource_id = getResourceID(pod.name);
+    if (resource_id == 0) //does not
     {
+        std::stringstream stream;
+        int resource_type = getSWGTypeInt(pod.type, true);
 
+        stream << "INSERT INTO " << resource_table_name;
+        stream << " (name, type_id, cold_resistance, conductivity, decay_resistance, flavor, heat_resistance, malleability, overall_quality, potential_energy, shock_resistance, unit_toughness) ";
+        stream << "VALUES ('" << pod.name << "', ";
+        insertResourceIntValue(stream, resource_type, true);
+        insertResourceIntValue(stream, pod.cold_resistance, true);
+        insertResourceIntValue(stream, pod.conductivity, true);
+        insertResourceIntValue(stream, pod.decay_resistance, true);
+        insertResourceIntValue(stream, pod.flavor, true);
+        insertResourceIntValue(stream, pod.heat_resistance, true);
+        insertResourceIntValue(stream, pod.malleability, true);
+        insertResourceIntValue(stream, pod.overall_quality, true);
+        insertResourceIntValue(stream, pod.potential_energy, true);
+        insertResourceIntValue(stream, pod.shock_resistance, true);
+        insertResourceIntValue(stream, pod.unit_toughness, false);
+        stream << ");";
+
+        //printf("%s\n", stream.str().c_str());
+        execute_statement_general(database, stream.str());
+        resource_id = getResourceID(pod.name);
+        //printf("added resource id: %i\n", resource_id);
+
+        for (size_t i = 0; i < vector.size(); i++)
+        {
+            int class_id = getSWGClassInt(vector[i], false);
+            if (class_id > 0) //should not fail but just in case keep the database in consistant state. The method will print an error
+            {
+                if (types.count(vector[i]) == 0) //check that this class is not inside the types table. if count is 0 it is not. should also not occur
+                {
+                    addIntermediate(resource_id, class_id);
+                }
+                else
+                {
+                    printf("skipping %s", vector[i].c_str());
+                }
+            }
+        }
+    }
+    else
+    {
+        printf("already exists with resource id: %i\n", resource_id);
+    }
+}
+
+void SqliteCore_V1::addResourceClass(std::string name) const
+{
+    std::stringstream stream;
+    stream << "INSERT INTO " << classes_table_name;
+    stream << " (class) ";
+    stream << "VALUES ('" << name << "');";
+
+    execute_statement_general(database, stream.str());
+}
+
+void SqliteCore_V1::addResourceType(std::string name) const
+{
+    std::stringstream stream;
+    stream << "INSERT INTO " << types_table_name;
+    stream << " (type) ";
+    stream << "VALUES ('" << name << "');";
+
+    execute_statement_general(database, stream.str());
+}
+
+void SqliteCore_V1::addIntermediate(int resource_id, int class_id) const
+{
+    std::stringstream stream;
+    stream << "INSERT INTO " << intermediate_table_name;
+    stream << " (resource_id, class_id) ";
+    stream << "VALUES (" << resource_id << ", " << class_id << ");";
+
+    execute_statement_general(database, stream.str());
+}
+
+void SqliteCore_V1::fillTypeAndClassTables() const
+{
+    transactionStart();
+    for (size_t i = 0; i < SWG_resource_classes_count; i++)
+    {
+        addResourceClass(SWGResourceClassString(static_cast<SWG_resource_classes>(i)));
     }
 
-    //printf("%s\n", stream.str().c_str());
-    execute_statement_general(database, stream.str());
+    for (size_t i = 0; i < SWG_resource_types_count; i++)
+    {
+        addResourceType(SWGResourceTypeString(static_cast<SWG_resource_types>(i)));
+    }
+    transactionStop();
 }
 
