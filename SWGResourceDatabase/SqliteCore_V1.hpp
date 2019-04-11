@@ -4,11 +4,13 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <unordered_map>
 
 //other includes
 #include "pods.hpp"
 #include "Resource.hpp"
 #include "Sqlite\sqlite3.h"
+#include "constantsV1.hpp"
 
 /*
 MIT License
@@ -50,6 +52,13 @@ public:
     void createTables() const; //create table
     void dropTables() const; //drop
     void showAllResources() const; //select
+    void showAllClasses() const;
+    void showAllTypes() const;
+    int getResourceID(std::string name) const;
+
+    //gets
+    int getSWGClassInt(std::string name) const; //both return 0(null) if it does not exist
+    int getSWGTypeInt(std::string name) const;
 
 private:
     sqlite3* database;
@@ -57,8 +66,14 @@ private:
     static const std::string classes_table_name;
     static const std::string intermediate_table_name;
     static const std::string types_table_name;
+    std::unordered_map<std::string, SWG_resource_classes> classes;
+    std::unordered_map<std::string, SWG_resource_types> types;
 
     void insertResourceIntValue(std::stringstream& stream, int value, bool add_comma) const; //converts any 0 to NULL and adds the value to stream. if add_comma is true it adds a comma as well
     void addResource(const resource_pod& pod, const std::vector<std::string>& vector) const;
+    void addResourceClass(std::string name) const;
+    void addResourceType(std::string name) const;
+    void addIntermediate(std::string name) const;
+    void fillTypeAndClassTables() const; //since these don't change they are auto filled
 };
 

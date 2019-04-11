@@ -496,6 +496,8 @@ int test_Sqlite_create()
     std::string database_name = "test.db";
     SqliteCore_V1 database(database_name);
     database.createTables();
+    database.showAllClasses();
+    database.showAllTypes();
 
     printf("test_Sqlite_create stop\n\n");
 
@@ -523,8 +525,8 @@ int test_Sqlite_insert()
     SqliteCore_V1 database(database_name);
 
     resource_pod pod;
-    pod.name = "test2";
-    pod.type = "junk2";
+    pod.name = "id_test23";
+    pod.type = "ore_intrusive_berubium";
     pod.cold_resistance = 0;
     pod.conductivity = 2;
     pod.decay_resistance = 3;
@@ -579,12 +581,12 @@ int main()
     //result = test_LuaCoreClassesError();
 
     //Sqlite
-   // result = test_Sqlite_delete();
+    //result = test_Sqlite_delete();
     //result = test_Sqlite_create();
-    //result = test_Sqlite_insert();
+    result = test_Sqlite_insert();
 
     //debug
-    result = debugRun();
+    //result = debugRun();
 
     return result;
 }
