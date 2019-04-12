@@ -40,7 +40,7 @@ int print_resource_callback(void* row_count, int argc, char **argv, char **azCol
     if (argc > 3)
     {
         printf("%6s ", argv[0]);
-        printf("%20s ", argv[1]);
+        printf("%15s ", argv[1]);
         printf("%35s ", argv[2]);
         int i;
         for (i = 3; i < argc; i++)
@@ -58,7 +58,7 @@ void execute_statement_print_resource_avg(sqlite3* database, std::string stateme
 {
     int row_count = 0;
     char *zErrMsg = nullptr;
-    printf("%6s %20s %35s %4s %4s %4s %4s %4s %4s %4s %4s %4s %4s %4s\n", "id", "name", "type", "CR", "CD", "DR", "FL", "HR", "MA", "OQ", "PE", "SR", "UT", "WAvg");
+    printf("%6s %15s %35s %4s %4s %4s %4s %4s %4s %4s %4s %4s %4s %4s\n", "id", "name", "type", "CR", "CD", "DR", "FL", "HR", "MA", "OQ", "PE", "SR", "UT", "WAvg");
     int rc = sqlite3_exec(database, statement.c_str(), print_resource_callback, &row_count, &zErrMsg);
     if (rc != SQLITE_OK)
     {
@@ -72,7 +72,7 @@ void execute_statement_print_resource(sqlite3* database, std::string statement)
 {
     int row_count = 0;
     char *zErrMsg = nullptr;
-    printf("%6s %20s %35s %4s %4s %4s %4s %4s %4s %4s %4s %4s %4s\n", "id", "name", "type", "CR", "CD", "DR", "FL", "HR", "MA", "OQ", "PE", "SR", "UT");
+    printf("%6s %15s %35s %4s %4s %4s %4s %4s %4s %4s %4s %4s %4s\n", "id", "name", "type", "CR", "CD", "DR", "FL", "HR", "MA", "OQ", "PE", "SR", "UT");
     int rc = sqlite3_exec(database, statement.c_str(), print_resource_callback, &row_count, &zErrMsg);
     if (rc != SQLITE_OK)
     {
@@ -584,6 +584,16 @@ void SqliteCore_V1::showByType(int type_id, int limit) const
 
 void SqliteCore_V1::showByClassAverage(int class_id, int limit, const std::vector<weighted_average_pod>& attributes) const
 {
+    std::stringstream stream;
+    stream << resourceSelectStringAverage(attributes);
+    stream << " JOIN " << intermediate_table_name << " ON " << intermediate_table_name << ".resource_id = " << resource_table_name << ".id";
+    stream << " JOIN " << classes_table_name << " ON " << classes_table_name << ".id = " << intermediate_table_name << ".class_id";
+    stream << " JOIN " << types_table_name << " ON " << types_table_name << ".id = " << resource_table_name << ".type_id";
+    stream << " WHERE " << classes_table_name << ".id = " << class_id;
+    stream << " ORDER BY WAvg DESC"; //highest on top
+    stream << " LIMIT " << limit << ";";
+    execute_statement_print_resource_avg(database, stream.str());
+    //printf("showByClass statement: %s\n", stream.str().c_str());
 }
 
 void SqliteCore_V1::showByTypeAverage(int type_id, int limit, const std::vector<weighted_average_pod>& attributes) const

@@ -608,22 +608,46 @@ int test_Sqlite_real_details()
     //database.showResourcesWithClass(SWGResourceClassString(ORGANIC), limit);
 
     /*
-    
-    */
-
-    weighted_average_pod pod;
-
     pod.attribute = static_cast<int>(OQ);
-    pod.weight = 0.5f;
+    pod.weight = weight;
     attributes.push_back(pod);
 
     pod.attribute = static_cast<int>(SR);
-    pod.weight = 0.5f;
+    pod.weight = weight;
+    attributes.push_back(pod);
+
+    pod.attribute = static_cast<int>(MA);
+    pod.weight = weight;
+    attributes.push_back(pod);
+
+    pod.attribute = static_cast<int>(UT);
+    pod.weight = weight;
     //attributes.push_back(pod);
+    */
+
+    weighted_average_pod pod;
+    float weight = 0.25f;
+
+    pod.attribute = static_cast<int>(OQ);
+    pod.weight = weight;
+    attributes.push_back(pod);
+
+    pod.attribute = static_cast<int>(FL);
+    pod.weight = weight;
+    attributes.push_back(pod);
+
+    pod.attribute = static_cast<int>(PE);
+    pod.weight = weight;
+    attributes.push_back(pod);
+
+    pod.attribute = static_cast<int>(DR);
+    pod.weight = weight;
+    attributes.push_back(pod);
 
     //database.showResourcesWithClassAverage(SWGResourceClassString(STEEL), limit, attributes);
+    database.showResourcesWithClassAverage(SWGResourceClassString(FRUIT), limit, attributes);
     //database.showResourcesWithClassAverage(SWGResourceTypeString(ALUMINUM_PHRIK), limit, attributes);
-    database.showResourcesWithClassAverage(SWGResourceTypeString(STEEL_DURALLOY), limit, attributes);
+    //database.showResourcesWithClassAverage(SWGResourceTypeString(STEEL_DURALLOY), limit, attributes);
 
     return EXIT_SUCCESS;
 }
