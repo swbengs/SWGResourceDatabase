@@ -36,6 +36,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+std::string SWGToString(SWG_resource_classes e)
+{
+    return SWGResourceClassString(e);
+}
+
+std::string SWGToString(SWG_resource_types e)
+{
+    return SWGResourceTypeString(e);
+}
+
 bool checkVector(const std::vector<std::string>& vector, const std::vector<std::string>& expected, std::string name)
 {
     //check size
@@ -588,7 +598,7 @@ int test_Sqlite_real_create()
 
 int test_Sqlite_real_details()
 {
-    const int limit = 50;
+    const int limit = 20;
     std::string database_name = "test.db";
     SqliteCore_V1 database(database_name);
     std::vector<weighted_average_pod> attributes;
@@ -622,11 +632,7 @@ int test_Sqlite_real_details()
 
     pod.attribute = static_cast<int>(UT);
     pod.weight = weight;
-    //attributes.push_back(pod);
-    */
-
-    weighted_average_pod pod;
-    float weight = 0.25f;
+    attributes.push_back(pod);
 
     pod.attribute = static_cast<int>(OQ);
     pod.weight = weight;
@@ -644,10 +650,21 @@ int test_Sqlite_real_details()
     pod.weight = weight;
     attributes.push_back(pod);
 
-    //database.showResourcesWithClassAverage(SWGResourceClassString(STEEL), limit, attributes);
-    database.showResourcesWithClassAverage(SWGResourceClassString(FRUIT), limit, attributes);
-    //database.showResourcesWithClassAverage(SWGResourceTypeString(ALUMINUM_PHRIK), limit, attributes);
-    //database.showResourcesWithClassAverage(SWGResourceTypeString(STEEL_DURALLOY), limit, attributes);
+    */
+
+    weighted_average_pod pod;
+    float weight = 1.0f;
+
+    pod.attribute = static_cast<int>(PE);
+    pod.weight = weight;
+    attributes.push_back(pod);
+
+    database.showResourcesWithClassAverage(SWGToString(RADIOACTIVE_KNOWN), limit, attributes);
+    //database.showResourcesWithClassAverage(SWGToString(RADIOACTIVE_KNOWN), limit, attributes);
+    //database.showResourcesWithClassAverage(SWGToString(STEEL), limit, attributes);
+    //database.showResourcesWithClassAverage(SWGToString(FRUIT_BERRIES), limit, attributes);
+    //database.showResourcesWithClassAverage(SWGToString(ALUMINUM_PHRIK), limit, attributes);
+    //database.showResourcesWithClassAverage(SWGToString(STEEL_DURALLOY), limit, attributes);
 
     return EXIT_SUCCESS;
 }
