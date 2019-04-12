@@ -37,13 +37,13 @@ int print_resource_callback(void* row_count, int argc, char **argv, char **azCol
     int* temp = (int*)row_count;
     *temp = *temp + 1; //issue with operator precedence?
 
-    if (argc == 13)
+    if (argc > 3)
     {
         printf("%6s ", argv[0]);
         printf("%20s ", argv[1]);
         printf("%40s ", argv[2]);
         int i;
-        for (i = 3; i < 13; i++)
+        for (i = 3; i < argc; i++)
         {
             printf("%4s ", argv[i] ? argv[i] : "NULL");
         }
@@ -52,6 +52,20 @@ int print_resource_callback(void* row_count, int argc, char **argv, char **azCol
     printf("\n");
 
     return 0; //anything else and bad things happen
+}
+
+void execute_statement_print_resource_avg(sqlite3* database, std::string statement)
+{
+    int row_count = 0;
+    char *zErrMsg = nullptr;
+    printf("%6s %20s %40s %4s %4s %4s %4s %4s %4s %4s %4s %4s %4s %4s\n", "id", "name", "type", "CR", "CD", "DR", "FL", "HR", "MA", "OQ", "PE", "SR", "UT", "WAvg");
+    int rc = sqlite3_exec(database, statement.c_str(), print_resource_callback, &row_count, &zErrMsg);
+    if (rc != SQLITE_OK)
+    {
+        fprintf(stderr, "SQL error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+    }
+    printf("row count: %i\n", row_count);
 }
 
 void execute_statement_print_resource(sqlite3* database, std::string statement)
@@ -300,6 +314,28 @@ void SqliteCore_V1::showResourcesWithClass(std::string class_name, int limit) co
     }
 }
 
+void SqliteCore_V1::showResourcesWithClassAverage(std::string class_name, int limit, const std::vector<weighted_average_pod>& attributes) const
+{
+    //figure out which type of query to do
+    int id = getSWGClassInt(class_name, false);
+    if (id == 0) //not a class
+    {
+        id = getSWGTypeInt(class_name, false);
+        if (id == 0) //not a type either ruh row
+        {
+            fprintf(stderr, "unkown class/type of: %s\n", class_name.c_str());
+        }
+        else
+        {
+            showByTypeAverage(id, limit, attributes);
+        }
+    }
+    else
+    {
+        showByClassAverage(id, limit, attributes);
+    }
+}
+
 //private
 
 void SqliteCore_V1::insertResourceIntValue(std::stringstream& stream, int value, bool add_comma) const
@@ -456,6 +492,53 @@ int SqliteCore_V1::getSWGTypeInt(std::string name, bool print_error) const
     return temp;
 }
 
+std::string SqliteCore_V1::resourceSelectStringAverage(const std::vector<weighted_average_pod>& attributes) const
+{
+    if (attributes.size() == 0)
+    {
+        printf("attributes is empty");
+        return ";";
+    }
+
+    std::stringstream stream;
+    //CR CD DR FL HR MA OQ PE SR UT are the abbreviations in order
+    stream << "SELECT " << resource_table_name;
+    stream << ".id, name, " << types_table_name;
+    stream << ".type, cold_resistance AS CR, conductivity AS CD, decay_resistance AS DR, flavor AS FL, heat_resistance AS HR, malleability AS MA, overall_quality AS OQ, potential_energy AS PE,";
+    stream << " shock_resistance AS SR, unit_toughness AS UT";
+    stream << " (" << weightAverageString(attributes) << ") as WAvg";
+    stream << " from " << resource_table_name;
+    return stream.str();
+}
+
+std::string SqliteCore_V1::weightAverageString(const std::vector<weighted_average_pod>& attributes) const
+{
+    std::stringstream result;
+
+    //numerator
+    result << "(";
+
+    for (size_t i = 0; i < attributes.size(); i++)
+    {
+
+    }
+
+    result << ") / ";
+
+    //denominator
+
+    result << "(";
+
+    for (size_t i = 0; i < attributes.size(); i++)
+    {
+
+    }
+
+    result << ")";
+
+    return result.str();
+}
+
 std::string SqliteCore_V1::resourceSelectString() const
 {
     std::stringstream stream;
@@ -477,7 +560,7 @@ void SqliteCore_V1::showByClass(int class_id, int limit) const
     stream << " WHERE " << classes_table_name << ".id = " << class_id;
     stream << " LIMIT " << limit << ";";
     execute_statement_print_resource(database, stream.str());
-    //printf("showByType statement: %s\n", stream.str().c_str());
+    //printf("showByClass statement: %s\n", stream.str().c_str());
 }
 
 void SqliteCore_V1::showByType(int type_id, int limit) const
@@ -489,5 +572,21 @@ void SqliteCore_V1::showByType(int type_id, int limit) const
     stream << " LIMIT " << limit << ";";
     execute_statement_print_resource(database, stream.str());
     //printf("showByType statement: %s\n", stream.str().c_str());
+}
+
+void SqliteCore_V1::showByClassAverage(int class_id, int limit, const std::vector<weighted_average_pod>& attributes) const
+{
+}
+
+void SqliteCore_V1::showByTypeAverage(int type_id, int limit, const std::vector<weighted_average_pod>& attributes) const
+{
+    std::stringstream stream;
+    stream << resourceSelectStringAverage(attributes);
+    stream << " JOIN " << types_table_name << " ON " << types_table_name << ".id = " << resource_table_name << ".type_id";
+    stream << " WHERE " << types_table_name << ".id = " << type_id;
+    stream << " ORDER BY WAvg DESC"; //highest on top
+    stream << " LIMIT " << limit << ";";
+    //execute_statement_print_resource(database, stream.str());
+    printf("showByType statement: %s\n", stream.str().c_str());
 }
 

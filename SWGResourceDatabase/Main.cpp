@@ -599,11 +599,11 @@ int test_Sqlite_real_details()
     //printf("resources with type duralloy steel\n");
     //database.showResourcesWithClass(SWGResourceTypeString(STEEL_DURALLOY), limit);
     //printf("resources with class steel\n");
-    //database.showResourcesWithClass(SWGResourceClassString(STEEL), limit);
+    database.showResourcesWithClass(SWGResourceClassString(STEEL), limit);
 
 
-    //database.showResourcesWithClass(SWGResourceClassString(INORGANIC), limit);
-    database.showResourcesWithClass(SWGResourceClassString(ORGANIC), limit);
+   // database.showResourcesWithClass(SWGResourceClassString(INORGANIC), limit);
+    //database.showResourcesWithClass(SWGResourceClassString(ORGANIC), limit);
 
     return EXIT_SUCCESS;
 }

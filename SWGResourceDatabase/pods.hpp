@@ -49,3 +49,9 @@ struct resource_pod
     unsigned int unit_toughness;
 };
 
+struct weighted_average_pod
+{
+    unsigned int attribute;
+    float weight;
+};
+

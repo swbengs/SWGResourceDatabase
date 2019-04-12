@@ -63,6 +63,7 @@ public:
 
     //useful ones
     void showResourcesWithClass(std::string class_name, int limit) const; //works with both class and type. just give the class/type name and this will figure it out. Shows without any group by statement
+    void showResourcesWithClassAverage(std::string class_name, int limit, const std::vector<weighted_average_pod>& attributes) const; //same as above but with weighted average as well
 
 private:
     sqlite3* database;
@@ -85,7 +86,13 @@ private:
     int getSWGTypeInt(std::string name, bool print_error) const;
 
     std::string resourceSelectString() const;
+    std::string resourceSelectStringAverage(const std::vector<weighted_average_pod>& attributes) const;
+    std::string weightAverageString(const std::vector<weighted_average_pod>& attributes) const;
+
     void showByClass(int class_id, int limit) const; //shows all resources with class with given class_id
-    void showByType(int type_id, int limit) const; //shows all resources with type with given type_id. 
+    void showByType(int type_id, int limit) const; //shows all resources with type with given type_id
+
+    void showByClassAverage(int class_id, int limit, const std::vector<weighted_average_pod>& attributes) const; //same as above but with added weighted average
+    void showByTypeAverage(int type_id, int limit, const std::vector<weighted_average_pod>& attributes) const; //same as above but with added weighted average
 };
 
