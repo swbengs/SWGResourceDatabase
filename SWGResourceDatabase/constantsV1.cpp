@@ -2868,6 +2868,35 @@ std::string SWGAttributesString(SWG_attributes e)
     }
 }
 
+std::string SWGAttributesStringFull(SWG_attributes e)
+{
+    switch (e)
+    {
+    case CR:
+        return "cold_resistance";
+    case CD:
+        return "conductivity";
+    case DR:
+        return "decay_resistance";
+    case FL:
+        return "flavor";
+    case HR:
+        return "heat_resistance";
+    case MA:
+        return "malleability";
+    case OQ:
+        return "overall_quality";
+    case PE:
+        return "potential_energy";
+    case SR:
+        return "shock_resistance";
+    case UT:
+        return "unit_toughness";
+    default:
+        return "bad SWG_attributes enum";
+    }
+}
+
 std::unordered_map<std::string, SWG_resource_classes> getReverseOfClassesString()
 {
     std::unordered_map<std::string, SWG_resource_classes> temp;

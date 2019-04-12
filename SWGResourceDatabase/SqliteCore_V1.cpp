@@ -41,7 +41,7 @@ int print_resource_callback(void* row_count, int argc, char **argv, char **azCol
     {
         printf("%6s ", argv[0]);
         printf("%20s ", argv[1]);
-        printf("%40s ", argv[2]);
+        printf("%35s ", argv[2]);
         int i;
         for (i = 3; i < argc; i++)
         {
@@ -58,7 +58,7 @@ void execute_statement_print_resource_avg(sqlite3* database, std::string stateme
 {
     int row_count = 0;
     char *zErrMsg = nullptr;
-    printf("%6s %20s %40s %4s %4s %4s %4s %4s %4s %4s %4s %4s %4s %4s\n", "id", "name", "type", "CR", "CD", "DR", "FL", "HR", "MA", "OQ", "PE", "SR", "UT", "WAvg");
+    printf("%6s %20s %35s %4s %4s %4s %4s %4s %4s %4s %4s %4s %4s %4s\n", "id", "name", "type", "CR", "CD", "DR", "FL", "HR", "MA", "OQ", "PE", "SR", "UT", "WAvg");
     int rc = sqlite3_exec(database, statement.c_str(), print_resource_callback, &row_count, &zErrMsg);
     if (rc != SQLITE_OK)
     {
@@ -72,7 +72,7 @@ void execute_statement_print_resource(sqlite3* database, std::string statement)
 {
     int row_count = 0;
     char *zErrMsg = nullptr;
-    printf("%6s %20s %40s %4s %4s %4s %4s %4s %4s %4s %4s %4s %4s\n", "id", "name", "type", "CR", "CD", "DR", "FL", "HR", "MA", "OQ", "PE", "SR", "UT");
+    printf("%6s %20s %35s %4s %4s %4s %4s %4s %4s %4s %4s %4s %4s\n", "id", "name", "type", "CR", "CD", "DR", "FL", "HR", "MA", "OQ", "PE", "SR", "UT");
     int rc = sqlite3_exec(database, statement.c_str(), print_resource_callback, &row_count, &zErrMsg);
     if (rc != SQLITE_OK)
     {
@@ -496,7 +496,7 @@ std::string SqliteCore_V1::resourceSelectStringAverage(const std::vector<weighte
 {
     if (attributes.size() == 0)
     {
-        printf("attributes is empty");
+        printf("attributes is empty\n");
         return ";";
     }
 
@@ -505,9 +505,9 @@ std::string SqliteCore_V1::resourceSelectStringAverage(const std::vector<weighte
     stream << "SELECT " << resource_table_name;
     stream << ".id, name, " << types_table_name;
     stream << ".type, cold_resistance AS CR, conductivity AS CD, decay_resistance AS DR, flavor AS FL, heat_resistance AS HR, malleability AS MA, overall_quality AS OQ, potential_energy AS PE,";
-    stream << " shock_resistance AS SR, unit_toughness AS UT";
-    stream << " (" << weightAverageString(attributes) << ") as WAvg";
-    stream << " from " << resource_table_name;
+    stream << " shock_resistance AS SR, unit_toughness AS UT,";
+    stream << " (" << weightAverageString(attributes) << ") AS WAvg";
+    stream << " FROM " << resource_table_name;
     return stream.str();
 }
 
@@ -520,7 +520,11 @@ std::string SqliteCore_V1::weightAverageString(const std::vector<weighted_averag
 
     for (size_t i = 0; i < attributes.size(); i++)
     {
-
+        if (i > 0)
+        {
+            result << " +";
+        }
+        result << " coalesce(" << SWGAttributesStringFull(static_cast<SWG_attributes>(attributes[i].attribute)) << ", 0) * " << attributes[i].weight;
     }
 
     result << ") / ";
@@ -531,7 +535,11 @@ std::string SqliteCore_V1::weightAverageString(const std::vector<weighted_averag
 
     for (size_t i = 0; i < attributes.size(); i++)
     {
-
+        if (i > 0)
+        {
+            result << " +";
+        }
+        result << " CASE WHEN " << SWGAttributesStringFull(static_cast<SWG_attributes>(attributes[i].attribute)) << " > 0 THEN " << attributes[i].weight << " ELSE 0 END";
     }
 
     result << ")";
@@ -546,7 +554,7 @@ std::string SqliteCore_V1::resourceSelectString() const
     stream << "SELECT " << resource_table_name;
     stream << ".id, name, " << types_table_name;
     stream << ".type, cold_resistance AS CR, conductivity AS CD, decay_resistance AS DR, flavor AS FL, heat_resistance AS HR, malleability AS MA, overall_quality AS OQ, potential_energy AS PE,";
-    stream << " shock_resistance AS SR, unit_toughness AS UT from " << resource_table_name;
+    stream << " shock_resistance AS SR, unit_toughness AS UT FROM " << resource_table_name;
     return stream.str();
 }
 
@@ -586,7 +594,7 @@ void SqliteCore_V1::showByTypeAverage(int type_id, int limit, const std::vector<
     stream << " WHERE " << types_table_name << ".id = " << type_id;
     stream << " ORDER BY WAvg DESC"; //highest on top
     stream << " LIMIT " << limit << ";";
-    //execute_statement_print_resource(database, stream.str());
-    printf("showByType statement: %s\n", stream.str().c_str());
+    execute_statement_print_resource_avg(database, stream.str());
+    //printf("showByType statement: %s\n", stream.str().c_str());
 }
 

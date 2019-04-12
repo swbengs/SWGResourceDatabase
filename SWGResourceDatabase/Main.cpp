@@ -588,9 +588,11 @@ int test_Sqlite_real_create()
 
 int test_Sqlite_real_details()
 {
-    const int limit = 100;
+    const int limit = 50;
     std::string database_name = "test.db";
     SqliteCore_V1 database(database_name);
+    std::vector<weighted_average_pod> attributes;
+
     printf("resource count: %i\n", database.getResourceCount());
     //database.showAllResourcesPretty(limit);
     
@@ -599,11 +601,29 @@ int test_Sqlite_real_details()
     //printf("resources with type duralloy steel\n");
     //database.showResourcesWithClass(SWGResourceTypeString(STEEL_DURALLOY), limit);
     //printf("resources with class steel\n");
-    database.showResourcesWithClass(SWGResourceClassString(STEEL), limit);
+    //database.showResourcesWithClass(SWGResourceClassString(STEEL), limit);
 
 
    // database.showResourcesWithClass(SWGResourceClassString(INORGANIC), limit);
     //database.showResourcesWithClass(SWGResourceClassString(ORGANIC), limit);
+
+    /*
+    
+    */
+
+    weighted_average_pod pod;
+
+    pod.attribute = static_cast<int>(OQ);
+    pod.weight = 0.5f;
+    attributes.push_back(pod);
+
+    pod.attribute = static_cast<int>(SR);
+    pod.weight = 0.5f;
+    //attributes.push_back(pod);
+
+    //database.showResourcesWithClassAverage(SWGResourceClassString(STEEL), limit, attributes);
+    //database.showResourcesWithClassAverage(SWGResourceTypeString(ALUMINUM_PHRIK), limit, attributes);
+    database.showResourcesWithClassAverage(SWGResourceTypeString(STEEL_DURALLOY), limit, attributes);
 
     return EXIT_SUCCESS;
 }

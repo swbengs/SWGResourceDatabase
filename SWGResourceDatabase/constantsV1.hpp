@@ -832,6 +832,7 @@ std::string SWGResourceTypeString(SWG_resource_types e);
 std::string SWGResourceTypeStringPretty(SWG_resource_types e);
 
 std::string SWGAttributesString(SWG_attributes e);
+std::string SWGAttributesStringFull(SWG_attributes e);
 
 std::unordered_map<std::string, SWG_resource_classes> getReverseOfClassesString();
 std::unordered_map<std::string, SWG_resource_classes> getReverseOfClassesPrettyString();
