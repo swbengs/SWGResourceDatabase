@@ -34,6 +34,21 @@ SOFTWARE.
 Description: Constants such as classes, types, their string and enums and so on
 */
 
+enum SWG_attributes
+{
+    //CR CD DR FL HR MA OQ PE SR UT are the abbreviations in order
+    CR,
+    CD,
+    DR,
+    FL,
+    HR,
+    MA,
+    OQ,
+    PE,
+    SR,
+    UT
+};
+
 //different classifications of the resources. forms a tree
 enum SWG_resource_classes
 {
@@ -815,6 +830,9 @@ std::string SWGResourceClassStringPretty(SWG_resource_classes e);
 
 std::string SWGResourceTypeString(SWG_resource_types e);
 std::string SWGResourceTypeStringPretty(SWG_resource_types e);
+
+std::string SWGAttributesString(SWG_attributes e);
+std::string SWGAttributesStringFull(SWG_attributes e);
 
 std::unordered_map<std::string, SWG_resource_classes> getReverseOfClassesString();
 std::unordered_map<std::string, SWG_resource_classes> getReverseOfClassesPrettyString();
