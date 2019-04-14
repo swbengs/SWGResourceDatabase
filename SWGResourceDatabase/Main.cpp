@@ -598,7 +598,7 @@ int test_Sqlite_real_create()
 
 int test_Sqlite_real_details()
 {
-    const int limit = 20;
+    const int limit = 10;
     std::string database_name = "test.db";
     SqliteCore_V1 database(database_name);
     std::vector<weighted_average_pod> attributes;
@@ -655,12 +655,31 @@ int test_Sqlite_real_details()
     weighted_average_pod pod;
     float weight = 1.0f;
 
+    /* bioengineer additives
+    pod.attribute = static_cast<int>(OQ);
+    pod.weight = 0.5f;
+    attributes.push_back(pod);
+
+    pod.attribute = static_cast<int>(FL);
+    pod.weight = 0.2f;
+    attributes.push_back(pod);
+
     pod.attribute = static_cast<int>(PE);
+    pod.weight = 0.3f;
+    attributes.push_back(pod);
+    */
+
+    pod.attribute = static_cast<int>(OQ);
     pod.weight = weight;
     attributes.push_back(pod);
 
-    database.showResourcesWithClassAverage(SWGToString(RADIOACTIVE_KNOWN), limit, attributes);
-    //database.showResourcesWithClassAverage(SWGToString(RADIOACTIVE_KNOWN), limit, attributes);
+    pod.attribute = static_cast<int>(SR);
+    pod.weight = weight;
+    attributes.push_back(pod);
+
+    database.showResourcesWithClassAverage(SWGToString(METAL), limit, attributes);
+    //database.showResourcesWithClassAverage(SWGToString(PETROCHEM_INERT_POLYMER), limit, attributes);
+    //database.showResourcesWithClassAverage(SWGToString(ORE_SILICLASTIC), limit, attributes);
     //database.showResourcesWithClassAverage(SWGToString(STEEL), limit, attributes);
     //database.showResourcesWithClassAverage(SWGToString(FRUIT_BERRIES), limit, attributes);
     //database.showResourcesWithClassAverage(SWGToString(ALUMINUM_PHRIK), limit, attributes);
