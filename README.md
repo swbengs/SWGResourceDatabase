@@ -5,9 +5,9 @@ Lua to Sqlite database program and simple CLI to do queries
 * Lua side
    * Done!
 * Sqlite3 version 1
-   * In progress
+   * Done!
 * CLI
-   * Not started yet
+   * Started
 
 ## How it works
 The ZonamaDev server at a minimum produces a Lua file that contains all resources to ever exist on the test server. It's likely that the Core3 ones do as well, since they run basically the same code. This program will load that file and make a Sqlite3 database with a name of your choosing.
@@ -18,6 +18,14 @@ The ZonamaDev server at a minimum produces a Lua file that contains all resource
 4. Enjoy!
 
 Built with MS VS 2015
+
+## CLI information
+1. Plan to have a way to write schematics and weightings via a Lua settings file. Might be a few different ones.
+2. Using the above it will allow you to see what the best resources are of any type or for any schematic you care about
+3. Also usful for testing. Can be modified to check for a range of resource attributes fairly easily which assits in testing the crafting system
+
+## CLI examples
+To be done later
 
 ## Languages
 * Lua 5.3
