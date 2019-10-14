@@ -6,6 +6,7 @@
 //other includes
 #include "LuaCore.hpp"
 #include "SqliteCore_V1.hpp"
+#include "constantsV1.hpp"
 
 /*
 MIT License
@@ -44,10 +45,12 @@ public:
     int startCLI(int argc, char **argv);
     bool createDatabase();
     bool loadDatabase();
-
-    void inputLoop(); //determine what to do next based on what the user types in
 private:
     std::string database_name;
     LuaCore settings_lua;
+    CLI_state state;
+
+    int getIntegerInput(std::string options, int min, int max);
+    int inputLoop(); //determine what to do next based on what the user types in
 };
 

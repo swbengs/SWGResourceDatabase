@@ -34,6 +34,16 @@ SOFTWARE.
 Description: Constants such as classes, types, their string and enums and so on
 */
 
+enum CLI_state
+{
+    NONE,
+    CLI_CREATE, //when told to create or load from the command line interface
+    CLI_LOAD,
+    ARG_CREATE, //when given command line arguments to load or create
+    ARG_LOAD,
+    READY
+};
+
 enum SWG_attributes
 {
     //CR CD DR FL HR MA OQ PE SR UT are the abbreviations in order

@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <sstream>
+#include <regex>
 
 //other library files
 #include "Sqlite\sqlite3.h"
@@ -35,13 +36,9 @@ SOFTWARE.
 */
 
 //class code
-
-
-//private
-
 CLI_V1::CLI_V1()
 {
-    
+    state = NONE;
 }
 
 int CLI_V1::startCLI(int argc, char** argv)
@@ -49,7 +46,7 @@ int CLI_V1::startCLI(int argc, char** argv)
     if (argc < 3)
     {
         //not enough arguments so just start a normal loop
-        return EXIT_SUCCESS;
+        return inputLoop();
     }
     else if (argc == 3)
     {
@@ -59,23 +56,11 @@ int CLI_V1::startCLI(int argc, char** argv)
 
         if (command.compare("-create") == 0)
         {
-            if (!createDatabase())
-            {
-                std::cerr << "Error creating database\n";
-                return EXIT_FAILURE;
-            }
-
-            inputLoop();
+            state = ARG_CREATE;
         }
         else if (command.compare("-load") == 0)
         {
-            if (loadDatabase())
-            {
-                std::cerr << "Error loading database\n";
-                return EXIT_FAILURE;
-            }
-
-            inputLoop();
+            state = ARG_LOAD;
         }
         else
         {
@@ -83,7 +68,7 @@ int CLI_V1::startCLI(int argc, char** argv)
             return EXIT_FAILURE;
         }
 
-        return EXIT_SUCCESS; //other paths finished so everything worked
+        return inputLoop();
     }
     else if (argc > 3)
     {
@@ -105,6 +90,85 @@ bool CLI_V1::loadDatabase()
     return false;
 }
 
-void CLI_V1::inputLoop()
+//private
+int CLI_V1::getIntegerInput(std::string options, int min, int max)
 {
+    int result = 0;
+    std::string input = "";
+    const std::regex number_regex("-*[0-9]+");
+    bool good_input = false;
+
+    while (!good_input)
+    {
+        std::cout << options << "Enter a whole number\n";
+        std::cin >> input;
+        good_input = regex_match(input, number_regex);
+
+        if (good_input)
+        {
+            result = stoi(input);
+            if (result < min || result > max) //must be within the given range
+            {
+                good_input = false;
+            }
+        }
+    }
+
+    return result;
 }
+
+int CLI_V1::inputLoop()
+{
+    bool isDone = false;
+    int input = 0;
+
+    while (!isDone)
+    {
+        switch (state)
+        {
+        case NONE:
+            input = getIntegerInput("Choices:\n0: Exit\n1: Create database\n2: Load database file\n", 0, 2);
+            switch (input)
+            {
+            case 0:
+                isDone = true;
+                break;
+            case 1:
+                state = CLI_CREATE;
+                break;
+            case 2:
+                state = CLI_LOAD;
+                break;
+            }
+            break;
+        case CLI_CREATE:
+            state = CLI_LOAD;
+            break;
+        case CLI_LOAD:
+            state = READY;
+            break;
+        case ARG_CREATE: //arg ones either work or don't so they can return failure directly
+            if (!createDatabase())
+            {
+                std::cerr << "Error creating database\n";
+                return EXIT_FAILURE;
+            }
+            state = ARG_LOAD;
+            break;
+        case ARG_LOAD:
+            if (loadDatabase())
+            {
+                std::cerr << "Error loading database\n";
+                return EXIT_FAILURE;
+            }
+            state = READY;
+            break;
+        case READY:
+            isDone = true;
+            break;
+        }
+    }
+
+    return EXIT_SUCCESS;
+}
+
