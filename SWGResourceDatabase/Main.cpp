@@ -11,6 +11,7 @@
 //test includes
 #include "LuaCore.hpp"
 #include "SqliteCore_V1.hpp"
+#include "CLI_V1.hpp"
 
 /*
 MIT License
@@ -827,10 +828,13 @@ int main(int argc, char **argv)
     //result = test_Sqlite_create();
     //result = test_Sqlite_insert();
     //result = test_Sqlite_real_create(); //reading the full table and adding everything
-    result = test_Sqlite_real_details();
+    //result = test_Sqlite_real_details();
 
     //debug
     //result = debugRun();
+
+    CLI_V1 cli;
+    result = cli.startCLI(argc, argv);
 
     return result;
 }

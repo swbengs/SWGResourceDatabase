@@ -149,6 +149,7 @@
     <None Include="bad_classes.lua">
       <FileType>Document</FileType>
     </None>
+    <ClCompile Include="CLI_V1.cpp" />
     <ClCompile Include="constantsV1.cpp" />
     <ClCompile Include="LuaCore.cpp" />
     <ClCompile Include="Lua\lapi.c" />
@@ -199,6 +200,7 @@
     <None Include="table_test.lua" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CLI_V1.hpp" />
     <ClInclude Include="constantsV1.hpp" />
     <ClInclude Include="LuaCore.hpp" />
     <ClInclude Include="Lua\lapi.h" />
