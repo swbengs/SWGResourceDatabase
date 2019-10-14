@@ -598,7 +598,7 @@ int test_Sqlite_real_create()
 
 int test_Sqlite_real_details()
 {
-    const int limit = 10;
+    const int limit = 3;
     std::string database_name = "test.db";
     SqliteCore_V1 database(database_name);
     std::vector<weighted_average_pod> attributes;
@@ -669,6 +669,7 @@ int test_Sqlite_real_details()
     attributes.push_back(pod);
     */
 
+    /*
     pod.attribute = static_cast<int>(OQ);
     pod.weight = weight;
     attributes.push_back(pod);
@@ -677,13 +678,114 @@ int test_Sqlite_real_details()
     pod.weight = weight;
     attributes.push_back(pod);
 
-    database.showResourcesWithClassAverage(SWGToString(METAL), limit, attributes);
+    pod.attribute = static_cast<int>(OQ);
+    pod.weight = 0.67f;
+    attributes.push_back(pod);
+
+    pod.attribute = static_cast<int>(CD);
+    pod.weight = 0.33f;
+    attributes.push_back(pod);
+    */
+
+    //first gen
+    //database.showResourcesWithClassAverage(SWGToString(METAL), limit, attributes);
+    //database.showResourcesWithClassAverage(SWGToString(GAS), limit, attributes);
+    //database.showResourcesWithClassAverage(SWGToString(CHEMICAL), limit, attributes);
+    //database.showResourcesWithClassAverage(SWGToString(METAL), limit, attributes);
+    //database.showResourcesWithClassAverage(SWGToString(MINERAL), limit, attributes);
+
+    //fourth gen lightsaber
+    //database.showResourcesWithClassAverage(SWGToString(COPPER_POLYSTEEL), limit, attributes);
+    //database.showResourcesWithClassAverage(SWGToString(GAS_INERT_CULSION), limit, attributes);
+    //database.showResourcesWithClassAverage(SWGToString(ALUMINUM_TITANIUM), limit, attributes);
     //database.showResourcesWithClassAverage(SWGToString(PETROCHEM_INERT_POLYMER), limit, attributes);
-    //database.showResourcesWithClassAverage(SWGToString(ORE_SILICLASTIC), limit, attributes);
-    //database.showResourcesWithClassAverage(SWGToString(STEEL), limit, attributes);
-    //database.showResourcesWithClassAverage(SWGToString(FRUIT_BERRIES), limit, attributes);
-    //database.showResourcesWithClassAverage(SWGToString(ALUMINUM_PHRIK), limit, attributes);
     //database.showResourcesWithClassAverage(SWGToString(STEEL_DURALLOY), limit, attributes);
+
+    //UT adv vibro unit
+    //database.showResourcesWithClassAverage(SWGToString(COPPER_DESH), limit, attributes);
+    //database.showResourcesWithClassAverage(SWGToString(PETROCHEM_FUEL_SOLID_TYPE3), limit, attributes);
+    //database.showResourcesWithClassAverage(SWGToString(COPPER_PLATINITE), limit, attributes);
+
+    //UT adv reinforced core
+    //database.showResourcesWithClassAverage(SWGToString(STEEL_DITANIUM), limit, attributes);
+
+    //SR power hammer
+    //database.showResourcesWithClassAverage(SWGToString(IRON_KAMMRIS), limit, attributes);
+    //database.showResourcesWithClassAverage(SWGToString(METAL), limit, attributes);
+    //database.showResourcesWithClassAverage(SWGToString(COPPER), limit, attributes);
+
+    //SR LVA
+    //database.showResourcesWithClassAverage(SWGToString(STEEL_DITANIUM), limit, attributes);
+    //database.showResourcesWithClassAverage(SWGToString(COPPER), limit, attributes);
+    //database.showResourcesWithClassAverage(SWGToString(METAL_NONFERROUS), limit, attributes);
+    //database.showResourcesWithClassAverage(SWGToString(STEEL_DURALLOY), limit, attributes);
+
+    //SR LVA
+    //database.showResourcesWithClassAverage(SWGToString(STEEL_DITANIUM), limit, attributes);
+    //database.showResourcesWithClassAverage(SWGToString(COPPER_POLYSTEEL), limit, attributes);
+    //database.showResourcesWithClassAverage(SWGToString(METAL), limit, attributes);
+
+    //mabari adv seg
+    //database.showResourcesWithClassAverage(SWGToString(IRON_BRONZIUM), limit, attributes);
+    //database.showResourcesWithClassAverage(SWGToString(STEEL_DITANIUM), limit, attributes);
+
+    //mabari armor
+    //database.showResourcesWithClassAverage(SWGToString(METAL), limit, attributes);
+    //database.showResourcesWithClassAverage(SWGToString(HIDE), limit, attributes);
+    //database.showResourcesWithClassAverage(SWGToString(FIBERPLAST), limit, attributes);
+    //database.showResourcesWithClassAverage(SWGToString(PETROCHEM_INERT), limit, attributes);
+
+    /*
+    pod.attribute = static_cast<int>(FL);
+    pod.weight = 0.20f;
+    attributes.push_back(pod);
+
+    pod.attribute = static_cast<int>(OQ);
+    pod.weight = 0.50f;
+    attributes.push_back(pod);
+
+    pod.attribute = static_cast<int>(PE);
+    pod.weight = 0.30f;
+    attributes.push_back(pod);
+    */
+
+    //nutrient add 20fl 50oq 30pe
+    //database.showResourcesWithClassAverage(SWGToString(ORGANIC), limit, attributes);
+    //database.showResourcesWithClassAverage(SWGToString(FLORA_FOOD), limit, attributes);
+    //database.showResourcesWithClassAverage(SWGToString(CREATURE_FOOD), limit, attributes);
+
+    pod.attribute = static_cast<int>(OQ);
+    pod.weight = 0.67f;
+    attributes.push_back(pod);
+
+    pod.attribute = static_cast<int>(PE);
+    pod.weight = 0.33f;
+    attributes.push_back(pod);
+
+    //medical adv comps for power 66% OQ 33% PE
+    /*
+    database.showResourcesWithClassAverage(SWGToString(WHEAT_WILD_LOK), limit, attributes);
+    database.showResourcesWithClassAverage(SWGToString(FIBERPLAST_TATOOINE), limit, attributes);
+
+    database.showResourcesWithClassAverage(SWGToString(MEAT_HERBIVORE), limit, attributes);
+    database.showResourcesWithClassAverage(SWGToString(PETROCHEM_FUEL_LIQUID_TYPE4), limit, attributes);
+
+    database.showResourcesWithClassAverage(SWGToString(FRUIT_BERRIES_DANTOOINE), limit, attributes);
+    database.showResourcesWithClassAverage(SWGToString(WATER_VAPOR_TALUS), limit, attributes);
+
+    database.showResourcesWithClassAverage(SWGToString(OATS_DOMESTICATED), limit, attributes);
+    database.showResourcesWithClassAverage(SWGToString(IRON_DOLOVITE), limit, attributes);
+    */
+    //end comps
+
+    //medical stims etc for power 66% OQ 33% PE
+    //stim E
+    database.showResourcesWithClassAverage(SWGToString(FRUIT_BERRIES), limit, attributes);
+    database.showResourcesWithClassAverage(SWGToString(FIBERPLAST), limit, attributes);
+
+    //buffs D
+    database.showResourcesWithClassAverage(SWGToString(MEAT_AVIAN), limit, attributes);
+    database.showResourcesWithClassAverage(SWGToString(GAS_REACTIVE), limit, attributes);
 
     return EXIT_SUCCESS;
 }
@@ -707,7 +809,7 @@ int debugRun()
     return EXIT_SUCCESS;
 }
 
-int main()
+int main(int argc, char **argv)
 {
     int result;
 
