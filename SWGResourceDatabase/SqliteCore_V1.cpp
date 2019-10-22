@@ -138,6 +138,34 @@ void execute_statement_general(sqlite3* database, std::string statement)
     printf("row count: %i\n", row_count);
 }
 
+int void_callback(void* row_count, int argc, char** argv, char** azColName)
+{
+    int* temp = (int*)row_count;
+    *temp = *temp + 1; //issue with operator precedence?
+    int i;
+    for (i = 0; i < argc; i++)
+    {
+        printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+    }
+
+    //printf("column count:%i\n", argc);
+    printf("\n");
+
+    return 0; //anything else and bad things happen
+}
+
+//Just does the statement with no output printed
+void execute_void_statement(sqlite3* database, std::string statement)
+{
+    char* zErrMsg = nullptr;
+    int rc = sqlite3_exec(database, statement.c_str(), nullptr, nullptr, &zErrMsg);
+    if (rc != SQLITE_OK)
+    {
+        fprintf(stderr, "SQL error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+    }
+}
+
 //class code
 
 //static defines
@@ -191,12 +219,12 @@ void SqliteCore_V1::createTables() const
     std::stringstream types_table; //1 to M with resource(resource has only one type but many classes) stores just types
     types_table << "CREATE TABLE IF NOT EXISTS " << types_table_name << " (id integer primary key, type varchar(50));";
 
-    execute_statement_general(database, resource_table.str());
-    execute_statement_general(database, classes_table.str());
-    execute_statement_general(database, classes_intermediate_table.str());
-    execute_statement_general(database, types_table.str());
+    execute_void_statement(database, resource_table.str());
+    execute_void_statement(database, classes_table.str());
+    execute_void_statement(database, classes_intermediate_table.str());
+    execute_void_statement(database, types_table.str());
 
-    execute_statement_general(database, show_tables);
+    execute_void_statement(database, show_tables);
 
     fillTypeAndClassTables();
 }
@@ -215,12 +243,12 @@ void SqliteCore_V1::dropTables() const
     std::stringstream types_table;
     types_table << "DROP TABLE IF EXISTS " << types_table_name << ";";
 
-    execute_statement_general(database, resource_table.str());
-    execute_statement_general(database, classes_table.str());
-    execute_statement_general(database, classes_intermediate_table.str());
-    execute_statement_general(database, types_table.str());
+    execute_void_statement(database, resource_table.str());
+    execute_void_statement(database, classes_table.str());
+    execute_void_statement(database, classes_intermediate_table.str());
+    execute_void_statement(database, types_table.str());
 
-    execute_statement_general(database, show_tables);
+    execute_void_statement(database, show_tables);
 }
 
 //select
@@ -284,12 +312,12 @@ int SqliteCore_V1::getResourceCount() const
 
 void SqliteCore_V1::transactionStart() const
 {
-    execute_statement_general(database, "BEGIN TRANSACTION;");
+    execute_void_statement(database, "BEGIN TRANSACTION;");
 }
 
 void SqliteCore_V1::transactionStop() const
 {
-    execute_statement_general(database, "COMMIT;");
+    execute_void_statement(database, "COMMIT;");
 }
 
 void SqliteCore_V1::showResourcesWithClass(std::string class_name, int limit) const
@@ -384,7 +412,7 @@ void SqliteCore_V1::addResource(const resource_pod& pod, const std::vector<std::
         stream << ");";
 
         //printf("%s\n", stream.str().c_str());
-        execute_statement_general(database, stream.str());
+        execute_void_statement(database, stream.str());
         resource_id = getResourceID(pod.name);
         //printf("added resource id: %i\n", resource_id);
 
@@ -417,7 +445,7 @@ void SqliteCore_V1::addResourceClass(std::string name) const
     stream << " (class) ";
     stream << "VALUES ('" << name << "');";
 
-    execute_statement_general(database, stream.str());
+    execute_void_statement(database, stream.str());
 }
 
 void SqliteCore_V1::addResourceType(std::string name) const
@@ -427,7 +455,7 @@ void SqliteCore_V1::addResourceType(std::string name) const
     stream << " (type) ";
     stream << "VALUES ('" << name << "');";
 
-    execute_statement_general(database, stream.str());
+    execute_void_statement(database, stream.str());
 }
 
 void SqliteCore_V1::addIntermediate(int resource_id, int class_id) const
@@ -437,7 +465,7 @@ void SqliteCore_V1::addIntermediate(int resource_id, int class_id) const
     stream << " (resource_id, class_id) ";
     stream << "VALUES (" << resource_id << ", " << class_id << ");";
 
-    execute_statement_general(database, stream.str());
+    execute_void_statement(database, stream.str());
 }
 
 void SqliteCore_V1::fillTypeAndClassTables() const

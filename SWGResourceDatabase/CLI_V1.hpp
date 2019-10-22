@@ -41,13 +41,16 @@ class CLI_V1
 {
 public:
     CLI_V1();
+    ~CLI_V1();
 
     int startCLI(int argc, char **argv);
     bool createDatabase();
     bool loadDatabase();
 private:
     std::string database_name;
+    std::string lua_dump_file;
     LuaCore settings_lua;
+    SqliteCore_V1* resource_database;
     CLI_state state;
 
     int getIntegerInput(std::string options, int min, int max);

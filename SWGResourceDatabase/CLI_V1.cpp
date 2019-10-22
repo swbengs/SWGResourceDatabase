@@ -39,6 +39,17 @@ SOFTWARE.
 CLI_V1::CLI_V1()
 {
     state = CLI_state::NONE;
+    resource_database = nullptr;
+    database_name = "";
+    lua_dump_file = "";
+}
+
+CLI_V1::~CLI_V1()
+{
+    if (resource_database != nullptr)
+    {
+        delete resource_database;
+    }
 }
 
 int CLI_V1::startCLI(int argc, char** argv)
@@ -50,30 +61,43 @@ int CLI_V1::startCLI(int argc, char** argv)
     }
     else if (argc == 3)
     {
-        //either args for loading or making a database or error
+        //either args for loading or error
         std::string command = argv[1];
         database_name = argv[2];
 
-        if (command.compare("-create") == 0)
-        {
-            state = CLI_state::ARG_CREATE;
-        }
-        else if (command.compare("-load") == 0)
+        if (command.compare("-load") == 0)
         {
             state = CLI_state::ARG_LOAD;
         }
         else
         {
-            std::cerr << "Unknown command line argument given. Usage is -create databasename or -load databasename\n";
+            std::cerr << "Unknown command line argument given. Usage is -load databasename\n";
             return EXIT_FAILURE;
         }
 
         return inputLoop();
     }
-    else if (argc > 3)
+    else if (argc == 4)
+    {
+        //either args for creating database or error
+        std::string command = argv[1];
+        database_name = argv[2];
+        lua_dump_file = argv[3];
+
+        if (command.compare("-create") == 0)
+        {
+            state = CLI_state::ARG_CREATE;
+        }
+        else
+        {
+            std::cerr << "Unknown command line argument given. Usage is -create databasename luadumpfile\n";
+            return EXIT_FAILURE;
+        }
+    }
+    else if (argc > 4)
     {
         //no idea what they gave us
-        std::cerr << "More than 3 arguments given. Usage is -create databasename or -load databasename\n";
+        std::cerr << "More than 4 arguments given. Usage is -create databasename luadumpfile or -load databasename\n";
         return EXIT_FAILURE;
     }
 
@@ -82,12 +106,49 @@ int CLI_V1::startCLI(int argc, char** argv)
 
 bool CLI_V1::createDatabase()
 {
-    return false;
+    resource_database = new SqliteCore_V1(database_name);
+    resource_database->dropTables();
+    resource_database->createTables();
+
+    LuaCore lua;
+    if (!lua.start(lua_dump_file))
+    {
+        return false;
+    }
+
+    resource_database->transactionStart();
+    bool next = true;
+    do
+    {
+        resource_pod pod;
+        std::vector<std::string> classes;
+
+        next = lua.getNextResource(pod, classes);
+        if (next)
+        {
+            Resource resource(pod, classes);
+            resource_database->addResource(resource);
+        }
+    } while (next);
+
+    resource_database->transactionStop();
+    lua.stop();
+
+    return true;
 }
 
 bool CLI_V1::loadDatabase()
 {
-    return false;
+    if (resource_database == nullptr)
+    {
+        resource_database = new SqliteCore_V1(database_name);
+    }
+
+    printf("resource count: %i\n", resource_database->getResourceCount());
+
+    resource_database->showAllResources(10);
+
+    return true;
 }
 
 //private
@@ -142,12 +203,35 @@ int CLI_V1::inputLoop()
             }
             break;
         case CLI_state::CLI_CREATE:
+            std::cout << "Enter in the database filename you want to make\n";
+            std::cin >> database_name;
+            std::cout << "Enter in the lua resource dump file name\n";
+            std::cin >> lua_dump_file;
+
+            if (!createDatabase())
+            {
+                std::cerr << "Error creating database\n";
+                return EXIT_FAILURE;
+            }
+
             state = CLI_state::CLI_LOAD;
             break;
         case CLI_state::CLI_LOAD:
+            if (database_name.compare("") == 0) // if no name there ask for one. used if not coming from a create
+            {
+                std::cout << "Enter in the database filename you want to load\n";
+                std::cin >> database_name;
+            }
+
+            if (!loadDatabase())
+            {
+                std::cerr << "Error loading database\n";
+                return EXIT_FAILURE;
+            }
+
             state = CLI_state::READY;
             break;
-        case CLI_state::ARG_CREATE: //arg ones either work or don't so they can return failure directly
+        case CLI_state::ARG_CREATE:
             if (!createDatabase())
             {
                 std::cerr << "Error creating database\n";
