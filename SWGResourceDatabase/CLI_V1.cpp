@@ -93,6 +93,8 @@ int CLI_V1::startCLI(int argc, char** argv)
             std::cerr << "Unknown command line argument given. Usage is -create databasename luadumpfile\n";
             return EXIT_FAILURE;
         }
+
+        return inputLoop();
     }
     else if (argc > 4)
     {
@@ -110,9 +112,12 @@ bool CLI_V1::createDatabase()
     resource_database->dropTables();
     resource_database->createTables();
 
+    std::cout << "Creating database named: " << database_name << "\n";
+
     LuaCore lua;
     if (!lua.start(lua_dump_file))
     {
+        std::cout << "Error with Lua dump file\n";
         return false;
     }
 
@@ -133,6 +138,8 @@ bool CLI_V1::createDatabase()
 
     resource_database->transactionStop();
     lua.stop();
+
+    std::cout << "Creation of database named: " << database_name << " complete.\n";
 
     return true;
 }
