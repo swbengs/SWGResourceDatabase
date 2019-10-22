@@ -443,12 +443,12 @@ void SqliteCore_V1::addIntermediate(int resource_id, int class_id) const
 void SqliteCore_V1::fillTypeAndClassTables() const
 {
     transactionStart();
-    for (size_t i = 0; i < SWG_resource_classes_count; i++)
+    for (size_t i = 0; i < static_cast<size_t>(SWG_resource_classes::SWG_resource_classes_count); i++)
     {
         addResourceClass(SWGResourceClassString(static_cast<SWG_resource_classes>(i)));
     }
 
-    for (size_t i = 0; i < SWG_resource_types_count; i++)
+    for (size_t i = 0; i < static_cast<size_t>(SWG_resource_types::SWG_resource_types_count); i++)
     {
         addResourceType(SWGResourceTypeString(static_cast<SWG_resource_types>(i)));
     }
@@ -462,7 +462,7 @@ int SqliteCore_V1::getSWGClassInt(std::string name, bool print_error) const
 
     if (classes.count(name) > 0)
     {
-        temp = classes.at(name) + 1; //actual DB value is 1 higher than enum
+        temp = static_cast<int>(classes.at(name)) + 1; //actual DB value is 1 higher than enum
     }
     else
     {
@@ -480,7 +480,7 @@ int SqliteCore_V1::getSWGTypeInt(std::string name, bool print_error) const
 
     if (types.count(name) > 0)
     {
-        temp = types.at(name) + 1; //actual DB value is 1 higher than enum
+        temp = static_cast<int>(types.at(name)) + 1; //actual DB value is 1 higher than enum
     }
     else
     {

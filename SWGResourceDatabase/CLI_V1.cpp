@@ -38,7 +38,7 @@ SOFTWARE.
 //class code
 CLI_V1::CLI_V1()
 {
-    state = NONE;
+    state = CLI_state::NONE;
 }
 
 int CLI_V1::startCLI(int argc, char** argv)
@@ -56,11 +56,11 @@ int CLI_V1::startCLI(int argc, char** argv)
 
         if (command.compare("-create") == 0)
         {
-            state = ARG_CREATE;
+            state = CLI_state::ARG_CREATE;
         }
         else if (command.compare("-load") == 0)
         {
-            state = ARG_LOAD;
+            state = CLI_state::ARG_LOAD;
         }
         else
         {
@@ -126,7 +126,7 @@ int CLI_V1::inputLoop()
     {
         switch (state)
         {
-        case NONE:
+        case CLI_state::NONE:
             input = getIntegerInput("Choices:\n0: Exit\n1: Create database\n2: Load database file\n", 0, 2);
             switch (input)
             {
@@ -134,36 +134,36 @@ int CLI_V1::inputLoop()
                 isDone = true;
                 break;
             case 1:
-                state = CLI_CREATE;
+                state = CLI_state::CLI_CREATE;
                 break;
             case 2:
-                state = CLI_LOAD;
+                state = CLI_state::CLI_LOAD;
                 break;
             }
             break;
-        case CLI_CREATE:
-            state = CLI_LOAD;
+        case CLI_state::CLI_CREATE:
+            state = CLI_state::CLI_LOAD;
             break;
-        case CLI_LOAD:
-            state = READY;
+        case CLI_state::CLI_LOAD:
+            state = CLI_state::READY;
             break;
-        case ARG_CREATE: //arg ones either work or don't so they can return failure directly
+        case CLI_state::ARG_CREATE: //arg ones either work or don't so they can return failure directly
             if (!createDatabase())
             {
                 std::cerr << "Error creating database\n";
                 return EXIT_FAILURE;
             }
-            state = ARG_LOAD;
+            state = CLI_state::ARG_LOAD;
             break;
-        case ARG_LOAD:
-            if (loadDatabase())
+        case CLI_state::ARG_LOAD:
+            if (!loadDatabase())
             {
                 std::cerr << "Error loading database\n";
                 return EXIT_FAILURE;
             }
-            state = READY;
+            state = CLI_state::READY;
             break;
-        case READY:
+        case CLI_state::READY:
             isDone = true;
             break;
         }

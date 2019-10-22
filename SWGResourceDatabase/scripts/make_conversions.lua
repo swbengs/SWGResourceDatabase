@@ -19,8 +19,10 @@ local function writeHeader(func_name, enum_name)
   io.write("    {\n")
 end
 
-local function writeBodyLine(enums_table, key)
+local function writeBodyLine(enums_table, key, enum_name)
   io.write("    case ")
+  io.write(enum_name)
+  io.write("::")
   io.write(enums_table["enum"])
   io.write(":\n")
   io.write("        return \"")
@@ -39,7 +41,7 @@ local function writeBasicStrings(filename, func_name, pretty_name, enums_table, 
 
   writeHeader(func_name, enums_name)
   for _, t in ipairs(enums_table) do
-    writeBodyLine(t, "enum_string")
+    writeBodyLine(t, "enum_string", enums_name)
   end
   io.write("    default:\n")
   io.write("        return \"bad ")
@@ -51,7 +53,7 @@ local function writeBasicStrings(filename, func_name, pretty_name, enums_table, 
 
   writeHeader(pretty_name, enums_name)
   for _, t in ipairs(enums_table) do
-    writeBodyLine(t, "pretty_string")
+    writeBodyLine(t, "pretty_string", enums_name)
   end
   io.write("    default:\n")
   io.write("        return \"bad ")

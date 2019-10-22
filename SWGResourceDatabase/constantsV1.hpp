@@ -34,7 +34,7 @@ SOFTWARE.
 Description: Constants such as classes, types, their string and enums and so on
 */
 
-enum CLI_state
+enum class CLI_state //enum class > plain enums C++11
 {
     NONE,
     CLI_CREATE, //when told to create or load from the command line interface
@@ -44,7 +44,7 @@ enum CLI_state
     READY
 };
 
-enum SWG_attributes
+enum class SWG_attributes
 {
     //CR CD DR FL HR MA OQ PE SR UT are the abbreviations in order
     CR,
@@ -60,7 +60,7 @@ enum SWG_attributes
 };
 
 //different classifications of the resources. forms a tree
-enum SWG_resource_classes
+enum class SWG_resource_classes
 {
     ALUMINUM,
     BONE,
@@ -166,7 +166,7 @@ enum SWG_resource_classes
 };
 
 //things the resource actually are
-enum SWG_resource_types
+enum class SWG_resource_types
 {
     ALUMINUM_AGRINIUM,
     ALUMINUM_CHROMIUM,
