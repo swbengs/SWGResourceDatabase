@@ -1,7 +1,7 @@
-#pragma once
+//class header
+#include "pods.hpp"
 
 //std lib includes
-#include <string>
 
 //other includes
 
@@ -29,33 +29,26 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-/*
-Description: Header that lists all PODs(plain old data). These don't need methods but since C++ treats structs as public classes they can have them.
-*/
+//class code
 
-struct resource_pod
+resource_pod::resource_pod()
 {
-    std::string name;
-    std::string type; //convert to int through lookup before adding to database. is a string when collected in Lua. Becomes an int index when in database
-    unsigned int cold_resistance; //CR CD DR FL HR MA OQ PE SR UT are the abbreviations in order
-    unsigned int conductivity;
-    unsigned int decay_resistance;
-    unsigned int flavor;
-    unsigned int heat_resistance;
-    unsigned int malleability;
-    unsigned int overall_quality;
-    unsigned int potential_energy;
-    unsigned int shock_resistance;
-    unsigned int unit_toughness;
+    name = "junk name";
+    type = "junk type";
+    cold_resistance = 0;
+    conductivity = 0;
+    decay_resistance = 0;
+    flavor = 0;
+    heat_resistance = 0;
+    malleability = 0;
+    overall_quality = 0;
+    potential_energy = 0;
+    shock_resistance = 0;
+    unit_toughness = 0;
+}
 
-    resource_pod();
-};
-
-struct weighted_average_pod
+weighted_average_pod::weighted_average_pod()
 {
-    unsigned int attribute;
-    float weight;
-
-    weighted_average_pod();
-};
-
+    attribute = 0;
+    weight = 0;
+}

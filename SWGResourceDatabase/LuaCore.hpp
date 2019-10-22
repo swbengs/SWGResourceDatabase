@@ -74,7 +74,5 @@ private:
     bool getResourceAttributes(resource_pod& pod);
     void getAttribute(resource_pod& pod); //these are in a table with key at table[1] and value at table[2]
     bool getResourceClasses(std::vector<std::string>& classes);
-
-    void resourceDefaults(resource_pod& pod) const;
 };
 
