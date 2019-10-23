@@ -12,6 +12,7 @@
 #include "LuaCore.hpp"
 #include "SqliteCore_V1.hpp"
 #include "CLI_V1.hpp"
+#include "ResourceTree.hpp"
 
 /*
 MIT License
@@ -791,6 +792,14 @@ int test_Sqlite_real_details()
     return EXIT_SUCCESS;
 }
 
+int resourceTreeFindTest()
+{
+    ResourceTree tree;
+    tree.debugTestFindClassNode();
+
+    return EXIT_SUCCESS;
+}
+
 //debug stuff
 int debugRun()
 {
@@ -833,8 +842,10 @@ int main(int argc, char **argv)
     //debug
     //result = debugRun();
 
-    CLI_V1 cli;
-    result = cli.startCLI(argc, argv);
+    //CLI_V1 cli;
+    //result = cli.startCLI(argc, argv);
+
+    result = resourceTreeFindTest();
 
     return result;
 }

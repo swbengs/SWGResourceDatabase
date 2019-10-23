@@ -31,7 +31,7 @@ SOFTWARE.
 */
 
 /*
-Description: Tree to represent SWG resource tree
+Description: Tree to represent SWG resource tree(not an actual tree implementation though)
 */
 
 struct resource_class_node
@@ -48,8 +48,14 @@ class ResourceTree
 public:
     ResourceTree();
 
+    const resource_class_node* getResourceClassNode(SWG_resource_classes resource_class) const;
+
+    void debugTestFindClassNode() const;
+
 private:
     resource_class_node root;
+
+    const resource_class_node* findClassRecursive(SWG_resource_classes resource_class, const resource_class_node* current_node) const;
 
     void createRootNode();
     resource_class_node createEnergyNode();
