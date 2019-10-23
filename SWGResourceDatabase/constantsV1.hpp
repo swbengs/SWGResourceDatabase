@@ -47,16 +47,16 @@ enum class CLI_state //enum class > plain enums C++11
 enum class SWG_attributes
 {
     //CR CD DR FL HR MA OQ PE SR UT are the abbreviations in order
-    CR,
-    CD,
-    DR,
-    FL,
-    HR,
-    MA,
-    OQ,
-    PE,
-    SR,
-    UT
+    CR, //cold resistance
+    CD, //conductivity
+    DR, //decay resistance
+    FL, //flavor
+    HR, //heat resistance
+    MA, //malleability
+    OQ, //overall quality
+    PE, //potential energy
+    SR, //shock resistance
+    UT  //unit toughness
 };
 
 //different classifications of the resources. forms a tree

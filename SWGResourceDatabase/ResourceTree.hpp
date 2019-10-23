@@ -1,10 +1,10 @@
 #pragma once
 
 //std lib includes
-#include <string>
 #include <vector>
 
 //other includes
+#include "constantsV1.hpp"
 
 /*
 MIT License
@@ -31,33 +31,30 @@ SOFTWARE.
 */
 
 /*
-Description: Header that lists all PODs(plain old data). These don't need methods but since C++ treats structs as public classes they can have them.
-Enums are cast to ints to limit what classes know about what things. IE lua doesn't need access to that list of enums
+Description: Tree to represent SWG resource tree
 */
 
-struct resource_pod
+struct resource_class_node
 {
-    std::string name;
-    std::string type; //convert to int through lookup before adding to database. is a string when collected in Lua. Becomes an int index when in database
-    unsigned int cold_resistance; //CR CD DR FL HR MA OQ PE SR UT are the abbreviations in order
-    unsigned int conductivity;
-    unsigned int decay_resistance;
-    unsigned int flavor;
-    unsigned int heat_resistance;
-    unsigned int malleability;
-    unsigned int overall_quality;
-    unsigned int potential_energy;
-    unsigned int shock_resistance;
-    unsigned int unit_toughness;
-
-    resource_pod();
+    SWG_resource_classes resource_class;
+    SWG_resource_types start_type; //used if this is an end node for the class IE steel, copper
+    SWG_resource_types end_type; //last resource type of the parent
+    std::vector<resource_class_node> children; //children that are also resource classes only
 };
 
-struct weighted_average_pod
+//class delcaration
+class ResourceTree
 {
-    unsigned int attribute;
-    float weight;
+public:
+    ResourceTree();
 
-    weighted_average_pod();
+private:
+    resource_class_node root;
+
+    void createRootNode();
+    resource_class_node createEnergyNode();
+    resource_class_node createInorganicNode();
+    resource_class_node createOrganicNode();
 };
+
 

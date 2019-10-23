@@ -1,8 +1,7 @@
-#pragma once
+//class header
+#include "ResourceTree.hpp"
 
 //std lib includes
-#include <string>
-#include <vector>
 
 //other includes
 
@@ -30,34 +29,41 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-/*
-Description: Header that lists all PODs(plain old data). These don't need methods but since C++ treats structs as public classes they can have them.
-Enums are cast to ints to limit what classes know about what things. IE lua doesn't need access to that list of enums
-*/
+//class code
 
-struct resource_pod
+ResourceTree::ResourceTree()
 {
-    std::string name;
-    std::string type; //convert to int through lookup before adding to database. is a string when collected in Lua. Becomes an int index when in database
-    unsigned int cold_resistance; //CR CD DR FL HR MA OQ PE SR UT are the abbreviations in order
-    unsigned int conductivity;
-    unsigned int decay_resistance;
-    unsigned int flavor;
-    unsigned int heat_resistance;
-    unsigned int malleability;
-    unsigned int overall_quality;
-    unsigned int potential_energy;
-    unsigned int shock_resistance;
-    unsigned int unit_toughness;
+    createRootNode();
+}
 
-    resource_pod();
-};
-
-struct weighted_average_pod
+//private
+void ResourceTree::createRootNode()
 {
-    unsigned int attribute;
-    float weight;
+    root = resource_class_node
+    {
+        SWG_resource_classes::ALUMINUM,
+        SWG_resource_types::ALUMINUM_AGRINIUM,
+        SWG_resource_types::ALUMINUM_AGRINIUM,
+        std::vector<resource_class_node>
+        {
+            createEnergyNode(),
+            createInorganicNode(),
+            createOrganicNode()
+        }
+    };
+}
 
-    weighted_average_pod();
-};
+resource_class_node ResourceTree::createEnergyNode()
+{
+    return resource_class_node();
+}
 
+resource_class_node ResourceTree::createInorganicNode()
+{
+    return resource_class_node();
+}
+
+resource_class_node ResourceTree::createOrganicNode()
+{
+    return resource_class_node();
+}

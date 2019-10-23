@@ -52,3 +52,4 @@ weighted_average_pod::weighted_average_pod()
     attribute = 0;
     weight = 0;
 }
+

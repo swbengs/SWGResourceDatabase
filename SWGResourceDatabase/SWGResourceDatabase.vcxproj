@@ -187,6 +187,7 @@
     <ClCompile Include="Lua\lzio.c" />
     <ClCompile Include="pods.cpp" />
     <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="ResourceTree.cpp" />
     <ClCompile Include="SqliteCore_V1.cpp" />
     <ClCompile Include="Sqlite\sqlite3.c" />
     <ClCompile Include="Main.cpp" />
@@ -232,6 +233,7 @@
     <ClInclude Include="Lua\lzio.h" />
     <ClInclude Include="pods.hpp" />
     <ClInclude Include="Resource.hpp" />
+    <ClInclude Include="ResourceTree.hpp" />
     <ClInclude Include="SqliteCore_V1.hpp" />
     <ClInclude Include="Sqlite\sqlite3.h" />
   </ItemGroup>
