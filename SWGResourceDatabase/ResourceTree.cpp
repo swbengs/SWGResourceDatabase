@@ -56,48 +56,28 @@ const resource_class_node* ResourceTree::getResourceClassNode(SWG_resource_class
 
 void ResourceTree::debugTestFindClassNode() const
 {
-    for (int i = static_cast<int>(SWG_resource_classes::ENERGY); i <= static_cast<int>(SWG_resource_classes::ENERGY_RENEWABLE_UNLIMITED_WIND); i++)
+    for (int i = static_cast<int>(SWG_resource_classes::ALUMINUM); i < static_cast<int>(SWG_resource_classes::SWG_resource_classes_count); i++)
     {
         SWG_resource_classes resource_class = static_cast<SWG_resource_classes>(i);
         const resource_class_node* node = getResourceClassNode(resource_class);
         if (node != nullptr)
         {
-            std::cout << "node class name: " << SWGResourceClassString(node->resource_class) << "\n";
-            std::cout << "node class pretty name: " << SWGResourceClassStringPretty(node->resource_class) << "\n\n";
+            //std::cout << "node class name: " << SWGResourceClassString(node->resource_class) << "\n";
+            //std::cout << "node class pretty name: " << SWGResourceClassStringPretty(node->resource_class) << "\n\n";
         }
         else
         {
             std::cout << "class failed to be found: " << SWGResourceClassStringPretty(resource_class) << "\n\n";
         }
     }
-
-    const resource_class_node* node = getResourceClassNode(SWG_resource_classes::INORGANIC);
-    std::cout << "node class name: " << SWGResourceClassString(node->resource_class) << "\n";
-    std::cout << "node class pretty name: " << SWGResourceClassStringPretty(node->resource_class) << "\n\n";
-    
-    node = getResourceClassNode(SWG_resource_classes::CHEMICAL);
-    std::cout << "node class name: " << SWGResourceClassString(node->resource_class) << "\n";
-    std::cout << "node class pretty name: " << SWGResourceClassStringPretty(node->resource_class) << "\n\n";
-
-    node = getResourceClassNode(SWG_resource_classes::WATER);
-    std::cout << "node class name: " << SWGResourceClassString(node->resource_class) << "\n";
-    std::cout << "node class pretty name: " << SWGResourceClassStringPretty(node->resource_class) << "\n\n";
-
-    node = getResourceClassNode(SWG_resource_classes::MINERAL);
-    std::cout << "node class name: " << SWGResourceClassString(node->resource_class) << "\n";
-    std::cout << "node class pretty name: " << SWGResourceClassStringPretty(node->resource_class) << "\n\n";
-
-    node = getResourceClassNode(SWG_resource_classes::GAS);
-    std::cout << "node class name: " << SWGResourceClassString(node->resource_class) << "\n";
-    std::cout << "node class pretty name: " << SWGResourceClassStringPretty(node->resource_class) << "\n\n";
 }
 
 const resource_class_node* ResourceTree::findClassRecursive(SWG_resource_classes resource_class, const resource_class_node* current_node) const
 {
-    //base cases are current node has no children and this node isn't what we're looking for, or it is
+    //base cases are: current node has no children and this node isn't what we're looking for(no where else to go so return), or it's the node we want
     const resource_class_node* result = nullptr;
 
-    //so check this node first, then call this method on children one by one
+    //check this node first, then call this method on children one by one
     if (current_node->resource_class == resource_class)
     {
         result = current_node;
@@ -134,6 +114,7 @@ void ResourceTree::createRootNode()
     };
 }
 
+//Entire node since it's only 4 layers deep
 resource_class_node ResourceTree::createEnergyNode()
 {
     resource_class_node temp = resource_class_node
@@ -187,6 +168,7 @@ resource_class_node ResourceTree::createEnergyNode()
     return temp;
 }
 
+//2 layers deep into inorganic tree and then call helpers
 resource_class_node ResourceTree::createInorganicNode()
 {
     resource_class_node temp = resource_class_node
@@ -201,7 +183,7 @@ resource_class_node ResourceTree::createInorganicNode()
                 SWG_resource_classes::CHEMICAL,
                 SWG_resource_types::ALUMINUM_AGRINIUM,
                 SWG_resource_types::ALUMINUM_AGRINIUM,
-                //vector here
+                createChemicalChildrenNodes()
             },
             resource_class_node
             {
@@ -215,21 +197,328 @@ resource_class_node ResourceTree::createInorganicNode()
                 SWG_resource_classes::MINERAL,
                 SWG_resource_types::ALUMINUM_AGRINIUM,
                 SWG_resource_types::ALUMINUM_AGRINIUM,
-                //vector here
+                createMineralChildrenNodes()
             },
             resource_class_node
             {
                 SWG_resource_classes::GAS,
                 SWG_resource_types::ALUMINUM_AGRINIUM,
                 SWG_resource_types::ALUMINUM_AGRINIUM,
-                //vector here
+                createGasChildrenNodes()
             }
         }
     };
     return temp;
 }
 
+std::vector<resource_class_node> ResourceTree::createChemicalChildrenNodes()
+{
+    std::vector<resource_class_node> temp =
+    {
+        resource_class_node
+        {
+            SWG_resource_classes::FIBERPLAST,
+            SWG_resource_types::FIBERPLAST_CORELLIA,
+            SWG_resource_types::FIBERPLAST_YAVIN4,
+            std::vector<resource_class_node>()
+        },
+        resource_class_node
+        {
+            SWG_resource_classes::PETROCHEM_INERT,
+            SWG_resource_types::PETROCHEM_INERT_LUBRICATING_OIL,
+            SWG_resource_types::PETROCHEM_INERT_POLYMER,
+            std::vector<resource_class_node>()
+        },
+        resource_class_node
+        {
+            SWG_resource_classes::FUEL_PETROCHEM_LIQUID,
+            SWG_resource_types::ALUMINUM_AGRINIUM,
+            SWG_resource_types::ALUMINUM_AGRINIUM,
+            std::vector<resource_class_node>
+            {
+                resource_class_node
+                {
+                    SWG_resource_classes::FUEL_PETROCHEM_LIQUID_KNOWN,
+                    SWG_resource_types::PETROCHEM_FUEL_LIQUID_TYPE1,
+                    SWG_resource_types::PETROCHEM_FUEL_LIQUID_UNKNOWN,
+                    std::vector<resource_class_node>()
+                }
+            }
+        }
+    };
+    return temp;
+}
+
+std::vector<resource_class_node> ResourceTree::createMineralChildrenNodes()
+{
+    std::vector<resource_class_node> temp =
+    {
+        resource_class_node
+        {
+            SWG_resource_classes::RADIOACTIVE,
+            SWG_resource_types::ALUMINUM_AGRINIUM,
+            SWG_resource_types::ALUMINUM_AGRINIUM,
+            std::vector<resource_class_node>
+            {
+                resource_class_node
+                {
+                    SWG_resource_classes::RADIOACTIVE_KNOWN,
+                    SWG_resource_types::RADIOACTIVE_POLYMETRIC,
+                    SWG_resource_types::RADIOACTIVE_UNKNOWN,
+                    std::vector<resource_class_node>()
+                }
+            }
+        },
+        resource_class_node
+        {
+            SWG_resource_classes::FUEL_PETROCHEM_SOLID,
+            SWG_resource_types::ALUMINUM_AGRINIUM,
+            SWG_resource_types::ALUMINUM_AGRINIUM,
+            std::vector<resource_class_node>
+            {
+                resource_class_node
+                {
+                    SWG_resource_classes::FUEL_PETROCHEM_SOLID_KNOWN,
+                    SWG_resource_types::PETROCHEM_FUEL_SOLID_TYPE1,
+                    SWG_resource_types::PETROCHEM_FUEL_SOLID_UNKNOWN,
+                    std::vector<resource_class_node>()
+                }
+            }
+        },
+        resource_class_node
+        {
+            SWG_resource_classes::METAL,
+            SWG_resource_types::ALUMINUM_AGRINIUM,
+            SWG_resource_types::ALUMINUM_AGRINIUM,
+            std::vector<resource_class_node>
+            {
+                resource_class_node
+                {
+                    SWG_resource_classes::METAL_FERROUS,
+                    SWG_resource_types::METAL_FERROUS_UNKNOWN,
+                    SWG_resource_types::METAL_FERROUS_UNKNOWN,
+                    std::vector<resource_class_node>
+                    {
+                        resource_class_node
+                        {
+                            SWG_resource_classes::IRON,
+                            SWG_resource_types::IRON_AXIDITE,
+                            SWG_resource_types::IRON_POLONIUM,
+                            std::vector<resource_class_node>()
+                        },
+                        resource_class_node
+                        {
+                            SWG_resource_classes::STEEL,
+                            SWG_resource_types::STEEL_ARVESHIAN,
+                            SWG_resource_types::STEEL_NEUTRONIUM,
+                            std::vector<resource_class_node>()
+                        }
+                    }
+                },
+                resource_class_node
+                {
+                    SWG_resource_classes::METAL_NONFERROUS,
+                    SWG_resource_types::METAL_NONFERROUS_UNKNOWN,
+                    SWG_resource_types::METAL_NONFERROUS_UNKNOWN,
+                    std::vector<resource_class_node>
+                    {
+                        resource_class_node
+                        {
+                            SWG_resource_classes::ALUMINUM,
+                            SWG_resource_types::ALUMINUM_AGRINIUM,
+                            SWG_resource_types::ALUMINUM_TITANIUM,
+                            std::vector<resource_class_node>()
+                        },
+                        resource_class_node
+                        {
+                            SWG_resource_classes::COPPER,
+                            SWG_resource_types::COPPER_BEYRLLIUS,
+                            SWG_resource_types::COPPER_THALLIUM,
+                            std::vector<resource_class_node>()
+                        }
+                    }
+                }
+            }
+        },
+        resource_class_node
+        {
+            SWG_resource_classes::ORE,
+            SWG_resource_types::ALUMINUM_AGRINIUM,
+            SWG_resource_types::ALUMINUM_AGRINIUM,
+            std::vector<resource_class_node>
+            {
+                resource_class_node
+                {
+                    SWG_resource_classes::ORE_IGNEOUS,
+                    SWG_resource_types::ORE_IGNEOUS_UNKNOWN,
+                    SWG_resource_types::ORE_IGNEOUS_UNKNOWN,
+                    std::vector<resource_class_node>
+                    {
+                        resource_class_node
+                        {
+                            SWG_resource_classes::ORE_EXTRUSIVE,
+                            SWG_resource_types::ORE_EXTRUSIVE_BENE,
+                            SWG_resource_types::ORE_EXTRUSIVE_VINTRIUM,
+                            std::vector<resource_class_node>()
+                        },
+                        resource_class_node
+                        {
+                            SWG_resource_classes::ORE_INTRUSIVE,
+                            SWG_resource_types::ORE_INTRUSIVE_BERUBIUM,
+                            SWG_resource_types::ORE_INTRUSIVE_ORIDIUM,
+                            std::vector<resource_class_node>()
+                        }
+                    }
+                },
+                resource_class_node
+                {
+                    SWG_resource_classes::ORE_SEDIMENTARY,
+                    SWG_resource_types::ORE_SEDIMENTARY_UNKNOWN,
+                    SWG_resource_types::ORE_SEDIMENTARY_UNKNOWN,
+                    std::vector<resource_class_node>
+                    {
+                        resource_class_node
+                        {
+                            SWG_resource_classes::ORE_CARBONATE,
+                            SWG_resource_types::ORE_CARBONATE_ALANTIUM,
+                            SWG_resource_types::ORE_CARBONATE_ZINSIAM,
+                            std::vector<resource_class_node>()
+                        },
+                        resource_class_node
+                        {
+                            SWG_resource_classes::ORE_SILICLASTIC,
+                            SWG_resource_types::ORE_SILICLASTIC_ARDANIUM,
+                            SWG_resource_types::ORE_SILICLASTIC_TERTIAN,
+                            std::vector<resource_class_node>()
+                        }
+                    }
+                }
+            }
+        },
+        resource_class_node
+        {
+            SWG_resource_classes::GEMSTONE,
+            SWG_resource_types::GEMSTONE_UNKNOWN,
+            SWG_resource_types::GEMSTONE_UNKNOWN,
+            std::vector<resource_class_node>
+            {
+                resource_class_node
+                {
+                    SWG_resource_classes::GEMSTONE_ARMOPHOUS,
+                    SWG_resource_types::ARMOPHOUS_BALTARAN,
+                    SWG_resource_types::ARMOPHOUS_VENDUSII,
+                    std::vector<resource_class_node>()
+                },
+                resource_class_node
+                {
+                    SWG_resource_classes::GEMSTONE_CRYSTALLINE,
+                    SWG_resource_types::CRYSTALLINE_BYROTHSIS,
+                    SWG_resource_types::CRYSTALLINE_VERTEX,
+                    std::vector<resource_class_node>()
+                }
+            }
+        }
+    };
+    return temp;
+}
+
+std::vector<resource_class_node> ResourceTree::createGasChildrenNodes()
+{
+    std::vector<resource_class_node> temp =
+    {
+        resource_class_node
+        {
+            SWG_resource_classes::GAS_INERT,
+            SWG_resource_types::ALUMINUM_AGRINIUM,
+            SWG_resource_types::ALUMINUM_AGRINIUM,
+            std::vector<resource_class_node>
+            {
+                resource_class_node
+                {
+                    SWG_resource_classes::GAS_INERT_KNOWN,
+                    SWG_resource_types::GAS_INERT_BILAL,
+                    SWG_resource_types::GAS_INERT_UNKNOWN, //unknown should be a class but it's a type
+                    std::vector<resource_class_node>()
+                },
+            }
+        },
+        resource_class_node
+        {
+            SWG_resource_classes::GAS_REACTIVE,
+            SWG_resource_types::ALUMINUM_AGRINIUM,
+            SWG_resource_types::ALUMINUM_AGRINIUM,
+            std::vector<resource_class_node>
+            {
+                resource_class_node
+                {
+                    SWG_resource_classes::GAS_REACTIVE_KNOWN,
+                    SWG_resource_types::GAS_REACTIVE_ELETON,
+                    SWG_resource_types::GAS_REACTIVE_UNKNOWN, //sig and unknown should be a class based on the swgcraft tree
+                    std::vector<resource_class_node>()
+                },
+            }
+        }
+    };
+    return temp;
+}
+
+//3 layers deep into organic tree and then call helpers
 resource_class_node ResourceTree::createOrganicNode()
 {
-    return resource_class_node();
+    resource_class_node temp = resource_class_node
+    {
+        SWG_resource_classes::ORGANIC,
+        SWG_resource_types::ALUMINUM_AGRINIUM,
+        SWG_resource_types::ALUMINUM_AGRINIUM,
+        std::vector<resource_class_node>
+        {
+            resource_class_node
+            {
+                SWG_resource_classes::FLORA_RESOURCES,
+                SWG_resource_types::ALUMINUM_AGRINIUM,
+                SWG_resource_types::ALUMINUM_AGRINIUM,
+                std::vector<resource_class_node>
+                {
+                    resource_class_node
+                    {
+                        SWG_resource_classes::FLORA_FOOD,
+                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        //vector here and helper
+                    },
+                    resource_class_node
+                    {
+                        SWG_resource_classes::FLORA_STRUCTURAL,
+                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        //vector here and helper
+                    }
+                }
+            },
+            resource_class_node
+            {
+                SWG_resource_classes::CREATURE_RESOURCES,
+                SWG_resource_types::ALUMINUM_AGRINIUM,
+                SWG_resource_types::ALUMINUM_AGRINIUM,
+                std::vector<resource_class_node>
+                {
+                    resource_class_node
+                    {
+                        SWG_resource_classes::CREATURE_FOOD,
+                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        //vector here and helper
+                    },
+                    resource_class_node
+                    {
+                        SWG_resource_classes::CREATURE_STRUCTURAL,
+                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        //vector here and helper
+                    }
+                }
+            }
+        }
+    };
+    return temp;
 }

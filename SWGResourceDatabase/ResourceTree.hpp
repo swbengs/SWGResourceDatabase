@@ -60,6 +60,9 @@ private:
     void createRootNode();
     resource_class_node createEnergyNode();
     resource_class_node createInorganicNode();
+    std::vector<resource_class_node> createChemicalChildrenNodes();
+    std::vector<resource_class_node> createMineralChildrenNodes();
+    std::vector<resource_class_node> createGasChildrenNodes();
     resource_class_node createOrganicNode();
 };
 
