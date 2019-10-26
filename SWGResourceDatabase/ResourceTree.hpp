@@ -64,6 +64,10 @@ private:
     std::vector<resource_class_node> createMineralChildrenNodes();
     std::vector<resource_class_node> createGasChildrenNodes();
     resource_class_node createOrganicNode();
+    std::vector<resource_class_node> createFloraFoodChildrenNodes();
+    std::vector<resource_class_node> createFloraStructuralChildrenNodes();
+    std::vector<resource_class_node> createCreatureFoodChildrenNodes();
+    std::vector<resource_class_node> createCreatureStructuralChildrenNodes();
 };
 
 

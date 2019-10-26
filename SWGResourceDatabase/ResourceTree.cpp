@@ -484,14 +484,14 @@ resource_class_node ResourceTree::createOrganicNode()
                         SWG_resource_classes::FLORA_FOOD,
                         SWG_resource_types::ALUMINUM_AGRINIUM,
                         SWG_resource_types::ALUMINUM_AGRINIUM,
-                        //vector here and helper
+                        createFloraFoodChildrenNodes()
                     },
                     resource_class_node
                     {
                         SWG_resource_classes::FLORA_STRUCTURAL,
                         SWG_resource_types::ALUMINUM_AGRINIUM,
                         SWG_resource_types::ALUMINUM_AGRINIUM,
-                        //vector here and helper
+                        createFloraStructuralChildrenNodes()
                     }
                 }
             },
@@ -507,14 +507,345 @@ resource_class_node ResourceTree::createOrganicNode()
                         SWG_resource_classes::CREATURE_FOOD,
                         SWG_resource_types::ALUMINUM_AGRINIUM,
                         SWG_resource_types::ALUMINUM_AGRINIUM,
-                        //vector here and helper
+                        createCreatureFoodChildrenNodes()
                     },
                     resource_class_node
                     {
                         SWG_resource_classes::CREATURE_STRUCTURAL,
                         SWG_resource_types::ALUMINUM_AGRINIUM,
                         SWG_resource_types::ALUMINUM_AGRINIUM,
-                        //vector here and helper
+                        createCreatureStructuralChildrenNodes()
+                    }
+                }
+            }
+        }
+    };
+    return temp;
+}
+
+std::vector<resource_class_node> ResourceTree::createFloraFoodChildrenNodes()
+{
+    std::vector<resource_class_node> temp =
+    {
+        std::vector<resource_class_node>
+        {
+            resource_class_node
+            {
+                SWG_resource_classes::CEREAL,
+                SWG_resource_types::ALUMINUM_AGRINIUM,
+                SWG_resource_types::ALUMINUM_AGRINIUM,
+                std::vector<resource_class_node>
+                {
+                    resource_class_node
+                    {
+                        SWG_resource_classes::CORN,
+                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        std::vector<resource_class_node>
+                        {
+                            resource_class_node
+                            {
+                                SWG_resource_classes::CORN_DOMESTICATED,
+                                SWG_resource_types::CORN_DOMESTICATED_CORELLIA,
+                                SWG_resource_types::CORN_DOMESTICATED_YAVIN4,
+                                std::vector<resource_class_node>()
+                            },
+                            resource_class_node
+                            {
+                                SWG_resource_classes::CORN_WILD,
+                                SWG_resource_types::CORN_WILD_CORELLIA,
+                                SWG_resource_types::CORN_WILD_YAVIN4,
+                                std::vector<resource_class_node>()
+                            }
+                        }
+                    },
+                    resource_class_node
+                    {
+                        SWG_resource_classes::OATS,
+                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        std::vector<resource_class_node>
+                        {
+                            resource_class_node
+                            {
+                                SWG_resource_classes::OATS_DOMESTICATED,
+                                SWG_resource_types::OATS_DOMESTICATED_CORELLIA,
+                                SWG_resource_types::OATS_DOMESTICATED_YAVIN4,
+                                std::vector<resource_class_node>()
+                            },
+                            resource_class_node
+                            {
+                                SWG_resource_classes::OATS_WILD,
+                                SWG_resource_types::OATS_WILD_CORELLIA,
+                                SWG_resource_types::OATS_WILD_YAVIN4,
+                                std::vector<resource_class_node>()
+                            }
+                        }
+                    },
+                    resource_class_node
+                    {
+                        SWG_resource_classes::RICE,
+                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        std::vector<resource_class_node>
+                        {
+                            resource_class_node
+                            {
+                                SWG_resource_classes::RICE_DOMESTICATED,
+                                SWG_resource_types::RICE_DOMESTICATED_CORELLIA,
+                                SWG_resource_types::RICE_DOMESTICATED_YAVIN4,
+                                std::vector<resource_class_node>()
+                            },
+                            resource_class_node
+                            {
+                                SWG_resource_classes::RICE_WILD,
+                                SWG_resource_types::RICE_WILD_CORELLIA,
+                                SWG_resource_types::RICE_WILD_YAVIN4,
+                                std::vector<resource_class_node>()
+                            }
+                        }
+                    },
+                    resource_class_node
+                    {
+                        SWG_resource_classes::WHEAT,
+                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        std::vector<resource_class_node>
+                        {
+                            resource_class_node
+                            {
+                                SWG_resource_classes::WHEAT_DOMESTICATED,
+                                SWG_resource_types::WHEAT_DOMESTICATED_CORELLIA,
+                                SWG_resource_types::WHEAT_DOMESTICATED_YAVIN4,
+                                std::vector<resource_class_node>()
+                            },
+                            resource_class_node
+                            {
+                                SWG_resource_classes::WHEAT_WILD,
+                                SWG_resource_types::WHEAT_WILD_CORELLIA,
+                                SWG_resource_types::WHEAT_WILD_YAVIN4,
+                                std::vector<resource_class_node>()
+                            }
+                        }
+                    }
+                }
+            },
+            resource_class_node
+            {
+                SWG_resource_classes::SEEDS,
+                SWG_resource_types::ALUMINUM_AGRINIUM,
+                SWG_resource_types::ALUMINUM_AGRINIUM,
+                std::vector<resource_class_node>
+                {
+                    resource_class_node
+                    {
+                        SWG_resource_classes::FRUIT,
+                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        std::vector<resource_class_node>
+                        {
+                            resource_class_node
+                            {
+                                SWG_resource_classes::FRUIT_BERRIES,
+                                SWG_resource_types::FRUIT_BERRIES_CORELLIA,
+                                SWG_resource_types::FRUIT_BERRIES_YAVIN4,
+                                std::vector<resource_class_node>()
+                            },
+                            resource_class_node
+                            {
+                                SWG_resource_classes::FRUIT_FLOWERS,
+                                SWG_resource_types::FRUIT_FLOWERS_CORELLIA,
+                                SWG_resource_types::FRUIT_FLOWERS_YAVIN4,
+                                std::vector<resource_class_node>()
+                            },
+                            resource_class_node
+                            {
+                                SWG_resource_classes::FRUIT_FRUITS,
+                                SWG_resource_types::FRUIT_FRUITS_CORELLIA,
+                                SWG_resource_types::FRUIT_FRUITS_YAVIN4,
+                                std::vector<resource_class_node>()
+                            }
+                        }
+                    },
+                    resource_class_node
+                    {
+                        SWG_resource_classes::VEGETABLE,
+                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        std::vector<resource_class_node>
+                        {
+                            resource_class_node
+                            {
+                                SWG_resource_classes::VEGETABLE_BEANS,
+                                SWG_resource_types::VEGETABLE_BEANS_CORELLIA,
+                                SWG_resource_types::VEGETABLE_BEANS_YAVIN4,
+                                std::vector<resource_class_node>()
+                            },
+                            resource_class_node
+                            {
+                                SWG_resource_classes::VEGETABLE_FUNGI,
+                                SWG_resource_types::VEGETABLE_FUNGI_CORELLIA,
+                                SWG_resource_types::VEGETABLE_FUNGI_YAVIN4,
+                                std::vector<resource_class_node>()
+                            },
+                            resource_class_node
+                            {
+                                SWG_resource_classes::VEGETABLE_GREENS,
+                                SWG_resource_types::VEGETABLE_GREENS_CORELLIA,
+                                SWG_resource_types::VEGETABLE_GREENS_YAVIN4,
+                                std::vector<resource_class_node>()
+                            },
+                                resource_class_node
+                            {
+                                SWG_resource_classes::VEGETABLE_TUBERS,
+                                SWG_resource_types::VEGETABLE_TUBERS_CORELLIA,
+                                SWG_resource_types::VEGETABLE_TUBERS_YAVIN4,
+                                std::vector<resource_class_node>()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    };
+    return temp;
+}
+
+std::vector<resource_class_node> ResourceTree::createFloraStructuralChildrenNodes()
+{
+    std::vector<resource_class_node> temp =
+    {
+        std::vector<resource_class_node>
+        {
+            resource_class_node
+            {
+                SWG_resource_classes::WOOD,
+                SWG_resource_types::ALUMINUM_AGRINIUM,
+                SWG_resource_types::ALUMINUM_AGRINIUM,
+                std::vector<resource_class_node>
+                {
+                    resource_class_node
+                    {
+                        SWG_resource_classes::WOOD_DECIDUOUS,
+                        SWG_resource_types::WOOD_DECIDUOUS_CORELLIA,
+                        SWG_resource_types::WOOD_DECIDUOUS_YAVIN4,
+                        std::vector<resource_class_node>()
+                    },
+                    resource_class_node
+                    {
+                        SWG_resource_classes::SOFTWOOD,
+                        SWG_resource_types::SOFTWOOD_CONIFER_CORELLIA,
+                        SWG_resource_types::SOFTWOOD_CONIFER_YAVIN4,
+                        std::vector<resource_class_node>
+                        {
+                            resource_class_node
+                            {
+                                SWG_resource_classes::SOFTWOOD_EVERGREEN,
+                                SWG_resource_types::SOFTWOOD_EVERGREEN_CORELLIA,
+                                SWG_resource_types::SOFTWOOD_EVERGREEN_YAVIN4,
+                                std::vector<resource_class_node>()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    };
+    return temp;
+}
+
+std::vector<resource_class_node> ResourceTree::createCreatureFoodChildrenNodes()
+{
+    std::vector<resource_class_node> temp =
+    {
+        std::vector<resource_class_node>
+        {
+            resource_class_node
+            {
+                SWG_resource_classes::WOOD,
+                SWG_resource_types::ALUMINUM_AGRINIUM,
+                SWG_resource_types::ALUMINUM_AGRINIUM,
+                std::vector<resource_class_node>
+                {
+                    resource_class_node
+                    {
+                        SWG_resource_classes::WOOD_DECIDUOUS,
+                        SWG_resource_types::WOOD_DECIDUOUS_CORELLIA,
+                        SWG_resource_types::WOOD_DECIDUOUS_YAVIN4,
+                        std::vector<resource_class_node>()
+                    },
+                    resource_class_node
+                    {
+                        SWG_resource_classes::SOFTWOOD,
+                        SWG_resource_types::SOFTWOOD_CONIFER_CORELLIA,
+                        SWG_resource_types::SOFTWOOD_CONIFER_YAVIN4,
+                        std::vector<resource_class_node>
+                        {
+                            resource_class_node
+                            {
+                                SWG_resource_classes::SOFTWOOD_EVERGREEN,
+                                SWG_resource_types::SOFTWOOD_EVERGREEN_CORELLIA,
+                                SWG_resource_types::SOFTWOOD_EVERGREEN_YAVIN4,
+                                std::vector<resource_class_node>()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    };
+    return temp;
+}
+
+std::vector<resource_class_node> ResourceTree::createCreatureStructuralChildrenNodes()
+{
+    std::vector<resource_class_node> temp =
+    {
+        std::vector<resource_class_node>
+        {
+            resource_class_node
+            {
+                SWG_resource_classes::FLORA_RESOURCES,
+                SWG_resource_types::ALUMINUM_AGRINIUM,
+                SWG_resource_types::ALUMINUM_AGRINIUM,
+                std::vector<resource_class_node>
+                {
+                    resource_class_node
+                    {
+                        SWG_resource_classes::FLORA_FOOD,
+                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        std::vector<resource_class_node>()
+                    },
+                    resource_class_node
+                    {
+                        SWG_resource_classes::FLORA_STRUCTURAL,
+                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        std::vector<resource_class_node>()
+                    }
+                }
+            },
+            resource_class_node
+            {
+                SWG_resource_classes::CREATURE_RESOURCES,
+                SWG_resource_types::ALUMINUM_AGRINIUM,
+                SWG_resource_types::ALUMINUM_AGRINIUM,
+                std::vector<resource_class_node>
+                {
+                    resource_class_node
+                    {
+                        SWG_resource_classes::CREATURE_FOOD,
+                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        std::vector<resource_class_node>()
+                    },
+                    resource_class_node
+                    {
+                        SWG_resource_classes::CREATURE_STRUCTURAL,
+                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        std::vector<resource_class_node>()
                     }
                 }
             }
