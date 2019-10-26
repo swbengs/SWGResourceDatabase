@@ -795,7 +795,8 @@ int test_Sqlite_real_details()
 int resourceTreeFindTest()
 {
     ResourceTree tree;
-    tree.debugTestFindClassNode();
+    //tree.debugTestFindClassNode();
+    tree.debugTestFindType();
 
     return EXIT_SUCCESS;
 }

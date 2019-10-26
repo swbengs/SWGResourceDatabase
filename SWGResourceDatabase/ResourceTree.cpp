@@ -63,15 +63,52 @@ void ResourceTree::debugTestFindClassNode() const
         if (node != nullptr)
         {
             //std::cout << "node class name: " << SWGResourceClassString(node->resource_class) << "\n";
-            //std::cout << "node class pretty name: " << SWGResourceClassStringPretty(node->resource_class) << "\n\n";
+            std::cout << "node class pretty name: " << SWGResourceClassStringPretty(node->resource_class) << "\n";
         }
         else
         {
-            std::cout << "class failed to be found: " << SWGResourceClassStringPretty(resource_class) << "\n\n";
+            std::cout << "ERROR: class failed to be found: " << SWGResourceClassStringPretty(resource_class) << "\n";
         }
     }
 }
 
+void ResourceTree::debugTestFindType() const
+{
+    std::vector<bool> found;
+    found.resize(static_cast<int>(SWG_resource_types::SWG_resource_types_count), false); //set all to false from 0 to SWG_resource_classes_count - 1
+
+    //this will always find the first type of aluminum since all nodes that don't use start and end set both to that but it's all good. wasteful but this works
+    for (int i = static_cast<int>(SWG_resource_classes::ALUMINUM); i < static_cast<int>(SWG_resource_classes::SWG_resource_classes_count); i++)
+    {
+        SWG_resource_classes resource_class = static_cast<SWG_resource_classes>(i);
+        const resource_class_node* node = getResourceClassNode(resource_class);
+        if (node != nullptr)
+        {
+            for (int c = static_cast<int>(node->start_type); c <= static_cast<int>(node->end_type); c++)
+            {
+                if (!found[c]) //if not already set to true, do so
+                {
+                    found[c] = true;
+                }
+            }
+        }
+    }
+
+    //look for and report any values of false
+    for (size_t i = 0; i < found.size(); i++)
+    {
+        if (found[i])
+        {
+            std::cout << "type pretty name: " << SWGResourceTypeStringPretty(static_cast<SWG_resource_types>(i)) << "\n";
+        }
+        else
+        {
+            std::cout << "ERROR: type failed to be found: " << SWGResourceTypeStringPretty(static_cast<SWG_resource_types>(i)) << "\n";
+        }
+    }
+}
+
+//private
 const resource_class_node* ResourceTree::findClassRecursive(SWG_resource_classes resource_class, const resource_class_node* current_node) const
 {
     //base cases are: current node has no children and this node isn't what we're looking for(no where else to go so return), or it's the node we want
@@ -97,7 +134,6 @@ const resource_class_node* ResourceTree::findClassRecursive(SWG_resource_classes
     return result;
 }
 
-//private
 void ResourceTree::createRootNode()
 {
     root = resource_class_node
@@ -158,7 +194,7 @@ resource_class_node ResourceTree::createEnergyNode()
                     {
                         SWG_resource_classes::ENERGY_RENEWABLE_SITE_LIMITED,
                         SWG_resource_types::ENERGY_RENEWABLE_SITE_LIMITED_GEOTHERMAL_CORELLIA,
-                        SWG_resource_types::ENERGY_RENEWABLE_SITE_LIMITED_GEOTHERMAL_YAVIN4,
+                        SWG_resource_types::ENERGY_RENEWABLE_SITE_LIMITED_TIDAL_YAVIN4,
                         std::vector<resource_class_node>()
                     }
                 }
@@ -310,7 +346,7 @@ std::vector<resource_class_node> ResourceTree::createMineralChildrenNodes()
                         {
                             SWG_resource_classes::STEEL,
                             SWG_resource_types::STEEL_ARVESHIAN,
-                            SWG_resource_types::STEEL_NEUTRONIUM,
+                            SWG_resource_types::STEEL_THORANIUM,
                             std::vector<resource_class_node>()
                         }
                     }
@@ -892,8 +928,8 @@ std::vector<resource_class_node> ResourceTree::createCreatureStructuralChildrenN
             resource_class_node
             {
                 SWG_resource_classes::BONE,
-                SWG_resource_types::ALUMINUM_AGRINIUM,
-                SWG_resource_types::ALUMINUM_AGRINIUM,
+                SWG_resource_types::BONE_MAMMAL_CORELLIA,
+                SWG_resource_types::BONE_MAMMAL_YAVIN4,
                 std::vector<resource_class_node>
                 {
                     resource_class_node

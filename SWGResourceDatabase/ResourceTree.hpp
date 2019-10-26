@@ -51,6 +51,7 @@ public:
     const resource_class_node* getResourceClassNode(SWG_resource_classes resource_class) const;
 
     void debugTestFindClassNode() const;
+    void debugTestFindType() const;
 
 private:
     resource_class_node root;
