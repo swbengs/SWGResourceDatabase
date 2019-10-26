@@ -762,33 +762,119 @@ std::vector<resource_class_node> ResourceTree::createCreatureFoodChildrenNodes()
         {
             resource_class_node
             {
-                SWG_resource_classes::WOOD,
+                SWG_resource_classes::MEAT,
                 SWG_resource_types::ALUMINUM_AGRINIUM,
                 SWG_resource_types::ALUMINUM_AGRINIUM,
                 std::vector<resource_class_node>
                 {
                     resource_class_node
                     {
-                        SWG_resource_classes::WOOD_DECIDUOUS,
-                        SWG_resource_types::WOOD_DECIDUOUS_CORELLIA,
-                        SWG_resource_types::WOOD_DECIDUOUS_YAVIN4,
+                        SWG_resource_classes::MEAT_AVIAN,
+                        SWG_resource_types::MEAT_AVIAN_CORELLIA,
+                        SWG_resource_types::MEAT_AVIAN_YAVIN4,
                         std::vector<resource_class_node>()
                     },
                     resource_class_node
                     {
-                        SWG_resource_classes::SOFTWOOD,
-                        SWG_resource_types::SOFTWOOD_CONIFER_CORELLIA,
-                        SWG_resource_types::SOFTWOOD_CONIFER_YAVIN4,
+                        SWG_resource_classes::MEAT_CARNIVORE,
+                        SWG_resource_types::MEAT_CARNIVORE_CORELLIA,
+                        SWG_resource_types::MEAT_CARNIVORE_YAVIN4,
+                        std::vector<resource_class_node>()
+                    },
+                    resource_class_node
+                    {
+                        SWG_resource_classes::MEAT_DOMESTICATED,
+                        SWG_resource_types::MEAT_DOMESTICATED_CORELLIA,
+                        SWG_resource_types::MEAT_DOMESTICATED_YAVIN4,
+                        std::vector<resource_class_node>()
+                    },
+                    resource_class_node
+                    {
+                        SWG_resource_classes::MEAT_EGG,
+                        SWG_resource_types::MEAT_EGG_CORELLIA,
+                        SWG_resource_types::MEAT_EGG_YAVIN4,
+                        std::vector<resource_class_node>()
+                    },
+                    resource_class_node
+                    {
+                        SWG_resource_classes::MEAT_HERBIVORE,
+                        SWG_resource_types::MEAT_HERBIVORE_CORELLIA,
+                        SWG_resource_types::MEAT_HERBIVORE_YAVIN4,
+                        std::vector<resource_class_node>()
+                    },
+                    resource_class_node
+                    {
+                        SWG_resource_classes::MEAT_INSECT,
+                        SWG_resource_types::MEAT_INSECT_CORELLIA,
+                        SWG_resource_types::MEAT_INSECT_YAVIN4,
+                        std::vector<resource_class_node>()
+                    },
+                    resource_class_node
+                    {
+                        SWG_resource_classes::MEAT_REPTILLIAN,
+                        SWG_resource_types::MEAT_REPTILIAN_CORELLIA,
+                        SWG_resource_types::MEAT_REPTILIAN_YAVIN4,
+                        std::vector<resource_class_node>()
+                    },
+                    resource_class_node
+                    {
+                        SWG_resource_classes::SEAFOOD,
+                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        SWG_resource_types::ALUMINUM_AGRINIUM,
                         std::vector<resource_class_node>
                         {
                             resource_class_node
                             {
-                                SWG_resource_classes::SOFTWOOD_EVERGREEN,
-                                SWG_resource_types::SOFTWOOD_EVERGREEN_CORELLIA,
-                                SWG_resource_types::SOFTWOOD_EVERGREEN_YAVIN4,
+                                SWG_resource_classes::SEAFOOD_CRUSTACEAN,
+                                SWG_resource_types::SEAFOOD_CRUSTACEAN_CORELLIA,
+                                SWG_resource_types::SEAFOOD_CRUSTACEAN_YAVIN4,
+                                std::vector<resource_class_node>()
+                            },
+                            resource_class_node
+                            {
+                                SWG_resource_classes::SEAFOOD_FISH,
+                                SWG_resource_types::SEAFOOD_FISH_CORELLIA,
+                                SWG_resource_types::SEAFOOD_FISH_YAVIN4,
+                                std::vector<resource_class_node>()
+                            },
+                            resource_class_node
+                            {
+                                SWG_resource_classes::SEAFOOD_MOLLUSK,
+                                SWG_resource_types::SEAFOOD_MOLLUSK_CORELLIA,
+                                SWG_resource_types::SEAFOOD_MOLLUSK_YAVIN4,
                                 std::vector<resource_class_node>()
                             }
                         }
+                    },
+                    resource_class_node
+                    {
+                        SWG_resource_classes::MEAT_WILD,
+                        SWG_resource_types::MEAT_WILD_CORELLIA,
+                        SWG_resource_types::MEAT_WILD_YAVIN4,
+                        std::vector<resource_class_node>()
+                    },
+                }
+            },
+            resource_class_node
+            {
+                SWG_resource_classes::MILK,
+                SWG_resource_types::ALUMINUM_AGRINIUM,
+                SWG_resource_types::ALUMINUM_AGRINIUM,
+                std::vector<resource_class_node>
+                {
+                    resource_class_node
+                    {
+                        SWG_resource_classes::MILK_DOMESTICATED,
+                        SWG_resource_types::MILK_DOMESTICATED_CORELLIA,
+                        SWG_resource_types::MILK_DOMESTICATED_YAVIN4,
+                        std::vector<resource_class_node>()
+                    },
+                    resource_class_node
+                    {
+                        SWG_resource_classes::MILK_WILD,
+                        SWG_resource_types::MILK_WILD_CORELLIA,
+                        SWG_resource_types::MILK_WILD_YAVIN4,
+                        std::vector<resource_class_node>()
                     }
                 }
             }
@@ -805,46 +891,60 @@ std::vector<resource_class_node> ResourceTree::createCreatureStructuralChildrenN
         {
             resource_class_node
             {
-                SWG_resource_classes::FLORA_RESOURCES,
+                SWG_resource_classes::BONE,
                 SWG_resource_types::ALUMINUM_AGRINIUM,
                 SWG_resource_types::ALUMINUM_AGRINIUM,
                 std::vector<resource_class_node>
                 {
                     resource_class_node
                     {
-                        SWG_resource_classes::FLORA_FOOD,
-                        SWG_resource_types::ALUMINUM_AGRINIUM,
-                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        SWG_resource_classes::BONE_AVIAN,
+                        SWG_resource_types::BONE_AVIAN_CORELLIA,
+                        SWG_resource_types::BONE_AVIAN_YAVIN4,
                         std::vector<resource_class_node>()
                     },
                     resource_class_node
                     {
-                        SWG_resource_classes::FLORA_STRUCTURAL,
-                        SWG_resource_types::ALUMINUM_AGRINIUM,
-                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        SWG_resource_classes::BONE_HORN,
+                        SWG_resource_types::BONE_HORN_CORELLIA,
+                        SWG_resource_types::BONE_HORN_YAVIN4,
                         std::vector<resource_class_node>()
                     }
                 }
             },
             resource_class_node
             {
-                SWG_resource_classes::CREATURE_RESOURCES,
+                SWG_resource_classes::HIDE,
                 SWG_resource_types::ALUMINUM_AGRINIUM,
                 SWG_resource_types::ALUMINUM_AGRINIUM,
                 std::vector<resource_class_node>
                 {
                     resource_class_node
                     {
-                        SWG_resource_classes::CREATURE_FOOD,
-                        SWG_resource_types::ALUMINUM_AGRINIUM,
-                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        SWG_resource_classes::HIDE_BRISTLEY,
+                        SWG_resource_types::HIDE_BRISTLEY_CORELLIA,
+                        SWG_resource_types::HIDE_BRISTLEY_YAVIN4,
                         std::vector<resource_class_node>()
                     },
                     resource_class_node
                     {
-                        SWG_resource_classes::CREATURE_STRUCTURAL,
-                        SWG_resource_types::ALUMINUM_AGRINIUM,
-                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        SWG_resource_classes::HIDE_LEATHERY,
+                        SWG_resource_types::HIDE_LEATHERY_CORELLIA,
+                        SWG_resource_types::HIDE_LEATHERY_YAVIN4,
+                        std::vector<resource_class_node>()
+                    },
+                    resource_class_node
+                    {
+                        SWG_resource_classes::HIDE_SCALEY,
+                        SWG_resource_types::HIDE_SCALEY_CORELLIA,
+                        SWG_resource_types::HIDE_SCALEY_YAVIN4,
+                        std::vector<resource_class_node>()
+                    },
+                    resource_class_node
+                    {
+                        SWG_resource_classes::HIDE_WOOLY,
+                        SWG_resource_types::HIDE_WOOLY_CORELLIA,
+                        SWG_resource_types::HIDE_WOOLY_YAVIN4,
                         std::vector<resource_class_node>()
                     }
                 }
