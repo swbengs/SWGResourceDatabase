@@ -174,6 +174,30 @@ void CLI_V1::loadSettings()
             //use the one in Lua if it was not 0
             limit = limit_temp;
         }
+
+        int spacing_temp = settings_lua.getIntGlobalValue("id_spacing");
+        if (spacing_temp > 0)
+        {
+            SqliteCore_V1::id_spacing = spacing_temp;
+        }
+
+        spacing_temp = settings_lua.getIntGlobalValue("name_spacing");
+        if (spacing_temp > 0)
+        {
+            SqliteCore_V1::name_spacing = spacing_temp;
+        }
+
+        spacing_temp = settings_lua.getIntGlobalValue("type_spacing");
+        if (spacing_temp > 0)
+        {
+            SqliteCore_V1::type_spacing = spacing_temp;
+        }
+
+        spacing_temp = settings_lua.getIntGlobalValue("attribute_spacing");
+        if (spacing_temp > 0)
+        {
+            SqliteCore_V1::attribute_spacing = spacing_temp;
+        }
     }
 }
 

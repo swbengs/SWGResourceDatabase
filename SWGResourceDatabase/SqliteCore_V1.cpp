@@ -2,6 +2,7 @@
 #include "SqliteCore_V1.hpp"
 
 //std lib includes
+#include <sstream>
 
 //other includes
 
@@ -32,6 +33,19 @@ SOFTWARE.
 //helper C functions(not part of the class)
 //callback that will print each column in a newline
 
+//settings
+int SqliteCore_V1::id_spacing = 6;
+int SqliteCore_V1::name_spacing = 15;
+int SqliteCore_V1::type_spacing = 35;
+int SqliteCore_V1::attribute_spacing = 4;
+
+std::string format_string(int spacing)
+{
+    std::stringstream stream;
+    stream << "%" << spacing << "s ";
+    return stream.str();
+}
+
 int print_resource_callback(void* row_count, int argc, char **argv, char **azColName)
 {
     int* temp = (int*)row_count;
@@ -39,13 +53,13 @@ int print_resource_callback(void* row_count, int argc, char **argv, char **azCol
 
     if (argc > 3)
     {
-        printf("%6s ", argv[0]);
-        printf("%15s ", argv[1]);
-        printf("%35s ", argv[2]);
+        printf(format_string(SqliteCore_V1::id_spacing).c_str(), argv[0]);
+        printf(format_string(SqliteCore_V1::name_spacing).c_str(), argv[1]);
+        printf(format_string(SqliteCore_V1::type_spacing).c_str(), argv[2]);
         int i;
         for (i = 3; i < argc; i++)
         {
-            printf("%4s ", argv[i] ? argv[i] : "NULL");
+            printf(format_string(SqliteCore_V1::attribute_spacing).c_str(), argv[i] ? argv[i] : "NULL");
         }
     }
 
@@ -58,7 +72,24 @@ void execute_statement_print_resource_avg(sqlite3* database, std::string stateme
 {
     int row_count = 0;
     char *zErrMsg = nullptr;
-    printf("%6s %15s %35s %4s %4s %4s %4s %4s %4s %4s %4s %4s %4s %4s\n", "id", "name", "type", "CR", "CD", "DR", "FL", "HR", "MA", "OQ", "PE", "SR", "UT", "WAvg");
+    //printf("%6s %15s %35s %4s %4s %4s %4s %4s %4s %4s %4s %4s %4s %4s\n", "id", "name", "type", "CR", "CD", "DR", "FL", "HR", "MA", "OQ", "PE", "SR", "UT", "WAvg");
+    printf(format_string(SqliteCore_V1::id_spacing).c_str(), "id");
+    printf(format_string(SqliteCore_V1::name_spacing).c_str(), "name");
+    printf(format_string(SqliteCore_V1::type_spacing).c_str(), "type");
+
+    printf(format_string(SqliteCore_V1::attribute_spacing).c_str(), "CR");
+    printf(format_string(SqliteCore_V1::attribute_spacing).c_str(), "CD");
+    printf(format_string(SqliteCore_V1::attribute_spacing).c_str(), "DR");
+    printf(format_string(SqliteCore_V1::attribute_spacing).c_str(), "FL");
+    printf(format_string(SqliteCore_V1::attribute_spacing).c_str(), "HR");
+    printf(format_string(SqliteCore_V1::attribute_spacing).c_str(), "MA");
+    printf(format_string(SqliteCore_V1::attribute_spacing).c_str(), "OQ");
+    printf(format_string(SqliteCore_V1::attribute_spacing).c_str(), "PE");
+    printf(format_string(SqliteCore_V1::attribute_spacing).c_str(), "SR");
+    printf(format_string(SqliteCore_V1::attribute_spacing).c_str(), "UT");
+    printf(format_string(SqliteCore_V1::attribute_spacing).c_str(), "WAvg");
+    printf("\n");
+
     int rc = sqlite3_exec(database, statement.c_str(), print_resource_callback, &row_count, &zErrMsg);
     if (rc != SQLITE_OK)
     {
@@ -72,7 +103,23 @@ void execute_statement_print_resource(sqlite3* database, std::string statement)
 {
     int row_count = 0;
     char *zErrMsg = nullptr;
-    printf("%6s %15s %35s %4s %4s %4s %4s %4s %4s %4s %4s %4s %4s\n", "id", "name", "type", "CR", "CD", "DR", "FL", "HR", "MA", "OQ", "PE", "SR", "UT");
+    //printf("%6s %15s %35s %4s %4s %4s %4s %4s %4s %4s %4s %4s %4s\n", "id", "name", "type", "CR", "CD", "DR", "FL", "HR", "MA", "OQ", "PE", "SR", "UT");
+    printf(format_string(SqliteCore_V1::id_spacing).c_str(), "id");
+    printf(format_string(SqliteCore_V1::name_spacing).c_str(), "name");
+    printf(format_string(SqliteCore_V1::type_spacing).c_str(), "type");
+
+    printf(format_string(SqliteCore_V1::attribute_spacing).c_str(), "CR");
+    printf(format_string(SqliteCore_V1::attribute_spacing).c_str(), "CD");
+    printf(format_string(SqliteCore_V1::attribute_spacing).c_str(), "DR");
+    printf(format_string(SqliteCore_V1::attribute_spacing).c_str(), "FL");
+    printf(format_string(SqliteCore_V1::attribute_spacing).c_str(), "HR");
+    printf(format_string(SqliteCore_V1::attribute_spacing).c_str(), "MA");
+    printf(format_string(SqliteCore_V1::attribute_spacing).c_str(), "OQ");
+    printf(format_string(SqliteCore_V1::attribute_spacing).c_str(), "PE");
+    printf(format_string(SqliteCore_V1::attribute_spacing).c_str(), "SR");
+    printf(format_string(SqliteCore_V1::attribute_spacing).c_str(), "UT");
+    printf("\n");
+
     int rc = sqlite3_exec(database, statement.c_str(), print_resource_callback, &row_count, &zErrMsg);
     if (rc != SQLITE_OK)
     {
