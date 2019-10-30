@@ -161,7 +161,22 @@ bool CLI_V1::loadDatabase()
     return true;
 }
 
-//private
+// private
+void CLI_V1::loadSettings()
+{
+    bool wasSuccess = settings_lua.runSettingsScript();
+    if (wasSuccess)
+    {
+        //only do stuff if it ran successfully
+        int limit_temp = settings_lua.getIntGlobalValue("limit");
+        if (limit_temp > 0)
+        {
+            //use the one in Lua if it was not 0
+            limit = limit_temp;
+        }
+    }
+}
+
 int CLI_V1::getIntegerInput(std::string options, int min, int max)
 {
     int result = 0;
@@ -258,6 +273,9 @@ int CLI_V1::inputLoop()
             state = CLI_state::READY;
             break;
         case CLI_state::READY:
+            //only get here once so do misc stuff here before main menu appears
+            loadSettings();
+
             mainMenuLoop();
             isDone = true;
             break;

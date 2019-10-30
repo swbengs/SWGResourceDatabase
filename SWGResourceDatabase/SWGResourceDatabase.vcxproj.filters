@@ -180,6 +180,9 @@
     <None Include="scripts\global_helpers.lua">
       <Filter>scripts</Filter>
     </None>
+    <None Include="settings.lua">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sqlite\sqlite3.h">

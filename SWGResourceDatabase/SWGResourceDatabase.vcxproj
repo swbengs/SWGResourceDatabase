@@ -199,6 +199,7 @@
     <None Include="scripts\make_conversions.lua" />
     <None Include="scripts\make_enums.lua" />
     <None Include="scripts\pull_resource_info.lua" />
+    <None Include="settings.lua" />
     <None Include="table_test.lua" />
   </ItemGroup>
   <ItemGroup>

@@ -137,6 +137,48 @@ bool LuaCore::getNextResource(resource_pod& pod, std::vector<std::string>& class
     return true;
 }
 
+bool LuaCore::runSettingsScript()
+{
+    bool wasSuccess = runScript("settings.lua");
+    if (!wasSuccess)
+    {
+        fprintf(stderr, "Could not find settings.lua. Switching to defaults\n");
+    }
+
+    return wasSuccess;
+}
+
+int LuaCore::getIntGlobalValue(std::string key)
+{
+    int result;
+    lua_getglobal(lua_state, key.c_str());
+    if (!lua_isnumber(lua_state, -1))
+    {
+        fprintf(stderr, "invalid integer in table[%s]\n", key.c_str());
+        //cleanup, aka the lua_pop happens even if we complain here hence why it's missing
+    }
+
+    result = (int)lua_tonumber(lua_state, -1);
+    lua_pop(lua_state, 1);  /* remove number */
+    return result;
+}
+
+std::string LuaCore::getStringGlobalValue(std::string key)
+{
+    std::string result;
+    lua_getglobal(lua_state, key.c_str());
+    if (!lua_isstring(lua_state, -1))
+    {
+        fprintf(stderr, "invalid string in table[%s]\n", key.c_str());
+        lua_pop(lua_state, 1); //don't forget to cleanup stack when returning early
+        return "null";
+    }
+
+    result = lua_tostring(lua_state, -1); //in C++11 it is supposed to copy the char*. If it does not this will cause issues. The internal pointer that Lua gives is only valid while the value is on the Lua stack
+    lua_pop(lua_state, 1);
+    return result;
+}
+
 //debug helpers
 void LuaCore::debugStart()
 {
@@ -213,6 +255,7 @@ int LuaCore::getFieldInt(int key)
     return result;
 }
 
+//returns the value at table[key] or string value of null if it was nil
 std::string LuaCore::getFieldString(std::string key)
 {
     std::string result;
@@ -231,6 +274,7 @@ std::string LuaCore::getFieldString(std::string key)
     return result;
 }
 
+//returns the value at table[key] or string value of null if it was nil
 std::string LuaCore::getFieldString(int key)
 {
     std::string result;

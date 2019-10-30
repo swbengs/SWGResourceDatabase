@@ -57,6 +57,7 @@ private:
     const resource_class_node* current_node;
     int limit;
 
+    void loadSettings();
     int getIntegerInput(std::string options, int min, int max);
     int inputLoop(); //determine what to do next based on what the user types in
     void mainMenuLoop();
