@@ -114,9 +114,12 @@ std::vector<node_items> ResourceTree::getNodeItems(const resource_class_node* no
         }
 
         //then any resource types at parent level
-        for (int i = 0; i < getNodeItemCount(node); i++)
+        if (node->start_type != skip_type && node->end_type != skip_type)
         {
-            result.push_back(node_items{ static_cast<int>(node->start_type)+i, true }); //get base type and add i to get each type
+            for (int i = 0; i < static_cast<int>(node->end_type) - static_cast<int>(node->start_type) + 1; i++)
+            {
+                result.push_back(node_items{ static_cast<int>(node->start_type) + i, false }); //get base type and add i to get each type
+            }
         }
     }
 

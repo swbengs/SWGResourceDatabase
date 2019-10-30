@@ -44,6 +44,7 @@ CLI_V1::CLI_V1()
     database_name = "";
     lua_dump_file = "";
     current_node = nullptr;
+    int limit = 25;
 }
 
 CLI_V1::~CLI_V1()
@@ -294,7 +295,6 @@ bool CLI_V1::viewResourcesLoop()
     const std::string preset_options = "Choices:\n-2: Exit program\n-1: Exit viewing resources\n0: Back\n";
 
     std::stack<SWG_resource_classes> parent_classes;
-    //parent_classes.push(SWG_resource_classes::SWG_resource_classes_count);
     current_node = tree.getRootNode();
 
     while (!isDone)
@@ -316,7 +316,14 @@ bool CLI_V1::viewResourcesLoop()
                 name = SWGResourceTypeStringPretty(static_cast<SWG_resource_types>(items[i].resource_enum));
             }
 
-            stream << i + 1 << ": " << name << "\n"; //+1 because 0 is already taken so start at 1. index needs to be starting at 0 though hence why i = 1 is not the loop start
+            if (i == 0 && !parent_classes.empty())
+            {
+                stream << i + 1 << ": " << name << "(view this class of resource)\n"; //almost the same but with identifiying that this is a search and not a navigate command
+            }
+            else
+            {
+                stream << i + 1 << ": " << name << "\n"; //+1 because 0 is already taken so start at 1. index needs to be starting at 0 though hence why i = 1 is not the loop start
+            }
         }
 
         input = getIntegerInput(stream.str(), -2, items.size());
@@ -348,6 +355,36 @@ bool CLI_V1::viewResourcesLoop()
             break;
         default:
             //figure out where to go and call
+
+            //root vs non root. Non root 1 is always this node, higher ones are either children nodes if a class or this node if a type. Root is always a class and never itself
+            if (parent_classes.empty()) //root so always a class
+            {
+                //navigate
+                current_node = tree.getResourceClassNode(static_cast<SWG_resource_classes>(items[input - 1].resource_enum));
+                parent_classes.push(SWG_resource_classes::SWG_resource_classes_count);
+            }
+            else //non root
+            {
+                if (input == 1) //this node
+                {
+                    //go nowhere just run the class command
+                    resource_database->showResourcesWithClass(SWGResourceClassString(static_cast<SWG_resource_classes>(items[input - 1].resource_enum)), limit);
+                }
+                else
+                {
+                    //child node if a class, this node if not
+                    if (items[input - 1].isClass)
+                    {
+                        //navigate
+                        current_node = tree.getResourceClassNode(static_cast<SWG_resource_classes>(items[input - 1].resource_enum));
+                        parent_classes.push(SWG_resource_classes::SWG_resource_classes_count);
+                    }
+                    else
+                    {
+                        resource_database->showResourcesWithClass(SWGResourceTypeString(static_cast<SWG_resource_types>(items[input - 1].resource_enum)), limit);
+                    }
+                }
+            }
             break;
         }
     }

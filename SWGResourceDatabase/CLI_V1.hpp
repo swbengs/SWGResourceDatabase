@@ -55,6 +55,7 @@ private:
     CLI_state state;
     ResourceTree tree;
     const resource_class_node* current_node;
+    int limit;
 
     int getIntegerInput(std::string options, int min, int max);
     int inputLoop(); //determine what to do next based on what the user types in
