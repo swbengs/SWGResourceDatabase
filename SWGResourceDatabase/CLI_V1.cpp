@@ -44,7 +44,7 @@ CLI_V1::CLI_V1()
     database_name = "";
     lua_dump_file = "";
     current_node = nullptr;
-    int limit = 25;
+    limit = 25;
 }
 
 CLI_V1::~CLI_V1()
@@ -153,10 +153,10 @@ bool CLI_V1::loadDatabase()
     {
         resource_database = new SqliteCore_V1(database_name);
     }
-
+    std::cout << "load database with name: " << database_name << "\n";
     printf("resource count: %i\n", resource_database->getResourceCount());
-
-    resource_database->showAllResources(10);
+    //resource_database->showAllClasses(limit);
+    //resource_database->showAllResources(limit);
 
     return true;
 }
@@ -368,6 +368,7 @@ bool CLI_V1::viewResourcesLoop()
                 if (input == 1) //this node
                 {
                     //go nowhere just run the class command
+                    std::cout << "resource class string: " << SWGResourceClassString(static_cast<SWG_resource_classes>(items[input - 1].resource_enum));
                     resource_database->showResourcesWithClass(SWGResourceClassString(static_cast<SWG_resource_classes>(items[input - 1].resource_enum)), limit);
                 }
                 else
