@@ -368,7 +368,7 @@ bool CLI_V1::viewResourcesLoop()
                 if (input == 1) //this node
                 {
                     //go nowhere just run the class command
-                    std::cout << "resource class string: " << SWGResourceClassString(static_cast<SWG_resource_classes>(items[input - 1].resource_enum));
+                    //std::cout << "resource class string: " << SWGResourceClassString(static_cast<SWG_resource_classes>(items[input - 1].resource_enum));
                     resource_database->showResourcesWithClass(SWGResourceClassString(static_cast<SWG_resource_classes>(items[input - 1].resource_enum)), limit);
                 }
                 else
