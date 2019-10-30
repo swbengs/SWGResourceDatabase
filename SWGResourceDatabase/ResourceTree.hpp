@@ -54,6 +54,7 @@ public:
     void debugTestFindType() const;
 
 private:
+    static const SWG_resource_types skip_type = SWG_resource_types::SWG_resource_types_count;
     resource_class_node root;
 
     const resource_class_node* findClassRecursive(SWG_resource_classes resource_class, const resource_class_node* current_node) const;

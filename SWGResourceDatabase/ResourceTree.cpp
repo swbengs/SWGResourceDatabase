@@ -31,7 +31,6 @@ SOFTWARE.
 */
 
 //class code
-
 ResourceTree::ResourceTree()
 {
     createRootNode();
@@ -77,18 +76,20 @@ void ResourceTree::debugTestFindType() const
     std::vector<bool> found;
     found.resize(static_cast<int>(SWG_resource_types::SWG_resource_types_count), false); //set all to false from 0 to SWG_resource_classes_count - 1
 
-    //this will always find the first type of aluminum since all nodes that don't use start and end set both to that but it's all good. wasteful but this works
     for (int i = static_cast<int>(SWG_resource_classes::ALUMINUM); i < static_cast<int>(SWG_resource_classes::SWG_resource_classes_count); i++)
     {
         SWG_resource_classes resource_class = static_cast<SWG_resource_classes>(i);
         const resource_class_node* node = getResourceClassNode(resource_class);
         if (node != nullptr)
         {
-            for (int c = static_cast<int>(node->start_type); c <= static_cast<int>(node->end_type); c++)
+            if (node->start_type != skip_type && node->end_type != skip_type) //only add if neither is set to skip type
             {
-                if (!found[c]) //if not already set to true, do so
+                for (int c = static_cast<int>(node->start_type); c <= static_cast<int>(node->end_type); c++)
                 {
-                    found[c] = true;
+                    if (!found[c]) //if not already set to true, do so
+                    {
+                        found[c] = true;
+                    }
                 }
             }
         }
@@ -139,8 +140,8 @@ void ResourceTree::createRootNode()
     root = resource_class_node
     {
         SWG_resource_classes::ALUMINUM,
-        SWG_resource_types::ALUMINUM_AGRINIUM,
-        SWG_resource_types::ALUMINUM_AGRINIUM,
+        skip_type,
+        skip_type,
         std::vector<resource_class_node>
         {
             createEnergyNode(),
@@ -156,22 +157,22 @@ resource_class_node ResourceTree::createEnergyNode()
     resource_class_node temp = resource_class_node
     {
         SWG_resource_classes::ENERGY,
-        SWG_resource_types::ALUMINUM_AGRINIUM,
-        SWG_resource_types::ALUMINUM_AGRINIUM,
+        skip_type,
+        skip_type,
         std::vector<resource_class_node>
         {
             resource_class_node
             {
                 SWG_resource_classes::ENERGY_RENEWABLE,
-                SWG_resource_types::ALUMINUM_AGRINIUM,
-                SWG_resource_types::ALUMINUM_AGRINIUM,
+                skip_type,
+                skip_type,
                 std::vector<resource_class_node>
                 {
                     resource_class_node
                     {
                         SWG_resource_classes::ENERGY_RENEWABLE_UNLIMITED,
-                        SWG_resource_types::ALUMINUM_AGRINIUM,
-                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        skip_type,
+                        skip_type,
                         std::vector<resource_class_node>
                         {
                             resource_class_node
@@ -210,15 +211,15 @@ resource_class_node ResourceTree::createInorganicNode()
     resource_class_node temp = resource_class_node
     {
         SWG_resource_classes::INORGANIC,
-        SWG_resource_types::ALUMINUM_AGRINIUM,
-        SWG_resource_types::ALUMINUM_AGRINIUM,
+        skip_type,
+        skip_type,
         std::vector<resource_class_node>
         {
             resource_class_node
             {
                 SWG_resource_classes::CHEMICAL,
-                SWG_resource_types::ALUMINUM_AGRINIUM,
-                SWG_resource_types::ALUMINUM_AGRINIUM,
+                skip_type,
+                skip_type,
                 createChemicalChildrenNodes()
             },
             resource_class_node
@@ -231,15 +232,15 @@ resource_class_node ResourceTree::createInorganicNode()
             resource_class_node
             {
                 SWG_resource_classes::MINERAL,
-                SWG_resource_types::ALUMINUM_AGRINIUM,
-                SWG_resource_types::ALUMINUM_AGRINIUM,
+                skip_type,
+                skip_type,
                 createMineralChildrenNodes()
             },
             resource_class_node
             {
                 SWG_resource_classes::GAS,
-                SWG_resource_types::ALUMINUM_AGRINIUM,
-                SWG_resource_types::ALUMINUM_AGRINIUM,
+                skip_type,
+                skip_type,
                 createGasChildrenNodes()
             }
         }
@@ -268,8 +269,8 @@ std::vector<resource_class_node> ResourceTree::createChemicalChildrenNodes()
         resource_class_node
         {
             SWG_resource_classes::FUEL_PETROCHEM_LIQUID,
-            SWG_resource_types::ALUMINUM_AGRINIUM,
-            SWG_resource_types::ALUMINUM_AGRINIUM,
+            skip_type,
+            skip_type,
             std::vector<resource_class_node>
             {
                 resource_class_node
@@ -292,8 +293,8 @@ std::vector<resource_class_node> ResourceTree::createMineralChildrenNodes()
         resource_class_node
         {
             SWG_resource_classes::RADIOACTIVE,
-            SWG_resource_types::ALUMINUM_AGRINIUM,
-            SWG_resource_types::ALUMINUM_AGRINIUM,
+            skip_type,
+            skip_type,
             std::vector<resource_class_node>
             {
                 resource_class_node
@@ -308,8 +309,8 @@ std::vector<resource_class_node> ResourceTree::createMineralChildrenNodes()
         resource_class_node
         {
             SWG_resource_classes::FUEL_PETROCHEM_SOLID,
-            SWG_resource_types::ALUMINUM_AGRINIUM,
-            SWG_resource_types::ALUMINUM_AGRINIUM,
+            skip_type,
+            skip_type,
             std::vector<resource_class_node>
             {
                 resource_class_node
@@ -324,8 +325,8 @@ std::vector<resource_class_node> ResourceTree::createMineralChildrenNodes()
         resource_class_node
         {
             SWG_resource_classes::METAL,
-            SWG_resource_types::ALUMINUM_AGRINIUM,
-            SWG_resource_types::ALUMINUM_AGRINIUM,
+            skip_type,
+            skip_type,
             std::vector<resource_class_node>
             {
                 resource_class_node
@@ -379,8 +380,8 @@ std::vector<resource_class_node> ResourceTree::createMineralChildrenNodes()
         resource_class_node
         {
             SWG_resource_classes::ORE,
-            SWG_resource_types::ALUMINUM_AGRINIUM,
-            SWG_resource_types::ALUMINUM_AGRINIUM,
+            skip_type,
+            skip_type,
             std::vector<resource_class_node>
             {
                 resource_class_node
@@ -465,8 +466,8 @@ std::vector<resource_class_node> ResourceTree::createGasChildrenNodes()
         resource_class_node
         {
             SWG_resource_classes::GAS_INERT,
-            SWG_resource_types::ALUMINUM_AGRINIUM,
-            SWG_resource_types::ALUMINUM_AGRINIUM,
+            skip_type,
+            skip_type,
             std::vector<resource_class_node>
             {
                 resource_class_node
@@ -481,8 +482,8 @@ std::vector<resource_class_node> ResourceTree::createGasChildrenNodes()
         resource_class_node
         {
             SWG_resource_classes::GAS_REACTIVE,
-            SWG_resource_types::ALUMINUM_AGRINIUM,
-            SWG_resource_types::ALUMINUM_AGRINIUM,
+            skip_type,
+            skip_type,
             std::vector<resource_class_node>
             {
                 resource_class_node
@@ -504,29 +505,29 @@ resource_class_node ResourceTree::createOrganicNode()
     resource_class_node temp = resource_class_node
     {
         SWG_resource_classes::ORGANIC,
-        SWG_resource_types::ALUMINUM_AGRINIUM,
-        SWG_resource_types::ALUMINUM_AGRINIUM,
+        skip_type,
+        skip_type,
         std::vector<resource_class_node>
         {
             resource_class_node
             {
                 SWG_resource_classes::FLORA_RESOURCES,
-                SWG_resource_types::ALUMINUM_AGRINIUM,
-                SWG_resource_types::ALUMINUM_AGRINIUM,
+                skip_type,
+                skip_type,
                 std::vector<resource_class_node>
                 {
                     resource_class_node
                     {
                         SWG_resource_classes::FLORA_FOOD,
-                        SWG_resource_types::ALUMINUM_AGRINIUM,
-                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        skip_type,
+                        skip_type,
                         createFloraFoodChildrenNodes()
                     },
                     resource_class_node
                     {
                         SWG_resource_classes::FLORA_STRUCTURAL,
-                        SWG_resource_types::ALUMINUM_AGRINIUM,
-                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        skip_type,
+                        skip_type,
                         createFloraStructuralChildrenNodes()
                     }
                 }
@@ -534,22 +535,22 @@ resource_class_node ResourceTree::createOrganicNode()
             resource_class_node
             {
                 SWG_resource_classes::CREATURE_RESOURCES,
-                SWG_resource_types::ALUMINUM_AGRINIUM,
-                SWG_resource_types::ALUMINUM_AGRINIUM,
+                skip_type,
+                skip_type,
                 std::vector<resource_class_node>
                 {
                     resource_class_node
                     {
                         SWG_resource_classes::CREATURE_FOOD,
-                        SWG_resource_types::ALUMINUM_AGRINIUM,
-                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        skip_type,
+                        skip_type,
                         createCreatureFoodChildrenNodes()
                     },
                     resource_class_node
                     {
                         SWG_resource_classes::CREATURE_STRUCTURAL,
-                        SWG_resource_types::ALUMINUM_AGRINIUM,
-                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        skip_type,
+                        skip_type,
                         createCreatureStructuralChildrenNodes()
                     }
                 }
@@ -568,15 +569,15 @@ std::vector<resource_class_node> ResourceTree::createFloraFoodChildrenNodes()
             resource_class_node
             {
                 SWG_resource_classes::CEREAL,
-                SWG_resource_types::ALUMINUM_AGRINIUM,
-                SWG_resource_types::ALUMINUM_AGRINIUM,
+                skip_type,
+                skip_type,
                 std::vector<resource_class_node>
                 {
                     resource_class_node
                     {
                         SWG_resource_classes::CORN,
-                        SWG_resource_types::ALUMINUM_AGRINIUM,
-                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        skip_type,
+                        skip_type,
                         std::vector<resource_class_node>
                         {
                             resource_class_node
@@ -598,8 +599,8 @@ std::vector<resource_class_node> ResourceTree::createFloraFoodChildrenNodes()
                     resource_class_node
                     {
                         SWG_resource_classes::OATS,
-                        SWG_resource_types::ALUMINUM_AGRINIUM,
-                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        skip_type,
+                        skip_type,
                         std::vector<resource_class_node>
                         {
                             resource_class_node
@@ -621,8 +622,8 @@ std::vector<resource_class_node> ResourceTree::createFloraFoodChildrenNodes()
                     resource_class_node
                     {
                         SWG_resource_classes::RICE,
-                        SWG_resource_types::ALUMINUM_AGRINIUM,
-                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        skip_type,
+                        skip_type,
                         std::vector<resource_class_node>
                         {
                             resource_class_node
@@ -644,8 +645,8 @@ std::vector<resource_class_node> ResourceTree::createFloraFoodChildrenNodes()
                     resource_class_node
                     {
                         SWG_resource_classes::WHEAT,
-                        SWG_resource_types::ALUMINUM_AGRINIUM,
-                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        skip_type,
+                        skip_type,
                         std::vector<resource_class_node>
                         {
                             resource_class_node
@@ -669,15 +670,15 @@ std::vector<resource_class_node> ResourceTree::createFloraFoodChildrenNodes()
             resource_class_node
             {
                 SWG_resource_classes::SEEDS,
-                SWG_resource_types::ALUMINUM_AGRINIUM,
-                SWG_resource_types::ALUMINUM_AGRINIUM,
+                skip_type,
+                skip_type,
                 std::vector<resource_class_node>
                 {
                     resource_class_node
                     {
                         SWG_resource_classes::FRUIT,
-                        SWG_resource_types::ALUMINUM_AGRINIUM,
-                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        skip_type,
+                        skip_type,
                         std::vector<resource_class_node>
                         {
                             resource_class_node
@@ -706,8 +707,8 @@ std::vector<resource_class_node> ResourceTree::createFloraFoodChildrenNodes()
                     resource_class_node
                     {
                         SWG_resource_classes::VEGETABLE,
-                        SWG_resource_types::ALUMINUM_AGRINIUM,
-                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        skip_type,
+                        skip_type,
                         std::vector<resource_class_node>
                         {
                             resource_class_node
@@ -756,8 +757,8 @@ std::vector<resource_class_node> ResourceTree::createFloraStructuralChildrenNode
             resource_class_node
             {
                 SWG_resource_classes::WOOD,
-                SWG_resource_types::ALUMINUM_AGRINIUM,
-                SWG_resource_types::ALUMINUM_AGRINIUM,
+                skip_type,
+                skip_type,
                 std::vector<resource_class_node>
                 {
                     resource_class_node
@@ -799,8 +800,8 @@ std::vector<resource_class_node> ResourceTree::createCreatureFoodChildrenNodes()
             resource_class_node
             {
                 SWG_resource_classes::MEAT,
-                SWG_resource_types::ALUMINUM_AGRINIUM,
-                SWG_resource_types::ALUMINUM_AGRINIUM,
+                skip_type,
+                skip_type,
                 std::vector<resource_class_node>
                 {
                     resource_class_node
@@ -855,8 +856,8 @@ std::vector<resource_class_node> ResourceTree::createCreatureFoodChildrenNodes()
                     resource_class_node
                     {
                         SWG_resource_classes::SEAFOOD,
-                        SWG_resource_types::ALUMINUM_AGRINIUM,
-                        SWG_resource_types::ALUMINUM_AGRINIUM,
+                        skip_type,
+                        skip_type,
                         std::vector<resource_class_node>
                         {
                             resource_class_node
@@ -894,8 +895,8 @@ std::vector<resource_class_node> ResourceTree::createCreatureFoodChildrenNodes()
             resource_class_node
             {
                 SWG_resource_classes::MILK,
-                SWG_resource_types::ALUMINUM_AGRINIUM,
-                SWG_resource_types::ALUMINUM_AGRINIUM,
+                skip_type,
+                skip_type,
                 std::vector<resource_class_node>
                 {
                     resource_class_node
@@ -951,8 +952,8 @@ std::vector<resource_class_node> ResourceTree::createCreatureStructuralChildrenN
             resource_class_node
             {
                 SWG_resource_classes::HIDE,
-                SWG_resource_types::ALUMINUM_AGRINIUM,
-                SWG_resource_types::ALUMINUM_AGRINIUM,
+                skip_type,
+                skip_type,
                 std::vector<resource_class_node>
                 {
                     resource_class_node
