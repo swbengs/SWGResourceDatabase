@@ -7,6 +7,7 @@
 #include <iostream>
 #include <sstream>
 #include <regex>
+#include <stack>
 
 //other library files
 #include "Sqlite\sqlite3.h"
@@ -42,6 +43,7 @@ CLI_V1::CLI_V1()
     resource_database = nullptr;
     database_name = "";
     lua_dump_file = "";
+    current_node = nullptr;
 }
 
 CLI_V1::~CLI_V1()
@@ -255,11 +257,101 @@ int CLI_V1::inputLoop()
             state = CLI_state::READY;
             break;
         case CLI_state::READY:
+            mainMenuLoop();
             isDone = true;
             break;
         }
     }
 
     return EXIT_SUCCESS;
+}
+
+void CLI_V1::mainMenuLoop()
+{
+    int input = 0;
+    bool isDone = false;
+
+    while (!isDone)
+    {
+        input = getIntegerInput("Choices:\n0: Exit\n1: View resources\n", 0, 1);
+        switch (input)
+        {
+        case 0:
+            isDone = true;
+            break;
+        case 1:
+            isDone = viewResourcesLoop();
+            break;
+        }
+    }
+}
+
+bool CLI_V1::viewResourcesLoop()
+{
+    //return false to continue the main loop and true if we should quit completely
+    int input = 0;
+    bool isDone = false;
+    const std::string preset_options = "Choices:\n-2: Exit program\n-1: Exit viewing resources\n0: Back\n";
+
+    std::stack<SWG_resource_classes> parent_classes;
+    //parent_classes.push(SWG_resource_classes::SWG_resource_classes_count);
+    current_node = tree.getRootNode();
+
+    while (!isDone)
+    {
+        std::stringstream stream;
+        stream << preset_options;
+
+        std::vector<node_items> items = tree.getNodeItems(current_node);
+        //fill in the other menu options
+        for (size_t i = 0; i < items.size(); i++)
+        {
+            std::string name;
+            if (items[i].isClass)
+            {
+                name = SWGResourceClassStringPretty(static_cast<SWG_resource_classes>(items[i].resource_enum));
+            }
+            else
+            {
+                name = SWGResourceTypeStringPretty(static_cast<SWG_resource_types>(items[i].resource_enum));
+            }
+
+            stream << i + 1 << ": " << name << "\n"; //+1 because 0 is already taken so start at 1. index needs to be starting at 0 though hence why i = 1 is not the loop start
+        }
+
+        input = getIntegerInput(stream.str(), -2, items.size());
+        switch (input)
+        {
+        case -2:
+            return true; //exit completely
+        case -1:
+            isDone = true;
+            break;
+        case 0:
+            if (!parent_classes.empty())
+            {
+                if (parent_classes.top() == SWG_resource_classes::SWG_resource_classes_count)
+                {
+                    current_node = tree.getRootNode();
+                }
+                else
+                {
+                    current_node = tree.getResourceClassNode(parent_classes.top());
+                }
+
+                parent_classes.pop();
+            }
+            else
+            {
+                isDone = true;
+            }
+            break;
+        default:
+            //figure out where to go and call
+            break;
+        }
+    }
+
+    return false;
 }
 

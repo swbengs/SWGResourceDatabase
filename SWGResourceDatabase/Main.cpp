@@ -843,10 +843,10 @@ int main(int argc, char **argv)
     //debug
     //result = debugRun();
 
-    //CLI_V1 cli;
-    //result = cli.startCLI(argc, argv);
+    CLI_V1 cli;
+    result = cli.startCLI(argc, argv);
 
-    result = resourceTreeFindTest();
+    //result = resourceTreeFindTest();
 
     return result;
 }

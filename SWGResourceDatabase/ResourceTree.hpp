@@ -34,6 +34,12 @@ SOFTWARE.
 Description: Tree to represent SWG resource tree(not an actual tree implementation though)
 */
 
+struct node_items
+{
+    int resource_enum;
+    bool isClass;
+};
+
 struct resource_class_node
 {
     SWG_resource_classes resource_class;
@@ -48,7 +54,10 @@ class ResourceTree
 public:
     ResourceTree();
 
+    const resource_class_node* getRootNode() const;
     const resource_class_node* getResourceClassNode(SWG_resource_classes resource_class) const;
+    int getNodeItemCount(const resource_class_node* node) const;
+    std::vector<node_items> getNodeItems(const resource_class_node* node) const;
 
     void debugTestFindClassNode() const;
     void debugTestFindType() const;

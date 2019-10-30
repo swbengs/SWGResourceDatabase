@@ -36,6 +36,11 @@ ResourceTree::ResourceTree()
     createRootNode();
 }
 
+const resource_class_node* ResourceTree::getRootNode() const
+{
+    return &root;
+}
+
 const resource_class_node* ResourceTree::getResourceClassNode(SWG_resource_classes resource_class) const
 {
     //replace with method that will say which of the 3 main branches to look in
@@ -47,6 +52,71 @@ const resource_class_node* ResourceTree::getResourceClassNode(SWG_resource_class
         if (result != nullptr) //the way to kick out of the loop if we find it
         {
             break;
+        }
+    }
+
+    return result;
+}
+
+int ResourceTree::getNodeItemCount(const resource_class_node* node) const
+{
+    //show this node and the children only(not their children) root is an exception. root doesn't count itself. show only the children.
+    if (node == nullptr)
+    {
+        return 0; //null means 0 since nothing there
+    }
+
+    if (node == &root) //want to check the actual address
+    {
+        return root.children.size();
+    }
+    else
+    {
+        //show this class, any resource types that show up here, and the children.
+        int count = 1; //start at 1 since this node is a class if not root or null
+        count += node->children.size();
+        if (node->start_type != skip_type && node->end_type != skip_type)
+        {
+            count += static_cast<int>(node->end_type) - static_cast<int>(node->start_type) + 1; //if there are resource types to show here get the count
+            //this works because end - start gives 1 less than the actual count. 0 if they are the same so add 1. Example 76(CORN_WILD_YAVIN4) - 67(CORN_WILD_CORELLIA) = 9 but there are 10 planets ;)
+        }
+
+        return count;
+    }
+}
+
+std::vector<node_items> ResourceTree::getNodeItems(const resource_class_node* node) const
+{
+    std::vector<node_items> result;
+
+    if (node == nullptr)
+    {
+        return result; //exit immediately
+    }
+
+    if (node == &root) //want to check the actual address
+    {
+        //only classes
+        for (size_t i = 0; i < node->children.size(); i++)
+        {
+            result.push_back(node_items{ static_cast<int>(node->children[i].resource_class), true });
+        }
+    }
+    else
+    {
+        //this class first
+        result.push_back(node_items{ static_cast<int>(node->resource_class), true });
+
+        //then children
+        for (size_t i = 0; i < node->children.size(); i++)
+        {
+            result.push_back(node_items{ static_cast<int>(node->children[i].resource_class), true });
+        }
+
+        //then any resource types at parent level
+        for (int i = 0; i < getNodeItemCount(node); i++)
+        {
+            result.push_back(node_items{ static_cast<int>(node->start_type)+i, true }); //get base type and add i to get each type
         }
     }
 

@@ -7,6 +7,7 @@
 #include "LuaCore.hpp"
 #include "SqliteCore_V1.hpp"
 #include "constantsV1.hpp"
+#include "ResourceTree.hpp"
 
 /*
 MIT License
@@ -52,8 +53,12 @@ private:
     LuaCore settings_lua;
     SqliteCore_V1* resource_database;
     CLI_state state;
+    ResourceTree tree;
+    const resource_class_node* current_node;
 
     int getIntegerInput(std::string options, int min, int max);
     int inputLoop(); //determine what to do next based on what the user types in
+    void mainMenuLoop();
+    bool viewResourcesLoop();
 };
 
