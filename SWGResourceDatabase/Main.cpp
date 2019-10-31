@@ -11,6 +11,8 @@
 //test includes
 #include "LuaCore.hpp"
 #include "SqliteCore_V1.hpp"
+#include "CLI_V1.hpp"
+#include "ResourceTree.hpp"
 
 /*
 MIT License
@@ -607,7 +609,7 @@ int test_Sqlite_real_details()
     //database.showAllResourcesPretty(limit);
     
     //printf("resources with type phrik aluminum\n");
-    //database.showResourcesWithClass(SWGResourceTypeString(ALUMINUM_PHRIK), limit); //do it the lazy way ;)
+    database.showResourcesWithClass(SWGResourceTypeString(SWG_resource_types::ALUMINUM_PHRIK), limit); //do it the lazy way ;)
     //printf("resources with type duralloy steel\n");
     //database.showResourcesWithClass(SWGResourceTypeString(STEEL_DURALLOY), limit);
     //printf("resources with class steel\n");
@@ -754,13 +756,13 @@ int test_Sqlite_real_details()
     //database.showResourcesWithClassAverage(SWGToString(FLORA_FOOD), limit, attributes);
     //database.showResourcesWithClassAverage(SWGToString(CREATURE_FOOD), limit, attributes);
 
-    pod.attribute = static_cast<int>(OQ);
-    pod.weight = 0.67f;
-    attributes.push_back(pod);
+    //pod.attribute = static_cast<int>(SWG_attributes::OQ);
+    //pod.weight = 0.67f;
+    //attributes.push_back(pod);
 
-    pod.attribute = static_cast<int>(PE);
-    pod.weight = 0.33f;
-    attributes.push_back(pod);
+    //pod.attribute = static_cast<int>(SWG_attributes::PE);
+    //pod.weight = 0.33f;
+    //attributes.push_back(pod);
 
     //medical adv comps for power 66% OQ 33% PE
     /*
@@ -780,12 +782,21 @@ int test_Sqlite_real_details()
 
     //medical stims etc for power 66% OQ 33% PE
     //stim E
-    database.showResourcesWithClassAverage(SWGToString(FRUIT_BERRIES), limit, attributes);
-    database.showResourcesWithClassAverage(SWGToString(FIBERPLAST), limit, attributes);
+    //database.showResourcesWithClassAverage(SWGToString(SWG_resource_classes::FRUIT_BERRIES), limit, attributes);
+    //database.showResourcesWithClassAverage(SWGToString(SWG_resource_classes::FIBERPLAST), limit, attributes);
 
     //buffs D
-    database.showResourcesWithClassAverage(SWGToString(MEAT_AVIAN), limit, attributes);
-    database.showResourcesWithClassAverage(SWGToString(GAS_REACTIVE), limit, attributes);
+    //database.showResourcesWithClassAverage(SWGToString(SWG_resource_classes::MEAT_AVIAN), limit, attributes);
+    //database.showResourcesWithClassAverage(SWGToString(SWG_resource_classes::GAS_REACTIVE), limit, attributes);
+
+    return EXIT_SUCCESS;
+}
+
+int resourceTreeFindTest()
+{
+    ResourceTree tree;
+    tree.debugTestFindClassNode();
+    tree.debugTestFindType();
 
     return EXIT_SUCCESS;
 }
@@ -827,10 +838,15 @@ int main(int argc, char **argv)
     //result = test_Sqlite_create();
     //result = test_Sqlite_insert();
     //result = test_Sqlite_real_create(); //reading the full table and adding everything
-    result = test_Sqlite_real_details();
+    //result = test_Sqlite_real_details();
 
     //debug
     //result = debugRun();
+
+    CLI_V1 cli;
+    result = cli.startCLI(argc, argv);
+
+    //result = resourceTreeFindTest();
 
     return result;
 }

@@ -22,32 +22,32 @@
     <ProjectGuid>{5175ADAA-98CB-4573-9CC7-9DDB38A68BB0}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>SWGResourceDatabase</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -149,6 +149,7 @@
     <None Include="bad_classes.lua">
       <FileType>Document</FileType>
     </None>
+    <ClCompile Include="CLI_V1.cpp" />
     <ClCompile Include="constantsV1.cpp" />
     <ClCompile Include="LuaCore.cpp" />
     <ClCompile Include="Lua\lapi.c" />
@@ -184,7 +185,9 @@
     <ClCompile Include="Lua\lutf8lib.c" />
     <ClCompile Include="Lua\lvm.c" />
     <ClCompile Include="Lua\lzio.c" />
+    <ClCompile Include="pods.cpp" />
     <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="ResourceTree.cpp" />
     <ClCompile Include="SqliteCore_V1.cpp" />
     <ClCompile Include="Sqlite\sqlite3.c" />
     <ClCompile Include="Main.cpp" />
@@ -196,9 +199,11 @@
     <None Include="scripts\make_conversions.lua" />
     <None Include="scripts\make_enums.lua" />
     <None Include="scripts\pull_resource_info.lua" />
+    <None Include="settings.lua" />
     <None Include="table_test.lua" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CLI_V1.hpp" />
     <ClInclude Include="constantsV1.hpp" />
     <ClInclude Include="LuaCore.hpp" />
     <ClInclude Include="Lua\lapi.h" />
@@ -229,6 +234,7 @@
     <ClInclude Include="Lua\lzio.h" />
     <ClInclude Include="pods.hpp" />
     <ClInclude Include="Resource.hpp" />
+    <ClInclude Include="ResourceTree.hpp" />
     <ClInclude Include="SqliteCore_V1.hpp" />
     <ClInclude Include="Sqlite\sqlite3.h" />
   </ItemGroup>

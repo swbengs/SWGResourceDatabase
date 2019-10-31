@@ -54,6 +54,11 @@ public:
     void stop(); //do closing things so that if the Lua state needs to be used again it's clean aka stack is empty
     bool getNextResource(resource_pod& pod, std::vector<std::string>& classes); //gets the next resource and returns true if there was one. If false the POD and vector you pass in are junk
 
+    //helpers for settings.lua. Only grab from global hash table
+    bool runSettingsScript(); //run any generic script
+    int getIntGlobalValue(std::string key);
+    std::string getStringGlobalValue(std::string key);
+
     //debug helpers
     void debugStart(); //adds in all libraries NOT SAFE. only use trusted Lua scripts. Runs commands and scripts to build all text files with enums and their methods
     void debugCollectResourceInfo(); //resource classes and types and their pretty names and enums. stored in classes.txt and types.txt
@@ -74,7 +79,5 @@ private:
     bool getResourceAttributes(resource_pod& pod);
     void getAttribute(resource_pod& pod); //these are in a table with key at table[1] and value at table[2]
     bool getResourceClasses(std::vector<std::string>& classes);
-
-    void resourceDefaults(resource_pod& pod) const;
 };
 

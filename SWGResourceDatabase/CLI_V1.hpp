@@ -2,9 +2,12 @@
 
 //std lib includes
 #include <string>
-#include <vector>
 
 //other includes
+#include "LuaCore.hpp"
+#include "SqliteCore_V1.hpp"
+#include "constantsV1.hpp"
+#include "ResourceTree.hpp"
 
 /*
 MIT License
@@ -31,33 +34,33 @@ SOFTWARE.
 */
 
 /*
-Description: Header that lists all PODs(plain old data). These don't need methods but since C++ treats structs as public classes they can have them.
-Enums are cast to ints to limit what classes know about what things. IE lua doesn't need access to that list of enums
+Description: First version of the command line interface
 */
 
-struct resource_pod
+//class delcaration
+class CLI_V1
 {
-    std::string name;
-    std::string type; //convert to int through lookup before adding to database. is a string when collected in Lua. Becomes an int index when in database
-    unsigned int cold_resistance; //CR CD DR FL HR MA OQ PE SR UT are the abbreviations in order
-    unsigned int conductivity;
-    unsigned int decay_resistance;
-    unsigned int flavor;
-    unsigned int heat_resistance;
-    unsigned int malleability;
-    unsigned int overall_quality;
-    unsigned int potential_energy;
-    unsigned int shock_resistance;
-    unsigned int unit_toughness;
+public:
+    CLI_V1();
+    ~CLI_V1();
 
-    resource_pod();
-};
+    int startCLI(int argc, char **argv);
+    bool createDatabase();
+    bool loadDatabase();
+private:
+    std::string database_name;
+    std::string lua_dump_file;
+    LuaCore settings_lua;
+    SqliteCore_V1* resource_database;
+    CLI_state state;
+    ResourceTree tree;
+    const resource_class_node* current_node;
+    int limit;
 
-struct weighted_average_pod
-{
-    unsigned int attribute;
-    float weight;
-
-    weighted_average_pod();
+    void loadSettings();
+    int getIntegerInput(std::string options, int min, int max);
+    int inputLoop(); //determine what to do next based on what the user types in
+    void mainMenuLoop();
+    bool viewResourcesLoop();
 };
 

@@ -17,7 +17,7 @@ The ZonamaDev server at a minimum produces a Lua file that contains all resource
 3. Use the CLI or any other Sqlite3 interface to run queries
 4. Enjoy!
 
-Built with MS VS 2015
+Built with MS VS 2019
 
 ## CLI information
 1. Plan to have a way to write schematics and weightings via a Lua settings file. Might be a few different ones.

@@ -44,6 +44,12 @@ Description: This is the first version of the SQL side. It has methods to run SQ
 class SqliteCore_V1
 {
 public:
+    //settings(public since making gets and sets is wasteful in this case)
+    static int id_spacing;
+    static int name_spacing;
+    static int type_spacing;
+    static int attribute_spacing;
+
     SqliteCore_V1(std::string database_name);
     ~SqliteCore_V1();
 

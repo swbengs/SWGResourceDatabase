@@ -93,7 +93,6 @@ void LuaCore::stop()
 //returns true if the resource was successfully pulled from Lua. False means either there was an error or the end of the table was reached. Errors will output to console/stderr
 bool LuaCore::getNextResource(resource_pod& pod, std::vector<std::string>& classes)
 {
-    resourceDefaults(pod); //set defaults
     if (!lua_gettop(lua_state) == 1)
     {
         if (lua_gettop(lua_state) > 1)
@@ -136,6 +135,48 @@ bool LuaCore::getNextResource(resource_pod& pod, std::vector<std::string>& class
     lua_pop(lua_state, 1); //make sure we pop our table off before we leave
 
     return true;
+}
+
+bool LuaCore::runSettingsScript()
+{
+    bool wasSuccess = runScript("settings.lua");
+    if (!wasSuccess)
+    {
+        fprintf(stderr, "Could not find settings.lua. Switching to defaults\n");
+    }
+
+    return wasSuccess;
+}
+
+int LuaCore::getIntGlobalValue(std::string key)
+{
+    int result;
+    lua_getglobal(lua_state, key.c_str());
+    if (!lua_isnumber(lua_state, -1))
+    {
+        fprintf(stderr, "invalid integer in table[%s]\n", key.c_str());
+        //cleanup, aka the lua_pop happens even if we complain here hence why it's missing
+    }
+
+    result = (int)lua_tonumber(lua_state, -1);
+    lua_pop(lua_state, 1);  /* remove number */
+    return result;
+}
+
+std::string LuaCore::getStringGlobalValue(std::string key)
+{
+    std::string result;
+    lua_getglobal(lua_state, key.c_str());
+    if (!lua_isstring(lua_state, -1))
+    {
+        fprintf(stderr, "invalid string in table[%s]\n", key.c_str());
+        lua_pop(lua_state, 1); //don't forget to cleanup stack when returning early
+        return "null";
+    }
+
+    result = lua_tostring(lua_state, -1); //in C++11 it is supposed to copy the char*. If it does not this will cause issues. The internal pointer that Lua gives is only valid while the value is on the Lua stack
+    lua_pop(lua_state, 1);
+    return result;
 }
 
 //debug helpers
@@ -214,6 +255,7 @@ int LuaCore::getFieldInt(int key)
     return result;
 }
 
+//returns the value at table[key] or string value of null if it was nil
 std::string LuaCore::getFieldString(std::string key)
 {
     std::string result;
@@ -232,6 +274,7 @@ std::string LuaCore::getFieldString(std::string key)
     return result;
 }
 
+//returns the value at table[key] or string value of null if it was nil
 std::string LuaCore::getFieldString(int key)
 {
     std::string result;
@@ -383,21 +426,5 @@ bool LuaCore::getResourceClasses(std::vector<std::string>& classes)
 
     lua_pop(lua_state, 1); //pop off attributes
     return true;
-}
-
-void LuaCore::resourceDefaults(resource_pod& pod) const
-{
-    pod.name = "junk";
-    pod.type = "junk";
-    pod.cold_resistance = 0;
-    pod.conductivity = 0;
-    pod.decay_resistance = 0;
-    pod.flavor = 0;
-    pod.heat_resistance = 0;
-    pod.malleability = 0;
-    pod.overall_quality = 0;
-    pod.potential_energy = 0;
-    pod.shock_resistance = 0;
-    pod.unit_toughness = 0;
 }
 

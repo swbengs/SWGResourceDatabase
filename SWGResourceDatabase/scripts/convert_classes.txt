@@ -2,201 +2,201 @@ std::string SWGResourceClassString(SWG_resource_classes e)
 {
     switch (e)
     {
-    case ALUMINUM:
+    case SWG_resource_classes::ALUMINUM:
         return "aluminum";
-    case BONE:
+    case SWG_resource_classes::BONE:
         return "bone";
-    case BONE_AVIAN:
+    case SWG_resource_classes::BONE_AVIAN:
         return "bone_avian";
-    case BONE_HORN:
+    case SWG_resource_classes::BONE_HORN:
         return "bone_horn";
-    case CEREAL:
+    case SWG_resource_classes::CEREAL:
         return "cereal";
-    case CHEMICAL:
+    case SWG_resource_classes::CHEMICAL:
         return "chemical";
-    case COPPER:
+    case SWG_resource_classes::COPPER:
         return "copper";
-    case CORN:
+    case SWG_resource_classes::CORN:
         return "corn";
-    case CORN_DOMESTICATED:
+    case SWG_resource_classes::CORN_DOMESTICATED:
         return "corn_domesticated";
-    case CORN_WILD:
+    case SWG_resource_classes::CORN_WILD:
         return "corn_wild";
-    case CREATURE_FOOD:
+    case SWG_resource_classes::CREATURE_FOOD:
         return "creature_food";
-    case CREATURE_RESOURCES:
+    case SWG_resource_classes::CREATURE_RESOURCES:
         return "creature_resources";
-    case CREATURE_STRUCTURAL:
+    case SWG_resource_classes::CREATURE_STRUCTURAL:
         return "creature_structural";
-    case ENERGY:
+    case SWG_resource_classes::ENERGY:
         return "energy";
-    case ENERGY_RENEWABLE:
+    case SWG_resource_classes::ENERGY_RENEWABLE:
         return "energy_renewable";
-    case ENERGY_RENEWABLE_SITE_LIMITED:
+    case SWG_resource_classes::ENERGY_RENEWABLE_SITE_LIMITED:
         return "energy_renewable_site_limited";
-    case ENERGY_RENEWABLE_UNLIMITED:
+    case SWG_resource_classes::ENERGY_RENEWABLE_UNLIMITED:
         return "energy_renewable_unlimited";
-    case ENERGY_RENEWABLE_UNLIMITED_SOLAR:
+    case SWG_resource_classes::ENERGY_RENEWABLE_UNLIMITED_SOLAR:
         return "energy_renewable_unlimited_solar";
-    case ENERGY_RENEWABLE_UNLIMITED_WIND:
+    case SWG_resource_classes::ENERGY_RENEWABLE_UNLIMITED_WIND:
         return "energy_renewable_unlimited_wind";
-    case FIBERPLAST:
+    case SWG_resource_classes::FIBERPLAST:
         return "fiberplast";
-    case FLORA_FOOD:
+    case SWG_resource_classes::FLORA_FOOD:
         return "flora_food";
-    case FLORA_RESOURCES:
+    case SWG_resource_classes::FLORA_RESOURCES:
         return "flora_resources";
-    case FLORA_STRUCTURAL:
+    case SWG_resource_classes::FLORA_STRUCTURAL:
         return "flora_structural";
-    case FRUIT:
+    case SWG_resource_classes::FRUIT:
         return "fruit";
-    case FRUIT_BERRIES:
+    case SWG_resource_classes::FRUIT_BERRIES:
         return "fruit_berries";
-    case FRUIT_FLOWERS:
+    case SWG_resource_classes::FRUIT_FLOWERS:
         return "fruit_flowers";
-    case FRUIT_FRUITS:
+    case SWG_resource_classes::FRUIT_FRUITS:
         return "fruit_fruits";
-    case FUEL_PETROCHEM_LIQUID:
+    case SWG_resource_classes::FUEL_PETROCHEM_LIQUID:
         return "fuel_petrochem_liquid";
-    case FUEL_PETROCHEM_LIQUID_KNOWN:
+    case SWG_resource_classes::FUEL_PETROCHEM_LIQUID_KNOWN:
         return "fuel_petrochem_liquid_known";
-    case FUEL_PETROCHEM_SOLID:
+    case SWG_resource_classes::FUEL_PETROCHEM_SOLID:
         return "fuel_petrochem_solid";
-    case FUEL_PETROCHEM_SOLID_KNOWN:
+    case SWG_resource_classes::FUEL_PETROCHEM_SOLID_KNOWN:
         return "fuel_petrochem_solid_known";
-    case GAS:
+    case SWG_resource_classes::GAS:
         return "gas";
-    case GAS_INERT:
+    case SWG_resource_classes::GAS_INERT:
         return "gas_inert";
-    case GAS_INERT_KNOWN:
+    case SWG_resource_classes::GAS_INERT_KNOWN:
         return "gas_inert_known";
-    case GAS_REACTIVE:
+    case SWG_resource_classes::GAS_REACTIVE:
         return "gas_reactive";
-    case GAS_REACTIVE_KNOWN:
+    case SWG_resource_classes::GAS_REACTIVE_KNOWN:
         return "gas_reactive_known";
-    case GEMSTONE:
+    case SWG_resource_classes::GEMSTONE:
         return "gemstone";
-    case GEMSTONE_ARMOPHOUS:
+    case SWG_resource_classes::GEMSTONE_ARMOPHOUS:
         return "gemstone_armophous";
-    case GEMSTONE_CRYSTALLINE:
+    case SWG_resource_classes::GEMSTONE_CRYSTALLINE:
         return "gemstone_crystalline";
-    case HIDE:
+    case SWG_resource_classes::HIDE:
         return "hide";
-    case HIDE_BRISTLEY:
+    case SWG_resource_classes::HIDE_BRISTLEY:
         return "hide_bristley";
-    case HIDE_LEATHERY:
+    case SWG_resource_classes::HIDE_LEATHERY:
         return "hide_leathery";
-    case HIDE_SCALEY:
+    case SWG_resource_classes::HIDE_SCALEY:
         return "hide_scaley";
-    case HIDE_WOOLY:
+    case SWG_resource_classes::HIDE_WOOLY:
         return "hide_wooly";
-    case INORGANIC:
+    case SWG_resource_classes::INORGANIC:
         return "inorganic";
-    case IRON:
+    case SWG_resource_classes::IRON:
         return "iron";
-    case MEAT:
+    case SWG_resource_classes::MEAT:
         return "meat";
-    case MEAT_AVIAN:
+    case SWG_resource_classes::MEAT_AVIAN:
         return "meat_avian";
-    case MEAT_CARNIVORE:
+    case SWG_resource_classes::MEAT_CARNIVORE:
         return "meat_carnivore";
-    case MEAT_DOMESTICATED:
+    case SWG_resource_classes::MEAT_DOMESTICATED:
         return "meat_domesticated";
-    case MEAT_EGG:
+    case SWG_resource_classes::MEAT_EGG:
         return "meat_egg";
-    case MEAT_HERBIVORE:
+    case SWG_resource_classes::MEAT_HERBIVORE:
         return "meat_herbivore";
-    case MEAT_INSECT:
+    case SWG_resource_classes::MEAT_INSECT:
         return "meat_insect";
-    case MEAT_REPTILLIAN:
+    case SWG_resource_classes::MEAT_REPTILLIAN:
         return "meat_reptillian";
-    case MEAT_WILD:
+    case SWG_resource_classes::MEAT_WILD:
         return "meat_wild";
-    case METAL:
+    case SWG_resource_classes::METAL:
         return "metal";
-    case METAL_FERROUS:
+    case SWG_resource_classes::METAL_FERROUS:
         return "metal_ferrous";
-    case METAL_NONFERROUS:
+    case SWG_resource_classes::METAL_NONFERROUS:
         return "metal_nonferrous";
-    case MILK:
+    case SWG_resource_classes::MILK:
         return "milk";
-    case MILK_DOMESTICATED:
+    case SWG_resource_classes::MILK_DOMESTICATED:
         return "milk_domesticated";
-    case MILK_WILD:
+    case SWG_resource_classes::MILK_WILD:
         return "milk_wild";
-    case MINERAL:
+    case SWG_resource_classes::MINERAL:
         return "mineral";
-    case OATS:
+    case SWG_resource_classes::OATS:
         return "oats";
-    case OATS_DOMESTICATED:
+    case SWG_resource_classes::OATS_DOMESTICATED:
         return "oats_domesticated";
-    case OATS_WILD:
+    case SWG_resource_classes::OATS_WILD:
         return "oats_wild";
-    case ORE:
+    case SWG_resource_classes::ORE:
         return "ore";
-    case ORE_CARBONATE:
+    case SWG_resource_classes::ORE_CARBONATE:
         return "ore_carbonate";
-    case ORE_EXTRUSIVE:
+    case SWG_resource_classes::ORE_EXTRUSIVE:
         return "ore_extrusive";
-    case ORE_IGNEOUS:
+    case SWG_resource_classes::ORE_IGNEOUS:
         return "ore_igneous";
-    case ORE_INTRUSIVE:
+    case SWG_resource_classes::ORE_INTRUSIVE:
         return "ore_intrusive";
-    case ORE_SEDIMENTARY:
+    case SWG_resource_classes::ORE_SEDIMENTARY:
         return "ore_sedimentary";
-    case ORE_SILICLASTIC:
+    case SWG_resource_classes::ORE_SILICLASTIC:
         return "ore_siliclastic";
-    case ORGANIC:
+    case SWG_resource_classes::ORGANIC:
         return "organic";
-    case PETROCHEM_INERT:
+    case SWG_resource_classes::PETROCHEM_INERT:
         return "petrochem_inert";
-    case RADIOACTIVE:
+    case SWG_resource_classes::RADIOACTIVE:
         return "radioactive";
-    case RADIOACTIVE_KNOWN:
+    case SWG_resource_classes::RADIOACTIVE_KNOWN:
         return "radioactive_known";
-    case RICE:
+    case SWG_resource_classes::RICE:
         return "rice";
-    case RICE_DOMESTICATED:
+    case SWG_resource_classes::RICE_DOMESTICATED:
         return "rice_domesticated";
-    case RICE_WILD:
+    case SWG_resource_classes::RICE_WILD:
         return "rice_wild";
-    case SEAFOOD:
+    case SWG_resource_classes::SEAFOOD:
         return "seafood";
-    case SEAFOOD_CRUSTACEAN:
+    case SWG_resource_classes::SEAFOOD_CRUSTACEAN:
         return "seafood_crustacean";
-    case SEAFOOD_FISH:
+    case SWG_resource_classes::SEAFOOD_FISH:
         return "seafood_fish";
-    case SEAFOOD_MOLLUSK:
+    case SWG_resource_classes::SEAFOOD_MOLLUSK:
         return "seafood_mollusk";
-    case SEEDS:
+    case SWG_resource_classes::SEEDS:
         return "seeds";
-    case SOFTWOOD:
+    case SWG_resource_classes::SOFTWOOD:
         return "softwood";
-    case SOFTWOOD_EVERGREEN:
+    case SWG_resource_classes::SOFTWOOD_EVERGREEN:
         return "softwood_evergreen";
-    case STEEL:
+    case SWG_resource_classes::STEEL:
         return "steel";
-    case VEGETABLE:
+    case SWG_resource_classes::VEGETABLE:
         return "vegetable";
-    case VEGETABLE_BEANS:
+    case SWG_resource_classes::VEGETABLE_BEANS:
         return "vegetable_beans";
-    case VEGETABLE_FUNGI:
+    case SWG_resource_classes::VEGETABLE_FUNGI:
         return "vegetable_fungi";
-    case VEGETABLE_GREENS:
+    case SWG_resource_classes::VEGETABLE_GREENS:
         return "vegetable_greens";
-    case VEGETABLE_TUBERS:
+    case SWG_resource_classes::VEGETABLE_TUBERS:
         return "vegetable_tubers";
-    case WATER:
+    case SWG_resource_classes::WATER:
         return "water";
-    case WHEAT:
+    case SWG_resource_classes::WHEAT:
         return "wheat";
-    case WHEAT_DOMESTICATED:
+    case SWG_resource_classes::WHEAT_DOMESTICATED:
         return "wheat_domesticated";
-    case WHEAT_WILD:
+    case SWG_resource_classes::WHEAT_WILD:
         return "wheat_wild";
-    case WOOD:
+    case SWG_resource_classes::WOOD:
         return "wood";
-    case WOOD_DECIDUOUS:
+    case SWG_resource_classes::WOOD_DECIDUOUS:
         return "wood_deciduous";
     default:
         return "bad SWG_resource_classes enum";
@@ -207,201 +207,201 @@ std::string SWGResourceClassStringPretty(SWG_resource_classes e)
 {
     switch (e)
     {
-    case ALUMINUM:
+    case SWG_resource_classes::ALUMINUM:
         return "Aluminum";
-    case BONE:
+    case SWG_resource_classes::BONE:
         return "Bone";
-    case BONE_AVIAN:
+    case SWG_resource_classes::BONE_AVIAN:
         return "Avian bone";
-    case BONE_HORN:
+    case SWG_resource_classes::BONE_HORN:
         return "Horn";
-    case CEREAL:
+    case SWG_resource_classes::CEREAL:
         return "Cereal";
-    case CHEMICAL:
+    case SWG_resource_classes::CHEMICAL:
         return "Chemical";
-    case COPPER:
+    case SWG_resource_classes::COPPER:
         return "Copper";
-    case CORN:
+    case SWG_resource_classes::CORN:
         return "Corn";
-    case CORN_DOMESTICATED:
+    case SWG_resource_classes::CORN_DOMESTICATED:
         return "Domesticated Corn";
-    case CORN_WILD:
+    case SWG_resource_classes::CORN_WILD:
         return "Wild Corn";
-    case CREATURE_FOOD:
+    case SWG_resource_classes::CREATURE_FOOD:
         return "Creature Food";
-    case CREATURE_RESOURCES:
+    case SWG_resource_classes::CREATURE_RESOURCES:
         return "Creature Resources";
-    case CREATURE_STRUCTURAL:
+    case SWG_resource_classes::CREATURE_STRUCTURAL:
         return "Creature Structural";
-    case ENERGY:
+    case SWG_resource_classes::ENERGY:
         return "Energy";
-    case ENERGY_RENEWABLE:
+    case SWG_resource_classes::ENERGY_RENEWABLE:
         return "Renewable energy";
-    case ENERGY_RENEWABLE_SITE_LIMITED:
+    case SWG_resource_classes::ENERGY_RENEWABLE_SITE_LIMITED:
         return "Site-Restricted Renewable Energy";
-    case ENERGY_RENEWABLE_UNLIMITED:
+    case SWG_resource_classes::ENERGY_RENEWABLE_UNLIMITED:
         return "Non Site-Restricted Renewable Energy";
-    case ENERGY_RENEWABLE_UNLIMITED_SOLAR:
+    case SWG_resource_classes::ENERGY_RENEWABLE_UNLIMITED_SOLAR:
         return "Solar Energy";
-    case ENERGY_RENEWABLE_UNLIMITED_WIND:
+    case SWG_resource_classes::ENERGY_RENEWABLE_UNLIMITED_WIND:
         return "Wind Energy";
-    case FIBERPLAST:
+    case SWG_resource_classes::FIBERPLAST:
         return "Fiberplast";
-    case FLORA_FOOD:
+    case SWG_resource_classes::FLORA_FOOD:
         return "Flora Food";
-    case FLORA_RESOURCES:
+    case SWG_resource_classes::FLORA_RESOURCES:
         return "Flora Resources";
-    case FLORA_STRUCTURAL:
+    case SWG_resource_classes::FLORA_STRUCTURAL:
         return "Flora Structural";
-    case FRUIT:
+    case SWG_resource_classes::FRUIT:
         return "Fruit";
-    case FRUIT_BERRIES:
+    case SWG_resource_classes::FRUIT_BERRIES:
         return "Berries";
-    case FRUIT_FLOWERS:
+    case SWG_resource_classes::FRUIT_FLOWERS:
         return "Flowers";
-    case FRUIT_FRUITS:
+    case SWG_resource_classes::FRUIT_FRUITS:
         return "Fruits";
-    case FUEL_PETROCHEM_LIQUID:
+    case SWG_resource_classes::FUEL_PETROCHEM_LIQUID:
         return "Liquid Petrochem Fuel";
-    case FUEL_PETROCHEM_LIQUID_KNOWN:
+    case SWG_resource_classes::FUEL_PETROCHEM_LIQUID_KNOWN:
         return "Known Liquid Petrochem Fuel";
-    case FUEL_PETROCHEM_SOLID:
+    case SWG_resource_classes::FUEL_PETROCHEM_SOLID:
         return "Solid Petrochem Fuel";
-    case FUEL_PETROCHEM_SOLID_KNOWN:
+    case SWG_resource_classes::FUEL_PETROCHEM_SOLID_KNOWN:
         return "Known Solid Petrochem Fuel";
-    case GAS:
+    case SWG_resource_classes::GAS:
         return "Gas";
-    case GAS_INERT:
+    case SWG_resource_classes::GAS_INERT:
         return "Inert Gas";
-    case GAS_INERT_KNOWN:
+    case SWG_resource_classes::GAS_INERT_KNOWN:
         return "Known Inert Gas";
-    case GAS_REACTIVE:
+    case SWG_resource_classes::GAS_REACTIVE:
         return "Reactive Gas";
-    case GAS_REACTIVE_KNOWN:
+    case SWG_resource_classes::GAS_REACTIVE_KNOWN:
         return "Known Reactive Gas";
-    case GEMSTONE:
+    case SWG_resource_classes::GEMSTONE:
         return "Gemstone";
-    case GEMSTONE_ARMOPHOUS:
+    case SWG_resource_classes::GEMSTONE_ARMOPHOUS:
         return "Amorphous Gemstone";
-    case GEMSTONE_CRYSTALLINE:
+    case SWG_resource_classes::GEMSTONE_CRYSTALLINE:
         return "Crystalline Gemstone";
-    case HIDE:
+    case SWG_resource_classes::HIDE:
         return "Hide";
-    case HIDE_BRISTLEY:
+    case SWG_resource_classes::HIDE_BRISTLEY:
         return "Bristley Hide";
-    case HIDE_LEATHERY:
+    case SWG_resource_classes::HIDE_LEATHERY:
         return "Leathery Hide";
-    case HIDE_SCALEY:
+    case SWG_resource_classes::HIDE_SCALEY:
         return "Scaley Hide";
-    case HIDE_WOOLY:
+    case SWG_resource_classes::HIDE_WOOLY:
         return "Wooly Hide";
-    case INORGANIC:
+    case SWG_resource_classes::INORGANIC:
         return "Inorganic";
-    case IRON:
+    case SWG_resource_classes::IRON:
         return "Iron";
-    case MEAT:
+    case SWG_resource_classes::MEAT:
         return "Meat";
-    case MEAT_AVIAN:
+    case SWG_resource_classes::MEAT_AVIAN:
         return "Avian Meat";
-    case MEAT_CARNIVORE:
+    case SWG_resource_classes::MEAT_CARNIVORE:
         return "Carnivore Meat";
-    case MEAT_DOMESTICATED:
+    case SWG_resource_classes::MEAT_DOMESTICATED:
         return "Domesticated Meat";
-    case MEAT_EGG:
+    case SWG_resource_classes::MEAT_EGG:
         return "Egg";
-    case MEAT_HERBIVORE:
+    case SWG_resource_classes::MEAT_HERBIVORE:
         return "Herbivore Meat";
-    case MEAT_INSECT:
+    case SWG_resource_classes::MEAT_INSECT:
         return "Insect Meat";
-    case MEAT_REPTILLIAN:
+    case SWG_resource_classes::MEAT_REPTILLIAN:
         return "Reptillian Meat";
-    case MEAT_WILD:
+    case SWG_resource_classes::MEAT_WILD:
         return "Wild Meat";
-    case METAL:
+    case SWG_resource_classes::METAL:
         return "Metal";
-    case METAL_FERROUS:
+    case SWG_resource_classes::METAL_FERROUS:
         return "Ferrous Metal";
-    case METAL_NONFERROUS:
+    case SWG_resource_classes::METAL_NONFERROUS:
         return "Non-Ferrous Metal";
-    case MILK:
+    case SWG_resource_classes::MILK:
         return "Milk";
-    case MILK_DOMESTICATED:
+    case SWG_resource_classes::MILK_DOMESTICATED:
         return "Domesticated Milk";
-    case MILK_WILD:
+    case SWG_resource_classes::MILK_WILD:
         return "Wild Milk";
-    case MINERAL:
+    case SWG_resource_classes::MINERAL:
         return "Mineral";
-    case OATS:
+    case SWG_resource_classes::OATS:
         return "Oats";
-    case OATS_DOMESTICATED:
+    case SWG_resource_classes::OATS_DOMESTICATED:
         return "Domesticated Oats";
-    case OATS_WILD:
+    case SWG_resource_classes::OATS_WILD:
         return "Wild Oats";
-    case ORE:
+    case SWG_resource_classes::ORE:
         return "Low-Grade Ore";
-    case ORE_CARBONATE:
+    case SWG_resource_classes::ORE_CARBONATE:
         return "Carbonate Ore";
-    case ORE_EXTRUSIVE:
+    case SWG_resource_classes::ORE_EXTRUSIVE:
         return "Extrusive Ore";
-    case ORE_IGNEOUS:
+    case SWG_resource_classes::ORE_IGNEOUS:
         return "Igneous Ore";
-    case ORE_INTRUSIVE:
+    case SWG_resource_classes::ORE_INTRUSIVE:
         return "Intrusive Ore";
-    case ORE_SEDIMENTARY:
+    case SWG_resource_classes::ORE_SEDIMENTARY:
         return "Sedimentary Ore";
-    case ORE_SILICLASTIC:
+    case SWG_resource_classes::ORE_SILICLASTIC:
         return "Siliclastic Ore";
-    case ORGANIC:
+    case SWG_resource_classes::ORGANIC:
         return "Organic";
-    case PETROCHEM_INERT:
+    case SWG_resource_classes::PETROCHEM_INERT:
         return "Inert Petrochemical";
-    case RADIOACTIVE:
+    case SWG_resource_classes::RADIOACTIVE:
         return "Radioactive";
-    case RADIOACTIVE_KNOWN:
+    case SWG_resource_classes::RADIOACTIVE_KNOWN:
         return "Known Radioactive";
-    case RICE:
+    case SWG_resource_classes::RICE:
         return "Rice";
-    case RICE_DOMESTICATED:
+    case SWG_resource_classes::RICE_DOMESTICATED:
         return "Domesticated Rice";
-    case RICE_WILD:
+    case SWG_resource_classes::RICE_WILD:
         return "Wild Rice";
-    case SEAFOOD:
+    case SWG_resource_classes::SEAFOOD:
         return "Seafood";
-    case SEAFOOD_CRUSTACEAN:
+    case SWG_resource_classes::SEAFOOD_CRUSTACEAN:
         return "Crustacean";
-    case SEAFOOD_FISH:
+    case SWG_resource_classes::SEAFOOD_FISH:
         return "Fish";
-    case SEAFOOD_MOLLUSK:
+    case SWG_resource_classes::SEAFOOD_MOLLUSK:
         return "Mollusk";
-    case SEEDS:
+    case SWG_resource_classes::SEEDS:
         return "Seeds";
-    case SOFTWOOD:
+    case SWG_resource_classes::SOFTWOOD:
         return "Soft Wood";
-    case SOFTWOOD_EVERGREEN:
+    case SWG_resource_classes::SOFTWOOD_EVERGREEN:
         return "Evergreen Soft Wood";
-    case STEEL:
+    case SWG_resource_classes::STEEL:
         return "Steel";
-    case VEGETABLE:
+    case SWG_resource_classes::VEGETABLE:
         return "Vegetables";
-    case VEGETABLE_BEANS:
+    case SWG_resource_classes::VEGETABLE_BEANS:
         return "Beans";
-    case VEGETABLE_FUNGI:
+    case SWG_resource_classes::VEGETABLE_FUNGI:
         return "Fungi";
-    case VEGETABLE_GREENS:
+    case SWG_resource_classes::VEGETABLE_GREENS:
         return "Greens";
-    case VEGETABLE_TUBERS:
+    case SWG_resource_classes::VEGETABLE_TUBERS:
         return "Tubers";
-    case WATER:
+    case SWG_resource_classes::WATER:
         return "Water";
-    case WHEAT:
+    case SWG_resource_classes::WHEAT:
         return "Wheat";
-    case WHEAT_DOMESTICATED:
+    case SWG_resource_classes::WHEAT_DOMESTICATED:
         return "Domesticated Wheat";
-    case WHEAT_WILD:
+    case SWG_resource_classes::WHEAT_WILD:
         return "Wild Wheat";
-    case WOOD:
+    case SWG_resource_classes::WOOD:
         return "Wood";
-    case WOOD_DECIDUOUS:
+    case SWG_resource_classes::WOOD_DECIDUOUS:
         return "Hard Wood";
     default:
         return "bad SWG_resource_classes enum";

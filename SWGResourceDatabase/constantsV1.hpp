@@ -34,23 +34,33 @@ SOFTWARE.
 Description: Constants such as classes, types, their string and enums and so on
 */
 
-enum SWG_attributes
+enum class CLI_state //enum class > plain enums C++11
+{
+    NONE,
+    CLI_CREATE, //when told to create or load from the command line interface
+    CLI_LOAD,
+    ARG_CREATE, //when given command line arguments to load or create
+    ARG_LOAD,
+    READY
+};
+
+enum class SWG_attributes
 {
     //CR CD DR FL HR MA OQ PE SR UT are the abbreviations in order
-    CR,
-    CD,
-    DR,
-    FL,
-    HR,
-    MA,
-    OQ,
-    PE,
-    SR,
-    UT
+    CR, //cold resistance
+    CD, //conductivity
+    DR, //decay resistance
+    FL, //flavor
+    HR, //heat resistance
+    MA, //malleability
+    OQ, //overall quality
+    PE, //potential energy
+    SR, //shock resistance
+    UT  //unit toughness
 };
 
 //different classifications of the resources. forms a tree
-enum SWG_resource_classes
+enum class SWG_resource_classes
 {
     ALUMINUM,
     BONE,
@@ -156,7 +166,7 @@ enum SWG_resource_classes
 };
 
 //things the resource actually are
-enum SWG_resource_types
+enum class SWG_resource_types
 {
     ALUMINUM_AGRINIUM,
     ALUMINUM_CHROMIUM,
