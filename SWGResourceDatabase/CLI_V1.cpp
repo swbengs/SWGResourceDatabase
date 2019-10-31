@@ -403,7 +403,7 @@ bool CLI_V1::viewResourcesLoop()
             {
                 //navigate
                 current_node = tree.getResourceClassNode(static_cast<SWG_resource_classes>(items[input - 1].resource_enum));
-                parent_classes.push(SWG_resource_classes::SWG_resource_classes_count);
+                parent_classes.push(SWG_resource_classes::SWG_resource_classes_count); //push root onto stack
             }
             else //non root
             {
@@ -419,8 +419,8 @@ bool CLI_V1::viewResourcesLoop()
                     if (items[input - 1].isClass)
                     {
                         //navigate
+                        parent_classes.push(current_node->resource_class); //add the parent first then navigate
                         current_node = tree.getResourceClassNode(static_cast<SWG_resource_classes>(items[input - 1].resource_enum));
-                        parent_classes.push(SWG_resource_classes::SWG_resource_classes_count);
                     }
                     else
                     {
