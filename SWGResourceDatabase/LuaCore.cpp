@@ -148,6 +148,28 @@ bool LuaCore::runSettingsScript()
     return wasSuccess;
 }
 
+bool LuaCore::runSchematicsScript()
+{
+    bool wasSuccess = runScript("schematics.lua");
+    if (!wasSuccess)
+    {
+        fprintf(stderr, "Could not find schematics.lua. Switching to defaults\n");
+    }
+
+    return wasSuccess;
+}
+
+bool LuaCore::runWeightsScript()
+{
+    bool wasSuccess = runScript("weights.lua");
+    if (!wasSuccess)
+    {
+        fprintf(stderr, "Could not find weights.lua. Switching to defaults\n");
+    }
+
+    return wasSuccess;
+}
+
 int LuaCore::getIntGlobalValue(std::string key)
 {
     int result;

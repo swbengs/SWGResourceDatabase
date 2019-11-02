@@ -55,7 +55,9 @@ public:
     bool getNextResource(resource_pod& pod, std::vector<std::string>& classes); //gets the next resource and returns true if there was one. If false the POD and vector you pass in are junk
 
     //helpers for settings.lua. Only grab from global hash table
-    bool runSettingsScript(); //run any generic script
+    bool runSettingsScript();
+    bool runSchematicsScript();
+    bool runWeightsScript();
     int getIntGlobalValue(std::string key);
     std::string getStringGlobalValue(std::string key);
 

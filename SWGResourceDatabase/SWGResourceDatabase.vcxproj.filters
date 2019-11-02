@@ -183,6 +183,12 @@
     <None Include="settings.lua">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="schematics.lua">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="weights.lua">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sqlite\sqlite3.h">

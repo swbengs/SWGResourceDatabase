@@ -424,6 +424,7 @@ bool CLI_V1::viewResourcesLoop()
                     }
                     else
                     {
+                        //even this node's items are added so no matter what we grab the item - 1's location
                         resource_database->showResourcesWithClass(SWGResourceTypeString(static_cast<SWG_resource_types>(items[input - 1].resource_enum)), limit);
                     }
                 }
