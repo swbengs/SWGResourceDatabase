@@ -59,13 +59,16 @@ private:
     const resource_class_node* current_node;
     int limit;
     std::vector<Weight> weights; //each set of weights(attribute and weight pair) makes a weight hence vector of a vector. a single weight can be multiple attributes
+    std::vector<Schematic> schematics;
 
     void loadSettings();
+    void loadSchematics();
     void loadWeights();
     int getIntegerInput(std::string options, int min, int max);
     int inputLoop(); //determine what to do next based on what the user types in
     void mainMenuLoop();
     bool viewResourcesLoop();
+    bool viewSchematicsLoop();
     bool viewWeightsLoop();
 };
 

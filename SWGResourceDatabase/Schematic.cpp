@@ -34,3 +34,44 @@ Schematic::Schematic()
 {
     name = "junk";
 }
+
+void Schematic::addClass(SWG_resource_classes value)
+{
+    classes.push_back(value);
+}
+
+void Schematic::addType(SWG_resource_types value)
+{
+    types.push_back(value);
+}
+
+std::string Schematic::getName() const
+{
+    return name;
+}
+
+const std::vector<SWG_resource_types>& Schematic::getTypes() const
+{
+    return types;
+}
+
+const std::vector<SWG_resource_classes>& Schematic::getClasses() const
+{
+    return classes;
+}
+
+void Schematic::setName(std::string name)
+{
+    this->name = name;
+}
+
+void Schematic::setTypes(const std::vector<SWG_resource_types>& types)
+{
+    this->types = types;
+}
+
+void Schematic::setClasses(const std::vector<SWG_resource_classes>& classes)
+{
+    this->classes = classes;
+}
+

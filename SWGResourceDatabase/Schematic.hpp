@@ -5,6 +5,7 @@
 #include <vector>
 
 //other includes
+#include "constantsV1.hpp"
 
 /*
 MIT License
@@ -39,8 +40,20 @@ class Schematic
 {
 public:
     Schematic();
+
+    void addClass(SWG_resource_classes value);
+    void addType(SWG_resource_types value);
+
+    std::string getName() const;
+    const std::vector<SWG_resource_types>& getTypes() const;
+    const std::vector<SWG_resource_classes>& getClasses() const;
+
+    void setName(std::string name);
+    void setTypes(const std::vector<SWG_resource_types>& types);
+    void setClasses(const std::vector<SWG_resource_classes>& classes);
 private:
     std::string name;
-    std::vector<std::string> resources;
+    std::vector<SWG_resource_types> types;
+    std::vector<SWG_resource_classes> classes;
 };
 

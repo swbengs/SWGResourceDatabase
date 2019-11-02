@@ -201,6 +201,31 @@ void CLI_V1::loadSettings()
     }
 }
 
+void CLI_V1::loadSchematics()
+{
+    bool wasSuccess = settings_lua.runSchematicsScript();
+    if (wasSuccess)
+    {
+        if (settings_lua.startSchematics())
+        {
+            //good to go. start grabbing schematics
+
+            bool next = true;
+            while (next)
+            {
+                Schematic temp;
+                next = settings_lua.getNextSchematic(temp);
+                if (next)
+                {
+                    schematics.push_back(temp);
+                }
+            }
+        }
+
+        settings_lua.stopSchematics();
+    }
+}
+
 void CLI_V1::loadWeights()
 {
     bool wasSuccess = settings_lua.runWeightsScript();
@@ -327,6 +352,7 @@ int CLI_V1::inputLoop()
         case CLI_state::READY:
             //only get here once so do misc stuff here before main menu appears
             loadSettings();
+            loadSchematics();
             loadWeights();
 
             mainMenuLoop();
@@ -355,6 +381,7 @@ void CLI_V1::mainMenuLoop()
             isDone = viewResourcesLoop();
             break;
         case 2:
+            isDone = viewSchematicsLoop();
             break;
         case 3:
             isDone = viewWeightsLoop();
@@ -463,6 +490,55 @@ bool CLI_V1::viewResourcesLoop()
                     }
                 }
             }
+            break;
+        }
+    }
+
+    return false;
+}
+
+bool CLI_V1::viewSchematicsLoop()
+{
+    //return false to continue the main loop and true if we should quit completely
+    int input = 0;
+    bool isDone = false;
+    const std::string preset_options = "Choices:\n-2: Exit program\n-1: Exit viewing schematics\n";
+    std::stringstream stream;
+    stream << preset_options;
+
+    //add actual schematics
+    for (size_t i = 0; i < schematics.size(); i++)
+    {
+        stream << i << ": " << schematics[i].getName() << "\n";
+    }
+
+    while (!isDone)
+    {
+        input = getIntegerInput(stream.str(), -2, schematics.size() - 1);
+        switch (input)
+        {
+        case -2:
+            return true; //exit completely
+        case -1:
+            isDone = true;
+            break;
+        default:
+            std::cout << "schematic name: " << schematics[input].getName() << "\n";
+            const std::vector<SWG_resource_classes>& temp_classes = schematics[input].getClasses();
+            const std::vector<SWG_resource_types>& temp_types = schematics[input].getTypes();
+
+            for (size_t i = 0; i < temp_classes.size(); i++)
+            {
+                std::cout << "resource class: " << SWGResourceClassString(temp_classes[i]) << "\n";
+            }
+            std::cout << "\n";
+
+            for (size_t i = 0; i < temp_types.size(); i++)
+            {
+                std::cout << "resource type: " << SWGResourceTypeString(temp_types[i]) << "\n";
+            }
+            std::cout << "\n";
+
             break;
         }
     }
