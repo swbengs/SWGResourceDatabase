@@ -136,6 +136,20 @@ bool LuaCore::getNextResource(resource_pod& pod, std::vector<std::string>& class
     return true;
 }
 
+bool LuaCore::startSchematics()
+{
+    return false;
+}
+
+bool LuaCore::getNextSchematic(Schematic& schematic)
+{
+    return false;
+}
+
+void LuaCore::stopSchematics()
+{
+}
+
 bool LuaCore::startWeights()
 {
     lua_getglobal(lua_state, "weights");

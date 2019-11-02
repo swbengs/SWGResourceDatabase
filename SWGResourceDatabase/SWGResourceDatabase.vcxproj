@@ -146,6 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Schematic.cpp" />
     <ClCompile Include="Weight.cpp" />
     <None Include="bad_classes.lua">
       <FileType>Document</FileType>
@@ -238,6 +239,7 @@
     <ClInclude Include="pods.hpp" />
     <ClInclude Include="Resource.hpp" />
     <ClInclude Include="ResourceTree.hpp" />
+    <ClInclude Include="Schematic.hpp" />
     <ClInclude Include="SqliteCore_V1.hpp" />
     <ClInclude Include="Sqlite\sqlite3.h" />
     <ClInclude Include="Weight.hpp" />

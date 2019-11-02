@@ -6,6 +6,7 @@
 
 //other includes
 #include "pods.hpp"
+#include "Schematic.hpp"
 
 //extern c or else while compiling as C++ there are naming issues
 extern "C"
@@ -41,6 +42,7 @@ SOFTWARE.
 
 /*
 Description: Class that will collect all information from the given lua script
+TODO: redesign so that enums are used everywhere but the edge where it gets converted instead of passing ints around
 */
 
 //class delcaration
@@ -53,6 +55,10 @@ public:
     bool start(std::string filename); //do setup things to be ready to collect resources. Takes a filename which is the Lua file that is a resource dump. Returns true if there was no error
     void stop(); //do closing things so that if the Lua state needs to be used again it's clean aka stack is empty
     bool getNextResource(resource_pod& pod, std::vector<std::string>& classes); //gets the next resource and returns true if there was one. If false the POD and vector you pass in are junk
+
+    bool startSchematics();
+    bool getNextSchematic(Schematic& schematic);
+    void stopSchematics();
 
     bool startWeights(); //push the weight table onto the stack and returns true if it's a table
     bool getNextWeight(std::vector<weighted_average_pod>& weight, std::string& name); //gets the next weight, and returns true if there was one. If it returns false the one you have is junk and there are no more
