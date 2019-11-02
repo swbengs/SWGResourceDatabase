@@ -54,6 +54,10 @@ public:
     void stop(); //do closing things so that if the Lua state needs to be used again it's clean aka stack is empty
     bool getNextResource(resource_pod& pod, std::vector<std::string>& classes); //gets the next resource and returns true if there was one. If false the POD and vector you pass in are junk
 
+    bool startWeights(); //push the weight table onto the stack and returns true if it's a table
+    bool getNextWeight(std::vector<weighted_average_pod>& weight, std::string& name); //gets the next weight, and returns true if there was one. If it returns false the one you have is junk and there are no more
+    void stopWeights(); //pop it off the stack and sanity check
+
     //helpers for settings.lua. Only grab from global hash table
     bool runSettingsScript();
     bool runSchematicsScript();

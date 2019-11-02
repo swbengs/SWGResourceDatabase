@@ -201,6 +201,34 @@ void CLI_V1::loadSettings()
     }
 }
 
+void CLI_V1::loadWeights()
+{
+    bool wasSuccess = settings_lua.runSettingsScript();
+    if (wasSuccess)
+    {
+        if (settings_lua.startWeights())
+        {
+            //good to go. start grabbing weights
+
+            bool next = false;
+            while (next)
+            {
+                std::string name;
+                std::vector<weighted_average_pod> pod;
+                next = settings_lua.getNextWeight(pod, name);
+                if (next)
+                {
+                    //current weight is good so add to the real vector
+                    Weight weight(name, pod);
+                    weights.push_back(weight);
+                }
+            }
+        }
+
+        settings_lua.stopWeights();
+    }
+}
+
 int CLI_V1::getIntegerInput(std::string options, int min, int max)
 {
     int result = 0;
@@ -316,7 +344,7 @@ void CLI_V1::mainMenuLoop()
 
     while (!isDone)
     {
-        input = getIntegerInput("Choices:\n0: Exit\n1: View resources\n", 0, 1);
+        input = getIntegerInput("Choices:\n0: Exit\n1: View resources\n2: View schematics\n3: View weights\n", 0, 3);
         switch (input)
         {
         case 0:
@@ -324,6 +352,11 @@ void CLI_V1::mainMenuLoop()
             break;
         case 1:
             isDone = viewResourcesLoop();
+            break;
+        case 2:
+            break;
+        case 3:
+            isDone = viewWeightsLoop();
             break;
         }
     }
@@ -429,6 +462,32 @@ bool CLI_V1::viewResourcesLoop()
                     }
                 }
             }
+            break;
+        }
+    }
+
+    return false;
+}
+
+bool CLI_V1::viewWeightsLoop()
+{
+    //return false to continue the main loop and true if we should quit completely
+    int input = 0;
+    bool isDone = false;
+    const std::string preset_options = "Choices:\n-2: Exit program\n-1: Exit viewing\n";
+
+    while (!isDone)
+    {
+        input = getIntegerInput("", -2, 0);
+        switch (input)
+        {
+        case -2:
+            return true; //exit completely
+        case -1:
+            isDone = true;
+            break;
+        case 0:
+            
             break;
         }
     }

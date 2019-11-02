@@ -1,15 +1,12 @@
 #pragma once
 
 //std lib includes
-#include <string>
 #include <vector>
+#include <string>
 
 //other includes
-#include "LuaCore.hpp"
-#include "SqliteCore_V1.hpp"
 #include "constantsV1.hpp"
-#include "ResourceTree.hpp"
-#include "Weight.hpp"
+#include "pods.hpp"
 
 /*
 MIT License
@@ -36,36 +33,20 @@ SOFTWARE.
 */
 
 /*
-Description: First version of the command line interface
+Description: Class to store a weight. The name plus all attribute weight pairs
 */
 
 //class delcaration
-class CLI_V1
+class Weight
 {
 public:
-    CLI_V1();
-    ~CLI_V1();
+    Weight();
+    Weight(std::string name, std::vector<weighted_average_pod>& weight);
 
-    int startCLI(int argc, char **argv);
-    bool createDatabase();
-    bool loadDatabase();
+    std::string getName() const;
+    const std::vector<weighted_average_pod>& getWeight() const;
 private:
-    std::string database_name;
-    std::string lua_dump_file;
-    LuaCore settings_lua;
-    SqliteCore_V1* resource_database;
-    CLI_state state;
-    ResourceTree tree;
-    const resource_class_node* current_node;
-    int limit;
-    std::vector<Weight> weights; //each set of weights(attribute and weight pair) makes a weight hence vector of a vector. a single weight can be multiple attributes
-
-    void loadSettings();
-    void loadWeights();
-    int getIntegerInput(std::string options, int min, int max);
-    int inputLoop(); //determine what to do next based on what the user types in
-    void mainMenuLoop();
-    bool viewResourcesLoop();
-    bool viewWeightsLoop();
+    std::string name;
+    std::vector<weighted_average_pod> weight;
 };
 

@@ -146,6 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Weight.cpp" />
     <None Include="bad_classes.lua">
       <FileType>Document</FileType>
     </None>
@@ -239,6 +240,7 @@
     <ClInclude Include="ResourceTree.hpp" />
     <ClInclude Include="SqliteCore_V1.hpp" />
     <ClInclude Include="Sqlite\sqlite3.h" />
+    <ClInclude Include="Weight.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

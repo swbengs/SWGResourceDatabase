@@ -55,7 +55,7 @@ bool LuaCore::start(std::string filename)
     lua_getglobal(lua_state, "resources");
     if (!lua_istable(lua_state, -1))
     {
-        printf("`resources' is not a valid table. Is the file a resource dump Lua script?\n");
+        printf("'resources' is not a valid table. Is the file a resource dump Lua script?\n");
         return false;
     }
 
@@ -135,6 +135,61 @@ bool LuaCore::getNextResource(resource_pod& pod, std::vector<std::string>& class
     lua_pop(lua_state, 1); //make sure we pop our table off before we leave
 
     return true;
+}
+
+bool LuaCore::startWeights()
+{
+    lua_getglobal(lua_state, "weights");
+    if (!lua_istable(lua_state, -1))
+    {
+        printf("'weights' is not a valid table\n");
+        return false;
+    }
+
+    //it exists so everything is ready to grab resources. Next step is to call getNextResource() until it returns false but not in this function ;)
+    current_index = 0;
+
+    return true;
+}
+
+bool LuaCore::getNextWeight(std::vector<weighted_average_pod>& weight, std::string& name)
+{
+    current_index++; //starts at 1 since we increment before doing anything
+
+    //push next weight table on
+    lua_pushinteger(lua_state, current_index);
+    lua_gettable(lua_state, -2);
+    if (!lua_istable(lua_state, -1))
+    {
+        printf("Weights table end has been reached\n");
+        lua_pop(lua_state, 1); //must clean up before we leave this method
+        return false;
+    }
+
+    //get the juicy bits
+
+
+    //pop this weight table
+    lua_pop(lua_state, 1);
+
+    return true;
+}
+
+void LuaCore::stopWeights()
+{
+    //call this even if start fails because it will push nil onto the stack
+    int count = lua_gettop(lua_state);
+    if (count == 1)
+    {
+        lua_pop(lua_state, 1);
+    }
+
+    //sanity check
+    count = lua_gettop(lua_state);
+    if (count != 0)
+    {
+        fprintf(stderr, "Lua stack is not empty after stop(). Stack count is: %i\n", count);
+    }
 }
 
 bool LuaCore::runSettingsScript()

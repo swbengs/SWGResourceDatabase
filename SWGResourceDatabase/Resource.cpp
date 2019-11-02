@@ -47,7 +47,7 @@ Resource::Resource()
     resource.unit_toughness = 0;
 }
 
-Resource::Resource(const resource_pod& pod, std::vector<std::string>& vector)
+Resource::Resource(resource_pod& pod, std::vector<std::string>& vector)
 {
     resource = std::move(pod);
     classes = std::move(vector);
