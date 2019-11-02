@@ -1,4 +1,4 @@
---wegihts file. just need each part once such as overall quality and armor
+--weights file. just need each part once such as overall quality and armor
 
 weights =
 {

@@ -56,7 +56,8 @@ enum class SWG_attributes
     OQ, //overall quality
     PE, //potential energy
     SR, //shock resistance
-    UT  //unit toughness
+    UT, //unit toughness
+    attribute_count //add nothing below this
 };
 
 //different classifications of the resources. forms a tree

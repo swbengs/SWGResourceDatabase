@@ -78,6 +78,7 @@ private:
     bool runScript(std::string filename); //run given script. returns true if it ran without errors
 
     //helper gets expect the table to already be pushed onto the stack
+    float getFieldFloat(std::string key, bool shouldPrintError);
     int getFieldInt(std::string key);
     int getFieldInt(int key);
     std::string getFieldString(std::string key);
@@ -85,5 +86,6 @@ private:
     bool getResourceAttributes(resource_pod& pod);
     void getAttribute(resource_pod& pod); //these are in a table with key at table[1] and value at table[2]
     bool getResourceClasses(std::vector<std::string>& classes);
+    bool getWeight(weighted_average_pod& pod, std::string attribute_key, unsigned int attribute_value);
 };
 

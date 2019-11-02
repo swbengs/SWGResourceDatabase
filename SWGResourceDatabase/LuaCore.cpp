@@ -30,7 +30,6 @@ SOFTWARE.
 */
 
 //class code
-
 LuaCore::LuaCore()
 {
     lua_state = luaL_newstate();
@@ -167,7 +166,31 @@ bool LuaCore::getNextWeight(std::vector<weighted_average_pod>& weight, std::stri
     }
 
     //get the juicy bits
+    name = getFieldString("name");
+    const std::vector<std::string> attributes =
+    {
+        "CR",
+        "CD",
+        "DR",
+        "FL",
+        "HR",
+        "MA",
+        "OQ",
+        "PE",
+        "SR",
+        "UT"
+    };
 
+    //only 10 attributes so just loop through them and add any found
+    for (size_t i = 0; i < attributes.size(); i++)
+    {
+        weighted_average_pod pod;
+        
+        if (getWeight(pod, attributes[i], i)) //nothing went wrong so add this
+        {
+            weight.push_back(pod);
+        }
+    }
 
     //pop this weight table
     lua_pop(lua_state, 1);
@@ -299,6 +322,22 @@ bool LuaCore::runScript(std::string filename)
 
     printf("running script: %s was a success!\n", filename.c_str());
     return true;
+}
+
+float LuaCore::getFieldFloat(std::string key, bool shouldPrintError)
+{
+    float result;
+
+    lua_pushstring(lua_state, key.c_str());
+    lua_gettable(lua_state, -2);  /* get table[key] */
+    if (!lua_isnumber(lua_state, -1) && shouldPrintError)
+    {
+        fprintf(stderr, "invalid float in table[%s]\n", key.c_str());
+    }
+    result = (float)lua_tonumber(lua_state, -1);
+    lua_pop(lua_state, 1);  /* remove number */
+
+    return result;
 }
 
 //get int can cry about an error but there is no valid int that will signify an error to the calling method. Just print error and go on
@@ -502,6 +541,20 @@ bool LuaCore::getResourceClasses(std::vector<std::string>& classes)
     } while (next);
 
     lua_pop(lua_state, 1); //pop off attributes
+    return true;
+}
+
+bool LuaCore::getWeight(weighted_average_pod& pod, std::string attribute_key, unsigned int attribute_value)
+{
+    float weight = getFieldFloat(attribute_key, false);
+    if (weight <= 0)
+    {
+        return false;
+    }
+
+    pod.attribute = attribute_value;
+    pod.weight = weight;
+
     return true;
 }
 

@@ -203,14 +203,14 @@ void CLI_V1::loadSettings()
 
 void CLI_V1::loadWeights()
 {
-    bool wasSuccess = settings_lua.runSettingsScript();
+    bool wasSuccess = settings_lua.runWeightsScript();
     if (wasSuccess)
     {
         if (settings_lua.startWeights())
         {
             //good to go. start grabbing weights
 
-            bool next = false;
+            bool next = true;
             while (next)
             {
                 std::string name;
@@ -327,6 +327,7 @@ int CLI_V1::inputLoop()
         case CLI_state::READY:
             //only get here once so do misc stuff here before main menu appears
             loadSettings();
+            loadWeights();
 
             mainMenuLoop();
             isDone = true;
@@ -474,11 +475,19 @@ bool CLI_V1::viewWeightsLoop()
     //return false to continue the main loop and true if we should quit completely
     int input = 0;
     bool isDone = false;
-    const std::string preset_options = "Choices:\n-2: Exit program\n-1: Exit viewing\n";
+    const std::string preset_options = "Choices:\n-2: Exit program\n-1: Exit viewing weights\n";
+    std::stringstream stream;
+    stream << preset_options;
+
+    //add the actual weights
+    for (size_t i = 0; i < weights.size(); i++)
+    {
+        stream << i << ": " << weights[i].getName() << "\n";
+    }
 
     while (!isDone)
     {
-        input = getIntegerInput("", -2, 0);
+        input = getIntegerInput(stream.str(), -2, weights.size() - 1);
         switch (input)
         {
         case -2:
@@ -486,8 +495,13 @@ bool CLI_V1::viewWeightsLoop()
         case -1:
             isDone = true;
             break;
-        case 0:
-            
+        default:
+            std::cout << "weight name: " << weights[input].getName() << "\n";
+            const std::vector<weighted_average_pod>& weight = weights[input].getWeight();
+            for (size_t i = 0; i < weight.size(); i++)
+            {
+                std::cout << "attribute name: " << SWGAttributesString(static_cast<SWG_attributes>(weight[i].attribute)) << " weight: " << weight[i].weight << "\n";
+            }
             break;
         }
     }
