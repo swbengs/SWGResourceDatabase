@@ -1,5 +1,5 @@
 //class header
-#include "Resource.hpp"
+#include "Schematic.hpp"
 
 //std lib includes
 
@@ -30,35 +30,48 @@ SOFTWARE.
 */
 
 //class code
-
-Resource::Resource()
+Schematic::Schematic()
 {
-    resource.name = "junk name";
-    resource.type = "junk type";
-    resource.cold_resistance = 0;
-    resource.conductivity = 0;
-    resource.decay_resistance = 0;
-    resource.flavor = 0;
-    resource.heat_resistance = 0;
-    resource.malleability = 0;
-    resource.overall_quality = 0;
-    resource.potential_energy = 0;
-    resource.shock_resistance = 0;
-    resource.unit_toughness = 0;
+    name = "junk";
 }
 
-Resource::Resource(resource_pod& pod, std::vector<std::string>& vector)
+void Schematic::addClass(SWG_resource_classes value)
 {
-    resource = std::move(pod);
-    classes = std::move(vector);
+    classes.push_back(value);
 }
 
-const resource_pod& Resource::getResourcePOD() const
+void Schematic::addType(SWG_resource_types value)
 {
-    return resource;
+    types.push_back(value);
 }
 
-const std::vector<std::string>& Resource::getClasses() const
+std::string Schematic::getName() const
+{
+    return name;
+}
+
+const std::vector<SWG_resource_types>& Schematic::getTypes() const
+{
+    return types;
+}
+
+const std::vector<SWG_resource_classes>& Schematic::getClasses() const
 {
     return classes;
 }
+
+void Schematic::setName(std::string name)
+{
+    this->name = name;
+}
+
+void Schematic::setTypes(const std::vector<SWG_resource_types>& types)
+{
+    this->types = types;
+}
+
+void Schematic::setClasses(const std::vector<SWG_resource_classes>& classes)
+{
+    this->classes = classes;
+}
+

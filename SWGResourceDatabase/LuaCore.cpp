@@ -30,11 +30,12 @@ SOFTWARE.
 */
 
 //class code
-
 LuaCore::LuaCore()
 {
     lua_state = luaL_newstate();
     current_index = 0;
+    reverse_classes = getReverseOfClassesString();
+    reverse_types = getReverseOfTypesString();
 }
 
 LuaCore::~LuaCore()
@@ -55,7 +56,7 @@ bool LuaCore::start(std::string filename)
     lua_getglobal(lua_state, "resources");
     if (!lua_istable(lua_state, -1))
     {
-        printf("`resources' is not a valid table. Is the file a resource dump Lua script?\n");
+        printf("'resources' is not a valid table. Is the file a resource dump Lua script?\n");
         return false;
     }
 
@@ -137,12 +138,196 @@ bool LuaCore::getNextResource(resource_pod& pod, std::vector<std::string>& class
     return true;
 }
 
+bool LuaCore::startSchematics()
+{
+    lua_getglobal(lua_state, "schematics");
+    if (!lua_istable(lua_state, -1))
+    {
+        printf("'schematics' is not a valid table\n");
+        return false;
+    }
+
+    //it exists so everything is ready to grab resources. Next step is to call getNextResource() until it returns false but not in this function ;)
+    current_index = 0;
+
+    return true;
+}
+
+bool LuaCore::getNextSchematic(Schematic& schematic)
+{
+    current_index++; //starts at 1 since we increment before doing anything
+
+    //push next schematic table on
+    lua_pushinteger(lua_state, current_index);
+    lua_gettable(lua_state, -2);
+    if (!lua_istable(lua_state, -1))
+    {
+        printf("Schematics table end has been reached\n");
+        lua_pop(lua_state, 1); //must clean up before we leave this method
+        return false;
+    }
+
+    schematic.setName(getFieldString("name"));
+
+    bool next = true;
+    int index = 1;
+    while (next)
+    {
+        std::string temp_string = getFieldString(index, false);
+        if (temp_string.compare("null") != 0)
+        {
+            //actual value so add it after figuring out if it's a class or type
+            if (isClassEnumString(temp_string))
+            {
+                schematic.addClass(getClassEnumByString(temp_string));
+            }
+            else if (isTypeEnumString(temp_string))
+            {
+                schematic.addType(getTypeEnumByString(temp_string));
+            }
+            else
+            {
+                //complain that temp_string is not a valid enum string
+            }
+        }
+        else
+        {
+            //didn't get a string so assume it's the end
+            next = false;
+        }
+        index++;
+    }
+
+    //pop this schematic table
+    lua_pop(lua_state, 1);
+
+    return true;
+}
+
+void LuaCore::stopSchematics()
+{
+    //call this even if start fails because it will push nil onto the stack
+    int count = lua_gettop(lua_state);
+    if (count == 1)
+    {
+        lua_pop(lua_state, 1);
+    }
+
+    //sanity check
+    count = lua_gettop(lua_state);
+    if (count != 0)
+    {
+        fprintf(stderr, "Lua stack is not empty after stopSchematics(). Stack count is: %i\n", count);
+    }
+}
+
+bool LuaCore::startWeights()
+{
+    lua_getglobal(lua_state, "weights");
+    if (!lua_istable(lua_state, -1))
+    {
+        printf("'weights' is not a valid table\n");
+        return false;
+    }
+
+    //it exists so everything is ready to grab resources. Next step is to call getNextResource() until it returns false but not in this function ;)
+    current_index = 0;
+
+    return true;
+}
+
+bool LuaCore::getNextWeight(std::vector<weighted_average_pod>& weight, std::string& name)
+{
+    current_index++; //starts at 1 since we increment before doing anything
+
+    //push next weight table on
+    lua_pushinteger(lua_state, current_index);
+    lua_gettable(lua_state, -2);
+    if (!lua_istable(lua_state, -1))
+    {
+        printf("Weights table end has been reached\n");
+        lua_pop(lua_state, 1); //must clean up before we leave this method
+        return false;
+    }
+
+    //get the juicy bits
+    name = getFieldString("name");
+    const std::vector<std::string> attributes =
+    {
+        "CR",
+        "CD",
+        "DR",
+        "FL",
+        "HR",
+        "MA",
+        "OQ",
+        "PE",
+        "SR",
+        "UT"
+    };
+
+    //only 10 attributes so just loop through them and add any found
+    for (size_t i = 0; i < attributes.size(); i++)
+    {
+        weighted_average_pod pod;
+        
+        if (getWeight(pod, attributes[i], i)) //nothing went wrong so add this
+        {
+            weight.push_back(pod);
+        }
+    }
+
+    //pop this weight table
+    lua_pop(lua_state, 1);
+
+    return true;
+}
+
+void LuaCore::stopWeights()
+{
+    //call this even if start fails because it will push nil onto the stack
+    int count = lua_gettop(lua_state);
+    if (count == 1)
+    {
+        lua_pop(lua_state, 1);
+    }
+
+    //sanity check
+    count = lua_gettop(lua_state);
+    if (count != 0)
+    {
+        fprintf(stderr, "Lua stack is not empty after stopWeights(). Stack count is: %i\n", count);
+    }
+}
+
 bool LuaCore::runSettingsScript()
 {
     bool wasSuccess = runScript("settings.lua");
     if (!wasSuccess)
     {
         fprintf(stderr, "Could not find settings.lua. Switching to defaults\n");
+    }
+
+    return wasSuccess;
+}
+
+bool LuaCore::runSchematicsScript()
+{
+    bool wasSuccess = runScript("schematics.lua");
+    if (!wasSuccess)
+    {
+        fprintf(stderr, "Could not find schematics.lua. Switching to defaults\n");
+    }
+
+    return wasSuccess;
+}
+
+bool LuaCore::runWeightsScript()
+{
+    bool wasSuccess = runScript("weights.lua");
+    if (!wasSuccess)
+    {
+        fprintf(stderr, "Could not find weights.lua. Switching to defaults\n");
     }
 
     return wasSuccess;
@@ -224,6 +409,22 @@ bool LuaCore::runScript(std::string filename)
     return true;
 }
 
+float LuaCore::getFieldFloat(std::string key, bool shouldPrintError)
+{
+    float result;
+
+    lua_pushstring(lua_state, key.c_str());
+    lua_gettable(lua_state, -2);  /* get table[key] */
+    if (!lua_isnumber(lua_state, -1) && shouldPrintError)
+    {
+        fprintf(stderr, "invalid float in table[%s]\n", key.c_str());
+    }
+    result = (float)lua_tonumber(lua_state, -1);
+    lua_pop(lua_state, 1);  /* remove number */
+
+    return result;
+}
+
 //get int can cry about an error but there is no valid int that will signify an error to the calling method. Just print error and go on
 int LuaCore::getFieldInt(std::string key)
 {
@@ -275,7 +476,7 @@ std::string LuaCore::getFieldString(std::string key)
 }
 
 //returns the value at table[key] or string value of null if it was nil
-std::string LuaCore::getFieldString(int key)
+std::string LuaCore::getFieldString(int key, bool shouldPrintError)
 {
     std::string result;
 
@@ -283,7 +484,10 @@ std::string LuaCore::getFieldString(int key)
     lua_gettable(lua_state, -2);
     if (!lua_isstring(lua_state, -1))
     {
-        fprintf(stderr, "invalid string in table[%i]\n", key);
+        if (shouldPrintError)
+        {
+            fprintf(stderr, "invalid string in table[%i]\n", key);
+        }
         lua_pop(lua_state, 1); //don't forget to cleanup stack when returning early
         return "null";
     }
@@ -333,7 +537,7 @@ void LuaCore::getAttribute(resource_pod& pod)
 {
     //grab the value only. We don't push the table off that happens in the loop
     //1 is the key, 2 is the value
-    std::string key = getFieldString(1);
+    std::string key = getFieldString(1, true);
     int value = getFieldInt(2);
 
     //figure out which attribute to set based on the key
@@ -411,7 +615,7 @@ bool LuaCore::getResourceClasses(std::vector<std::string>& classes)
         }
         else //grab just the second value. First is a more human readable string of the second
         {
-            std::string value = getFieldString(2);
+            std::string value = getFieldString(2, true);
             if (value.compare("null") == 0)
             {
                 //error will generate at call above so just cleanup and return. Issue here means the classes table is messed up somehow so make sure the calling method knows something went wrong
@@ -426,5 +630,41 @@ bool LuaCore::getResourceClasses(std::vector<std::string>& classes)
 
     lua_pop(lua_state, 1); //pop off attributes
     return true;
+}
+
+bool LuaCore::getWeight(weighted_average_pod& pod, std::string attribute_key, unsigned int attribute_value)
+{
+    float weight = getFieldFloat(attribute_key, false);
+    if (weight <= 0)
+    {
+        return false;
+    }
+
+    pod.attribute = attribute_value;
+    pod.weight = weight;
+
+    return true;
+}
+
+bool LuaCore::isClassEnumString(std::string name) const
+{
+    auto result = reverse_classes.find(name); //set to end() if not found
+    return result != reverse_classes.end();
+}
+
+bool LuaCore::isTypeEnumString(std::string name) const
+{
+    auto result = reverse_types.find(name); //set to end() if not found
+    return result != reverse_types.end();
+}
+
+SWG_resource_classes LuaCore::getClassEnumByString(std::string name) const
+{
+    return reverse_classes.at(name);
+}
+
+SWG_resource_types LuaCore::getTypeEnumByString(std::string name) const
+{
+    return reverse_types.at(name);
 }
 

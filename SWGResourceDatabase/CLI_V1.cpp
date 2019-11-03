@@ -45,6 +45,7 @@ CLI_V1::CLI_V1()
     lua_dump_file = "";
     current_node = nullptr;
     limit = 25;
+    current_weight_index = 0;
 }
 
 CLI_V1::~CLI_V1()
@@ -201,6 +202,59 @@ void CLI_V1::loadSettings()
     }
 }
 
+void CLI_V1::loadSchematics()
+{
+    bool wasSuccess = settings_lua.runSchematicsScript();
+    if (wasSuccess)
+    {
+        if (settings_lua.startSchematics())
+        {
+            //good to go. start grabbing schematics
+
+            bool next = true;
+            while (next)
+            {
+                Schematic temp;
+                next = settings_lua.getNextSchematic(temp);
+                if (next)
+                {
+                    schematics.push_back(temp);
+                }
+            }
+        }
+
+        settings_lua.stopSchematics();
+    }
+}
+
+void CLI_V1::loadWeights()
+{
+    bool wasSuccess = settings_lua.runWeightsScript();
+    if (wasSuccess)
+    {
+        if (settings_lua.startWeights())
+        {
+            //good to go. start grabbing weights
+
+            bool next = true;
+            while (next)
+            {
+                std::string name;
+                std::vector<weighted_average_pod> pod;
+                next = settings_lua.getNextWeight(pod, name);
+                if (next)
+                {
+                    //current weight is good so add to the real vector
+                    Weight weight(name, pod);
+                    weights.push_back(weight);
+                }
+            }
+        }
+
+        settings_lua.stopWeights();
+    }
+}
+
 int CLI_V1::getIntegerInput(std::string options, int min, int max)
 {
     int result = 0;
@@ -299,6 +353,8 @@ int CLI_V1::inputLoop()
         case CLI_state::READY:
             //only get here once so do misc stuff here before main menu appears
             loadSettings();
+            loadSchematics();
+            loadWeights();
 
             mainMenuLoop();
             isDone = true;
@@ -316,7 +372,7 @@ void CLI_V1::mainMenuLoop()
 
     while (!isDone)
     {
-        input = getIntegerInput("Choices:\n0: Exit\n1: View resources\n", 0, 1);
+        input = getIntegerInput("Choices:\n0: Exit\n1: View resources\n2: View schematics\n3: View weights\n4: Pick weight to use\n5: Find best resources for schematic(with current weight)\n", 0, 5);
         switch (input)
         {
         case 0:
@@ -324,6 +380,18 @@ void CLI_V1::mainMenuLoop()
             break;
         case 1:
             isDone = viewResourcesLoop();
+            break;
+        case 2:
+            isDone = viewSchematicsLoop(true);
+            break;
+        case 3:
+            isDone = viewWeightsLoop(true);
+            break;
+        case 4:
+            isDone = viewWeightsLoop(false);
+            break;
+        case 5:
+            isDone = viewSchematicsLoop(false);
             break;
         }
     }
@@ -424,10 +492,148 @@ bool CLI_V1::viewResourcesLoop()
                     }
                     else
                     {
+                        //even this node's items are added so no matter what we grab the item - 1's location
                         resource_database->showResourcesWithClass(SWGResourceTypeString(static_cast<SWG_resource_types>(items[input - 1].resource_enum)), limit);
                     }
                 }
             }
+            break;
+        }
+    }
+
+    return false;
+}
+
+bool CLI_V1::viewSchematicsLoop(bool isViewing)
+{
+    //safety checks
+    if (!isViewing)
+    {
+        //trying to view resources for a schematic but there are no schematics and or weights
+        if (weights.size() == 0)
+        {
+            std::cout << "There are no weights found. Returning to main menu. weights.lua is either missing or damaged\n";
+            return false;
+        }
+        else if (schematics.size() == 0)
+        {
+            std::cout << "There are no schematics found. Returning to main menu. schematics.lua is either missing or damaged\n";
+            return false;
+        }
+    }
+
+    //return false to continue the main loop and true if we should quit completely
+    int input = 0;
+    bool isDone = false;
+    const std::string preset_options = "Choices:\n-2: Exit program\n-1: Exit viewing schematics\n";
+    std::stringstream stream;
+    stream << preset_options;
+
+    //add actual schematics
+    for (size_t i = 0; i < schematics.size(); i++)
+    {
+        stream << i << ": " << schematics[i].getName() << "\n";
+    }
+
+    while (!isDone)
+    {
+        input = getIntegerInput(stream.str(), -2, schematics.size() - 1);
+        switch (input)
+        {
+        case -2:
+            return true; //exit completely
+        case -1:
+            isDone = true;
+            break;
+        default:
+            std::cout << "schematic name: " << schematics[input].getName() << "\n";
+            const std::vector<SWG_resource_classes>& temp_classes = schematics[input].getClasses();
+            const std::vector<SWG_resource_types>& temp_types = schematics[input].getTypes();
+
+            if (isViewing) //viewing the contents of the schematic. not the weighted avg
+            {
+                for (size_t i = 0; i < temp_classes.size(); i++)
+                {
+                    std::cout << "resource class: " << SWGResourceClassString(temp_classes[i]) << "\n";
+                }
+                std::cout << "\n";
+
+                for (size_t i = 0; i < temp_types.size(); i++)
+                {
+                    std::cout << "resource type: " << SWGResourceTypeString(temp_types[i]) << "\n";
+                }
+                std::cout << "\n";
+            }
+            else //viewing avg weighted resources that fit each type/class
+            {
+                std::cout << "Best resources using weight: " << weights[current_weight_index].getName() << "\n--------\n";
+
+                for (size_t i = 0; i < temp_classes.size(); i++)
+                {
+                    std::string temp = SWGResourceClassString(temp_classes[i]);
+                    std::cout << "best resource(s) for class: " << temp << "\n";
+                    resource_database->showResourcesWithClassAverage(temp, limit, weights[current_weight_index].getWeight());
+                    std::cout << "--------\n";
+                }
+
+                for (size_t i = 0; i < temp_types.size(); i++)
+                {
+                    std::string temp = SWGResourceTypeString(temp_types[i]);
+                    std::cout << "best resource(s) for type: " << temp << "\n";
+                    resource_database->showResourcesWithClassAverage(temp, limit, weights[current_weight_index].getWeight());
+                    std::cout << "--------\n";
+                }
+            }
+
+            break;
+        }
+    }
+
+    return false;
+}
+
+bool CLI_V1::viewWeightsLoop(bool isViewing)
+{
+    //return false to continue the main loop and true if we should quit completely
+    int input = 0;
+    bool isDone = false;
+    const std::string preset_options = "Choices:\n-2: Exit program\n-1: Exit viewing weights\n";
+    std::stringstream stream;
+    stream << preset_options;
+
+    //add the actual weights
+    for (size_t i = 0; i < weights.size(); i++)
+    {
+        stream << i << ": " << weights[i].getName() << "\n";
+    }
+
+    while (!isDone)
+    {
+        input = getIntegerInput(stream.str(), -2, weights.size() - 1);
+        switch (input)
+        {
+        case -2:
+            return true; //exit completely
+        case -1:
+            isDone = true;
+            break;
+        default:
+            if (isViewing)
+            {
+                std::cout << "weight name: " << weights[input].getName() << "\n";
+                const std::vector<weighted_average_pod>& weight = weights[input].getWeight();
+                for (size_t i = 0; i < weight.size(); i++)
+                {
+                    std::cout << "attribute name: " << SWGAttributesString(static_cast<SWG_attributes>(weight[i].attribute)) << " weight: " << weight[i].weight << "\n";
+                }
+            }
+            else //picking a weight to use for avg weighted viewing
+            {
+                std::cout << "Setting current weight to " << weights[input].getName() << "\n";
+                current_weight_index = input;
+                return false;
+            }
+
             break;
         }
     }

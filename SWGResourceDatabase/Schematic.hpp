@@ -1,9 +1,11 @@
-//class header
-#include "Resource.hpp"
+#pragma once
 
 //std lib includes
+#include <string>
+#include <vector>
 
 //other includes
+#include "constantsV1.hpp"
 
 /*
 MIT License
@@ -29,36 +31,29 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-//class code
+/*
+Description: Class to store a basic schematic
+*/
 
-Resource::Resource()
+//class delcaration
+class Schematic
 {
-    resource.name = "junk name";
-    resource.type = "junk type";
-    resource.cold_resistance = 0;
-    resource.conductivity = 0;
-    resource.decay_resistance = 0;
-    resource.flavor = 0;
-    resource.heat_resistance = 0;
-    resource.malleability = 0;
-    resource.overall_quality = 0;
-    resource.potential_energy = 0;
-    resource.shock_resistance = 0;
-    resource.unit_toughness = 0;
-}
+public:
+    Schematic();
 
-Resource::Resource(resource_pod& pod, std::vector<std::string>& vector)
-{
-    resource = std::move(pod);
-    classes = std::move(vector);
-}
+    void addClass(SWG_resource_classes value);
+    void addType(SWG_resource_types value);
 
-const resource_pod& Resource::getResourcePOD() const
-{
-    return resource;
-}
+    std::string getName() const;
+    const std::vector<SWG_resource_types>& getTypes() const;
+    const std::vector<SWG_resource_classes>& getClasses() const;
 
-const std::vector<std::string>& Resource::getClasses() const
-{
-    return classes;
-}
+    void setName(std::string name);
+    void setTypes(const std::vector<SWG_resource_types>& types);
+    void setClasses(const std::vector<SWG_resource_classes>& classes);
+private:
+    std::string name;
+    std::vector<SWG_resource_types> types;
+    std::vector<SWG_resource_classes> classes;
+};
+

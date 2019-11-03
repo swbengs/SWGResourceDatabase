@@ -1,9 +1,12 @@
-//class header
-#include "Resource.hpp"
+#pragma once
 
 //std lib includes
+#include <vector>
+#include <string>
 
 //other includes
+#include "constantsV1.hpp"
+#include "pods.hpp"
 
 /*
 MIT License
@@ -29,36 +32,21 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-//class code
+/*
+Description: Class to store a weight. The name plus all attribute weight pairs
+*/
 
-Resource::Resource()
+//class delcaration
+class Weight
 {
-    resource.name = "junk name";
-    resource.type = "junk type";
-    resource.cold_resistance = 0;
-    resource.conductivity = 0;
-    resource.decay_resistance = 0;
-    resource.flavor = 0;
-    resource.heat_resistance = 0;
-    resource.malleability = 0;
-    resource.overall_quality = 0;
-    resource.potential_energy = 0;
-    resource.shock_resistance = 0;
-    resource.unit_toughness = 0;
-}
+public:
+    Weight();
+    Weight(std::string name, std::vector<weighted_average_pod>& weight);
 
-Resource::Resource(resource_pod& pod, std::vector<std::string>& vector)
-{
-    resource = std::move(pod);
-    classes = std::move(vector);
-}
+    std::string getName() const;
+    const std::vector<weighted_average_pod>& getWeight() const;
+private:
+    std::string name;
+    std::vector<weighted_average_pod> weight;
+};
 
-const resource_pod& Resource::getResourcePOD() const
-{
-    return resource;
-}
-
-const std::vector<std::string>& Resource::getClasses() const
-{
-    return classes;
-}

@@ -1,5 +1,5 @@
 //class header
-#include "Resource.hpp"
+#include "Weight.hpp"
 
 //std lib includes
 
@@ -30,35 +30,23 @@ SOFTWARE.
 */
 
 //class code
-
-Resource::Resource()
+Weight::Weight()
 {
-    resource.name = "junk name";
-    resource.type = "junk type";
-    resource.cold_resistance = 0;
-    resource.conductivity = 0;
-    resource.decay_resistance = 0;
-    resource.flavor = 0;
-    resource.heat_resistance = 0;
-    resource.malleability = 0;
-    resource.overall_quality = 0;
-    resource.potential_energy = 0;
-    resource.shock_resistance = 0;
-    resource.unit_toughness = 0;
+    name = "junk";
 }
 
-Resource::Resource(resource_pod& pod, std::vector<std::string>& vector)
+Weight::Weight(std::string name, std::vector<weighted_average_pod>& weight)
 {
-    resource = std::move(pod);
-    classes = std::move(vector);
+    this->name = std::move(name);
+    this->weight = std::move(weight);
 }
 
-const resource_pod& Resource::getResourcePOD() const
+std::string Weight::getName() const
 {
-    return resource;
+    return name;
 }
 
-const std::vector<std::string>& Resource::getClasses() const
+const std::vector<weighted_average_pod>& Weight::getWeight() const
 {
-    return classes;
+    return weight;
 }

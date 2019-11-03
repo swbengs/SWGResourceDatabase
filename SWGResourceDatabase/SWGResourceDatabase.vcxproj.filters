@@ -28,6 +28,15 @@
     <Filter Include="scripts">
       <UniqueIdentifier>{54fd9720-c433-4cb9-8352-900f31b463b0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shell_scripts">
+      <UniqueIdentifier>{0bef89b1-48a6-430a-9613-ca04e5a7a466}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shell_scripts\windows">
+      <UniqueIdentifier>{02d5f990-d0ee-4354-be9e-261703b42b44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shell_scripts\linux">
+      <UniqueIdentifier>{d9cd4832-af5d-41ee-8a0c-05b3126cd55a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Lua\lapi.c">
@@ -156,6 +165,12 @@
     <ClCompile Include="ResourceTree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Weight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Schematic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />
@@ -182,6 +197,18 @@
     </None>
     <None Include="settings.lua">
       <Filter>Resource Files</Filter>
+    </None>
+    <None Include="schematics.lua">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="weights.lua">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shell_scripts\windows\test_create.cmd">
+      <Filter>shell_scripts\windows</Filter>
+    </None>
+    <None Include="shell_scripts\windows\test_load.cmd">
+      <Filter>shell_scripts\windows</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -285,6 +312,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ResourceTree.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Weight.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Schematic.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

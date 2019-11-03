@@ -2,12 +2,14 @@
 
 //std lib includes
 #include <string>
+#include <vector>
 
 //other includes
 #include "LuaCore.hpp"
 #include "SqliteCore_V1.hpp"
 #include "constantsV1.hpp"
 #include "ResourceTree.hpp"
+#include "Weight.hpp"
 
 /*
 MIT License
@@ -56,11 +58,18 @@ private:
     ResourceTree tree;
     const resource_class_node* current_node;
     int limit;
+    std::vector<Weight> weights; //each set of weights(attribute and weight pair) makes a weight hence vector of a vector. a single weight can be multiple attributes
+    std::vector<Schematic> schematics;
+    size_t current_weight_index;
 
     void loadSettings();
+    void loadSchematics();
+    void loadWeights();
     int getIntegerInput(std::string options, int min, int max);
     int inputLoop(); //determine what to do next based on what the user types in
     void mainMenuLoop();
     bool viewResourcesLoop();
+    bool viewSchematicsLoop(bool isViewing);
+    bool viewWeightsLoop(bool isViewing);
 };
 
