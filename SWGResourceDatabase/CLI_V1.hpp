@@ -60,6 +60,7 @@ private:
     int limit;
     std::vector<Weight> weights; //each set of weights(attribute and weight pair) makes a weight hence vector of a vector. a single weight can be multiple attributes
     std::vector<Schematic> schematics;
+    size_t current_weight_index;
 
     void loadSettings();
     void loadSchematics();
@@ -68,7 +69,7 @@ private:
     int inputLoop(); //determine what to do next based on what the user types in
     void mainMenuLoop();
     bool viewResourcesLoop();
-    bool viewSchematicsLoop();
-    bool viewWeightsLoop();
+    bool viewSchematicsLoop(bool isViewing);
+    bool viewWeightsLoop(bool isViewing);
 };
 

@@ -1,16 +1,18 @@
 # SWGResourceDatabase
 Lua to Sqlite database program and simple CLI to do queries
 
+![Image of schematic viewing](https://github.com/swbengs/SWGResourceDatabase/blob/master/sample_use.png)
+
 ## Still in dev
 * Lua side
    * Done!
 * Sqlite3 version 1
    * Done!
 * CLI
-   * Started
+   * Done(basic features. more will be added)
 
 ## How it works
-The ZonamaDev server at a minimum produces a Lua file that contains all resources to ever exist on the test server. It's likely that the Core3 ones do as well, since they run basically the same code. This program will load that file and make a Sqlite3 database with a name of your choosing.
+The ZonamaDev server at a minimum produces a Lua file that contains all resources to ever exist on the test server. It's likely that the Core3 ones do as well, since they run the same code. This program will load that file and make a Sqlite3 database with a name of your choosing.
 
 1. Copy the resource_manager_spawns.lua file somewhere it's easy to access
 2. Run the program and do the setup. Give it the .lua filename and database name and it will make it(you can leave it as resource_manager_spawns.lua or change it, makes no difference)
@@ -26,6 +28,14 @@ Built with MS VS 2019
 
 ## CLI examples
 To be done later
+
+## Settings files
+To be done later
+
+## Sample shell scripts
+* Assist with loading or creating a database without repeated user input
+* Linux samples are not yet made
+* Windows samples are in shell_scripts/windows folder
 
 ## Languages
 * Lua 5.3

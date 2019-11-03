@@ -45,6 +45,7 @@ CLI_V1::CLI_V1()
     lua_dump_file = "";
     current_node = nullptr;
     limit = 25;
+    current_weight_index = 0;
 }
 
 CLI_V1::~CLI_V1()
@@ -371,7 +372,7 @@ void CLI_V1::mainMenuLoop()
 
     while (!isDone)
     {
-        input = getIntegerInput("Choices:\n0: Exit\n1: View resources\n2: View schematics\n3: View weights\n", 0, 3);
+        input = getIntegerInput("Choices:\n0: Exit\n1: View resources\n2: View schematics\n3: View weights\n4: Pick weight to use\n5: Find best resources for schematic(with current weight)\n", 0, 5);
         switch (input)
         {
         case 0:
@@ -381,10 +382,16 @@ void CLI_V1::mainMenuLoop()
             isDone = viewResourcesLoop();
             break;
         case 2:
-            isDone = viewSchematicsLoop();
+            isDone = viewSchematicsLoop(true);
             break;
         case 3:
-            isDone = viewWeightsLoop();
+            isDone = viewWeightsLoop(true);
+            break;
+        case 4:
+            isDone = viewWeightsLoop(false);
+            break;
+        case 5:
+            isDone = viewSchematicsLoop(false);
             break;
         }
     }
@@ -497,8 +504,24 @@ bool CLI_V1::viewResourcesLoop()
     return false;
 }
 
-bool CLI_V1::viewSchematicsLoop()
+bool CLI_V1::viewSchematicsLoop(bool isViewing)
 {
+    //safety checks
+    if (!isViewing)
+    {
+        //trying to view resources for a schematic but there are no schematics and or weights
+        if (weights.size() == 0)
+        {
+            std::cout << "There are no weights found. Returning to main menu. weights.lua is either missing or damaged\n";
+            return false;
+        }
+        else if (schematics.size() == 0)
+        {
+            std::cout << "There are no schematics found. Returning to main menu. schematics.lua is either missing or damaged\n";
+            return false;
+        }
+    }
+
     //return false to continue the main loop and true if we should quit completely
     int input = 0;
     bool isDone = false;
@@ -527,17 +550,40 @@ bool CLI_V1::viewSchematicsLoop()
             const std::vector<SWG_resource_classes>& temp_classes = schematics[input].getClasses();
             const std::vector<SWG_resource_types>& temp_types = schematics[input].getTypes();
 
-            for (size_t i = 0; i < temp_classes.size(); i++)
+            if (isViewing) //viewing the contents of the schematic. not the weighted avg
             {
-                std::cout << "resource class: " << SWGResourceClassString(temp_classes[i]) << "\n";
-            }
-            std::cout << "\n";
+                for (size_t i = 0; i < temp_classes.size(); i++)
+                {
+                    std::cout << "resource class: " << SWGResourceClassString(temp_classes[i]) << "\n";
+                }
+                std::cout << "\n";
 
-            for (size_t i = 0; i < temp_types.size(); i++)
-            {
-                std::cout << "resource type: " << SWGResourceTypeString(temp_types[i]) << "\n";
+                for (size_t i = 0; i < temp_types.size(); i++)
+                {
+                    std::cout << "resource type: " << SWGResourceTypeString(temp_types[i]) << "\n";
+                }
+                std::cout << "\n";
             }
-            std::cout << "\n";
+            else //viewing avg weighted resources that fit each type/class
+            {
+                std::cout << "Best resources using weight: " << weights[current_weight_index].getName() << "\n--------\n";
+
+                for (size_t i = 0; i < temp_classes.size(); i++)
+                {
+                    std::string temp = SWGResourceClassString(temp_classes[i]);
+                    std::cout << "best resource(s) for class: " << temp << "\n";
+                    resource_database->showResourcesWithClassAverage(temp, limit, weights[current_weight_index].getWeight());
+                    std::cout << "--------\n";
+                }
+
+                for (size_t i = 0; i < temp_types.size(); i++)
+                {
+                    std::string temp = SWGResourceTypeString(temp_types[i]);
+                    std::cout << "best resource(s) for type: " << temp << "\n";
+                    resource_database->showResourcesWithClassAverage(temp, limit, weights[current_weight_index].getWeight());
+                    std::cout << "--------\n";
+                }
+            }
 
             break;
         }
@@ -546,7 +592,7 @@ bool CLI_V1::viewSchematicsLoop()
     return false;
 }
 
-bool CLI_V1::viewWeightsLoop()
+bool CLI_V1::viewWeightsLoop(bool isViewing)
 {
     //return false to continue the main loop and true if we should quit completely
     int input = 0;
@@ -572,12 +618,22 @@ bool CLI_V1::viewWeightsLoop()
             isDone = true;
             break;
         default:
-            std::cout << "weight name: " << weights[input].getName() << "\n";
-            const std::vector<weighted_average_pod>& weight = weights[input].getWeight();
-            for (size_t i = 0; i < weight.size(); i++)
+            if (isViewing)
             {
-                std::cout << "attribute name: " << SWGAttributesString(static_cast<SWG_attributes>(weight[i].attribute)) << " weight: " << weight[i].weight << "\n";
+                std::cout << "weight name: " << weights[input].getName() << "\n";
+                const std::vector<weighted_average_pod>& weight = weights[input].getWeight();
+                for (size_t i = 0; i < weight.size(); i++)
+                {
+                    std::cout << "attribute name: " << SWGAttributesString(static_cast<SWG_attributes>(weight[i].attribute)) << " weight: " << weight[i].weight << "\n";
+                }
             }
+            else //picking a weight to use for avg weighted viewing
+            {
+                std::cout << "Setting current weight to " << weights[input].getName() << "\n";
+                current_weight_index = input;
+                return false;
+            }
+
             break;
         }
     }
