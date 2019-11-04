@@ -1,0 +1,9 @@
+#!/bin/bash
+#Do all the things to setup on ZonamaDev
+
+to=~/Desktop/SWGResourceDatabase
+
+mkdir $to
+cp ../../weights.lua $to
+cp ../../settings.lua $to
+cp ../../schematics.lua $to
