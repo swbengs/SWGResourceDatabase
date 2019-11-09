@@ -3,10 +3,14 @@
 
 to=~/Desktop/SWGResourceDatabase
 
+#Make the directory and copy import scripts and files there
 mkdir $to
 cp SWGResourceDatabase/weights.lua $to
 cp SWGResourceDatabase/settings.lua $to
 cp SWGResourceDatabase/schematics.lua $to
+cp SWGResourceDatabase/shell_scripts/linux/copy_resource_dump $to
+
+#Make executable and copy it to the directory
 make
 cp SWGResourceDB $to
 

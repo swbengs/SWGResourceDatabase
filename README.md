@@ -28,6 +28,7 @@ Makefile for ZonamaDev
 settings.lua controls diffrent display controls for queries
 weights.lua define the weights to use for average weighted searches. Displayed in order. First defined weight is the default.
 schematics.lua define the schematics(don't have to be ingame schematics) that use the current weight. Displayed in the program in the order they appear in the file
+* Resource types and classes are defined in constantsV1.cpp. You use the NON pretty versions. Sample lua files are provided which show both to get an idea how it works. More schematics and weights will be added over time.
 
 ## Sample shell scripts
 * Assist with loading or creating a database without repeated user input. ZonamaDev script to copy the resource dump file
