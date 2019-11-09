@@ -201,14 +201,14 @@
     <None Include="weights.lua">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="shell_scripts\windows\test_create.cmd">
-      <Filter>shell_scripts\windows</Filter>
-    </None>
-    <None Include="shell_scripts\windows\test_load.cmd">
-      <Filter>shell_scripts\windows</Filter>
-    </None>
     <None Include="..\Makefile" />
     <None Include="..\setup" />
+    <None Include="shell_scripts\windows\sample_create.cmd">
+      <Filter>shell_scripts\windows</Filter>
+    </None>
+    <None Include="shell_scripts\windows\sample_load.cmd">
+      <Filter>shell_scripts\windows</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sqlite\sqlite3.h">

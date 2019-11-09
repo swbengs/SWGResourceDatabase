@@ -195,8 +195,8 @@
     <ClCompile Include="SqliteCore_V1.cpp" />
     <ClCompile Include="Sqlite\sqlite3.c" />
     <ClCompile Include="Main.cpp" />
-    <None Include="shell_scripts\windows\test_create.cmd" />
-    <None Include="shell_scripts\windows\test_load.cmd" />
+    <None Include="shell_scripts\windows\sample_create.cmd" />
+    <None Include="shell_scripts\windows\sample_load.cmd" />
     <None Include="weights.lua" />
   </ItemGroup>
   <ItemGroup>
