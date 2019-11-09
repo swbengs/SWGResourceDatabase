@@ -34,9 +34,6 @@
     <Filter Include="shell_scripts\windows">
       <UniqueIdentifier>{02d5f990-d0ee-4354-be9e-261703b42b44}</UniqueIdentifier>
     </Filter>
-    <Filter Include="shell_scripts\linux">
-      <UniqueIdentifier>{d9cd4832-af5d-41ee-8a0c-05b3126cd55a}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Lua\lapi.c">
@@ -210,6 +207,8 @@
     <None Include="shell_scripts\windows\test_load.cmd">
       <Filter>shell_scripts\windows</Filter>
     </None>
+    <None Include="..\Makefile" />
+    <None Include="..\setup" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sqlite\sqlite3.h">

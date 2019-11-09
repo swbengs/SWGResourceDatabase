@@ -148,6 +148,8 @@
   <ItemGroup>
     <ClCompile Include="Schematic.cpp" />
     <ClCompile Include="Weight.cpp" />
+    <None Include="..\Makefile" />
+    <None Include="..\setup" />
     <None Include="bad_classes.lua">
       <FileType>Document</FileType>
     </None>

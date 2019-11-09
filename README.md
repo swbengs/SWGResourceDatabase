@@ -3,39 +3,36 @@ Lua to Sqlite database program and simple CLI to do queries
 
 ![Image of schematic viewing](https://github.com/swbengs/SWGResourceDatabase/blob/master/sample_use.png)
 
-## Still in dev
-* Lua side
-   * Done!
-* Sqlite3 version 1
-   * Done!
-* CLI
-   * Done(basic features. more will be added)
-
 ## How it works
-The ZonamaDev server at a minimum produces a Lua file that contains all resources to ever exist on the test server. It's likely that the Core3 ones do as well, since they run the same code. This program will load that file and make a Sqlite3 database with a name of your choosing.
+The ZonamaDev server and Core3 produces a Lua file that contains all resources to ever exist on the test server. This program will load that file and make a Sqlite3 database with a name of your choosing.
 
-1. Copy the resource_manager_spawns.lua file somewhere it's easy to access
+1. Copy the resource_manager_spawns.lua file somewhere it's easy to access or use a helper shell script to grab it
 2. Run the program and do the setup. Give it the .lua filename and database name and it will make it(you can leave it as resource_manager_spawns.lua or change it, makes no difference)
 3. Use the CLI or any other Sqlite3 interface to run queries
 4. Enjoy!
 
-Built with MS VS 2019
+Solution built with MS VS 2019
+Makefile for ZonamaDev
 
-## CLI information
-1. Plan to have a way to write schematics and weightings via a Lua settings file. Might be a few different ones.
-2. Using the above it will allow you to see what the best resources are of any type or for any schematic you care about
-3. Also usful for testing. Can be modified to check for a range of resource attributes fairly easily which assits in testing the crafting system
+## Usage tips
+* Most important function is with weights and schematics. The default weight is the first one listed in weights.lua
+* Select option 4 to choose a different weight
+* Once you have the weight you want, select the schematic in option 5 and it will query each listed resource type and class to find the top resources for it currently in the database
+* Create a new up to date database as often as you want. Every day, every week, every month, doesn't matter
 
-## CLI examples
-To be done later
+## Linux/ZonamaDev install
+1. Run the setup script and it will copy all neccesary files to the desktop/SWGResourceDatabase folder and then run the makefile
+2. Use the supplied sample shell scripts to assist with copying the dump file, loading, and creating your databases.
 
 ## Settings files
-To be done later
+settings.lua controls diffrent display controls for queries
+weights.lua define the weights to use for average weighted searches. Displayed in order. First defined weight is the default.
+schematics.lua define the schematics(don't have to be ingame schematics) that use the current weight. Displayed in the program in the order they appear in the file
 
 ## Sample shell scripts
-* Assist with loading or creating a database without repeated user input
-* Linux samples are not yet made
+* Assist with loading or creating a database without repeated user input. ZonamaDev script to copy the resource dump file
 * Windows samples are in shell_scripts/windows folder
+* Linux shells are in shell_scripts/linux
 
 ## Languages
 * Lua 5.3
