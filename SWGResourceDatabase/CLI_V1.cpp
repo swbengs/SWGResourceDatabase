@@ -10,7 +10,7 @@
 #include <stack>
 
 //other library files
-#include "Sqlite\sqlite3.h"
+#include "Sqlite/sqlite3.h"
 
 /*
 MIT License

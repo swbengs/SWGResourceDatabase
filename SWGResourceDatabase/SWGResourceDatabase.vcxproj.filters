@@ -35,7 +35,7 @@
       <UniqueIdentifier>{02d5f990-d0ee-4354-be9e-261703b42b44}</UniqueIdentifier>
     </Filter>
     <Filter Include="shell_scripts\linux">
-      <UniqueIdentifier>{d9cd4832-af5d-41ee-8a0c-05b3126cd55a}</UniqueIdentifier>
+      <UniqueIdentifier>{25255c85-3e08-4e3e-bb53-98d57d17fd69}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -204,11 +204,16 @@
     <None Include="weights.lua">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="shell_scripts\windows\test_create.cmd">
+    <None Include="..\Makefile" />
+    <None Include="..\setup" />
+    <None Include="shell_scripts\windows\sample_create.cmd">
       <Filter>shell_scripts\windows</Filter>
     </None>
-    <None Include="shell_scripts\windows\test_load.cmd">
+    <None Include="shell_scripts\windows\sample_load.cmd">
       <Filter>shell_scripts\windows</Filter>
+    </None>
+    <None Include="shell_scripts\linux\copy_resource_dump">
+      <Filter>shell_scripts\linux</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

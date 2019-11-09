@@ -6,7 +6,7 @@
 #include <sstream>
 
 //other library files
-#include "Sqlite\sqlite3.h"
+#include "Sqlite/sqlite3.h"
 
 //test includes
 #include "LuaCore.hpp"

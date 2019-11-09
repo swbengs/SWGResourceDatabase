@@ -11,9 +11,9 @@
 //extern c or else while compiling as C++ there are naming issues
 extern "C"
 {
-#include "Lua\lua.h" //bread and butter
-#include "Lua\lauxlib.h" //helper functions for plain Lua
-#include "Lua\lualib.h" //helper libraries for tables, math, IO, and so on inside Lua
+#include "Lua/lua.h" //bread and butter
+#include "Lua/lauxlib.h" //helper functions for plain Lua
+#include "Lua/lualib.h" //helper libraries for tables, math, IO, and so on inside Lua
 }
 
 /*

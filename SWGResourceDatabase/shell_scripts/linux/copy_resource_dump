@@ -1,0 +1,7 @@
+#!/bin/bash
+#Copy on ZonamaDev the resource dump file to resource database location
+
+to=~/Desktop/SWGResourceDatabase
+
+cp ~/workspace/MMOCoreORB/bin/scripts/managers/resource_manager_spawns.lua $to
+
