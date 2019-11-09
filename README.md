@@ -21,8 +21,10 @@ Makefile for ZonamaDev
 * Create a new up to date database as often as you want. Every day, every week, every month, doesn't matter
 
 ## Linux/ZonamaDev install
-1. Run the setup script and it will copy all neccesary files to the desktop/SWGResourceDatabase folder and then run the makefile
-2. Use the supplied sample shell scripts to assist with copying the dump file, loading, and creating your databases.
+1. Run the setup script(usually need to allow permission to run it. Right click and select properties, go to permissions and check the box for running) and it will copy all neccesary files to the desktop/SWGResourceDatabase folder and then run the makefile
+2. ./setup is the command to run it after allowing it to be run. Run in the same folder setup is located in. Top directory after cloning
+3. Use the supplied sample shell scripts to assist with copying the dump file, loading, and creating your databases.
+4. Again these scripts need to be right clicked->properties->permissions->check allow to run as program in order to work
 
 ## Settings files
 settings.lua controls diffrent display controls for queries

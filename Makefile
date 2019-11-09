@@ -1,4 +1,4 @@
-CXXFLAGS ?= -g -O2 -std=c++11 -I/src/
+CXXFLAGS ?= -g -O2 -std=c++11
  
 OBJDIR := obj
 SRCDIR := SWGResourceDatabase
