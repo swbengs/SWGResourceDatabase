@@ -34,6 +34,9 @@
     <Filter Include="shell_scripts\windows">
       <UniqueIdentifier>{02d5f990-d0ee-4354-be9e-261703b42b44}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shell_scripts\linux">
+      <UniqueIdentifier>{25255c85-3e08-4e3e-bb53-98d57d17fd69}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Lua\lapi.c">
@@ -208,6 +211,9 @@
     </None>
     <None Include="shell_scripts\windows\sample_load.cmd">
       <Filter>shell_scripts\windows</Filter>
+    </None>
+    <None Include="shell_scripts\linux\copy_resource_dump">
+      <Filter>shell_scripts\linux</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

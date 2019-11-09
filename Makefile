@@ -15,7 +15,7 @@ CXXFLAGS += -MMD -MP
 DEPS := $(patsubst %,$(OBJDIR)/%,$(_SRCS:c=d))
 CPPDEPS := $(patsubst %,$(OBJDIR)/%,$(_CPPSRCS:cpp=d))
 
-all: SWGResourceDatabase
+all: SWGResourceDB
 
 dump:
 	echo "$(OBJS)"
@@ -24,12 +24,12 @@ dump:
 createdir:
 	mkdir -p $(OBJDIR)
  
-SWGResourceDatabase: $(OBJS) $(OBJDIR)/sqlite3.o $(CPPOBJS)
+SWGResourceDB: $(OBJS) $(OBJDIR)/sqlite3.o $(CPPOBJS)
 	@echo " LINK $^"
 	$(CXX) $(CXXFLAGS) -lpthread -ldl -o $@ $^ 
 
-$(OBJDIR)/sqlite3.o: src/Sqlite/sqlite3.c src/Sqlite/sqlite3.h
-	gcc -g -O2 -c -o obj/sqlite3.o src/Sqlite/sqlite3.c 
+$(OBJDIR)/sqlite3.o: $(SRCDIR)/Sqlite/sqlite3.c $(SRCDIR)/Sqlite/sqlite3.h
+	gcc -g -O2 -c -o $(OBJDIR)/sqlite3.o $(SRCDIR)/Sqlite/sqlite3.c 
 
 $(OBJDIR)/%.o: $(SRCDIR)/Lua/%.c | createdir
 	gcc -g -O2 -c -o $@ $< 
@@ -39,7 +39,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $< 
  
 clean:
-	$(RM) -f *~ core SWGResourceDatabase
+	$(RM) -f *~ core SWGResourceDB
 	$(RM) -r $(OBJDIR)
  
 .PHONY: clean all

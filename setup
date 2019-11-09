@@ -7,4 +7,6 @@ mkdir $to
 cp SWGResourceDatabase/weights.lua $to
 cp SWGResourceDatabase/settings.lua $to
 cp SWGResourceDatabase/schematics.lua $to
+make
+cp SWGResourceDB $to
 
